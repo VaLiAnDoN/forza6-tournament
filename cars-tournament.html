@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Турнир Forza 6 — Тачки</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            background-color: #000;
+            color: #fff;
+        }
+
+        /* Контейнер для полноэкранного видеофона */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .video-background iframe {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100vw;
+            height: 56.25vw; /* Пропорции 16:9 */
+            min-height: 100vh;
+            min-width: 177.77vh; /* Пропорции 16:9 */
+            transform: translate(-50%, -50%);
+        }
+
+        /* Темная вуаль поверх видео, чтобы текст читался */
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.65);
+            z-index: -1;
+        }
+
+        /* Основной контент страницы */
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            z-index: 1;
+            position: relative;
+        }
+
+        /* Шапка страницы */
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #ff3333;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            margin-bottom: 20px;
+        }
+
+        /* Интерактивная гоночная кнопка звука */
+        .audio-control-btn {
+            background: linear-gradient(135deg, #ff3333 0%, #990000 100%);
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(255, 51, 51, 0.4);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .audio-control-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(255, 51, 51, 0.8);
+        }
+
+        /* Главная карточка с турнирной информацией */
+        .tournament-card {
+            background: rgba(20, 20, 20, 0.85);
+            border: 2px solid #333;
+            border-top: 5px solid #ff3333;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+            backdrop-filter: blur(5px);
+        }
+
+        .section-title {
+            color: #ffcc00;
+            text-transform: uppercase;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #444;
+            padding-bottom: 5px;
+        }
+
+        /* Пример турнирной таблицы */
+        .tournament-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            margin-bottom: 30px;
+        }
+
+        .tournament-table th, .tournament-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #333;
+        }
+
+        .tournament-table th {
+            background-color: rgba(255, 51, 51, 0.2);
+            color: #ffcc00;
+            text-transform: uppercase;
+        }
+
+        .tournament-table tr:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            color: #aaa;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .back-btn:hover {
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Видеофон с YouTube API -->
+    <div class="video-background">
+        <div id="player"></div>
+    </div>
+    
+    <div class="video-overlay"></div>
+
+    <div class="container">
+        <header>
+            <h1>Кубок Молнии Маккуина</h1>
+            <!-- Кнопка включения звука -->
+            <button class="audio-control-btn" id="muteBtn" onclick="toggleMute()">
+                Включить звук 🏎️🔊
+            </button>
+        </header>
+
+        <main class="tournament-card">
+            <h2 class="section-title">Текущее положение (Forza 6)</h2>
+            <table class="tournament-table">
+                <thead>
+                    <tr>
+                        <th>Позиция</th>
+                        <th>Пилот</th>
+                        <th>Автомобиль</th>
+                        <th>Очки</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>LightningMcQueen_95</td>
+                        <td>Chevrolet Corvette C6.R</td>
+                        <td>25</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Jackson_Storm_20</td>
+                        <td>Ford GT (2016)</td>
+                        <td>18</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Cruz_Ramirez_51</td>
+                        <td>Dodge Viper SRT10</td>
+                        <td>15</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2 class="section-title">Правила турнира</h2>
+            <p style="line-height: 1.6; color: #ccc;">
+                Гонки проходят без помощников управления. Повреждения включены на «Симуляцию». 
+                Каждый этап состоит из квалификации (3 круга) и основной гонки (15 кругов). 
+                Старт под трек Real Gone — обязателен!
+            </p>
+
+            <a href="index.html" class="back-btn">← Вернуться на главную</a>
+        </main>
+    </div>
+
+    <!-- Скрипт YouTube API для управления плеером -->
+    <script>
+        // Подключаем API YouTube
+        var tag = document.createElement('script');
+        tag.src = "https://youtube.com";
+        var firstScriptTag = document.getElementsByTagName('script');
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        var player;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                videoId: 'I4AR-eBF9G4', // ID вашего видео
+                playerVars: {
+                    'autoplay': 1,
+                    'mute': 1,          // Стартуем без звука, чтобы обойти блокировку
+                    'loop': 1,
+                    'playlist': 'I4AR-eBF9G4',
+                    'controls': 0,
+                    'showinfo': 0,
+                    'rel': 0,
+                    'modestbranding': 1
+                },
+                events: {
+                    'onReady': onPlayerReady
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            event.target.playVideo();
+        }
+
+        // Функция включения/выключения звука
+        function toggleMute() {
+            var btn = document.getElementById('muteBtn');
+            if (player.isMuted()) {
+                player.unMute();
+                btn.innerHTML = "Заглушить звук 🤫";
+                btn.style.background = "linear-gradient(135deg, #555 0%, #222 100%)";
+                btn.style.boxShadow = "none";
+            } else {
+                player.mute();
+                btn.innerHTML = "Включить звук 🏎️🔊";
+                btn.style.background = "linear-gradient(135deg, #ff3333 0%, #990000 100%)";
+                btn.style.boxShadow = "0 0 15px rgba(255, 51, 51, 0.4)";
+            }
+        }
+    </script>
+</body>
+</html>
