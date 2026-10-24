@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Турниры Forza 6</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: radial-gradient(circle, #1a1a1a 0%, #0a0a0a 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(255,255,255,0.2);
+            margin-bottom: 10px;
+        }
+
+        h1 span {
+            color: #ff3333;
+        }
+
+        p.subtitle {
+            color: #888;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Сетка для плиток турниров */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 900px;
+            width: 100%;
+        }
+
+        /* Стильная гоночная плитка */
+        .tournament-tile {
+            background: linear-gradient(145deg, #222222, #151515);
+            border: 2px solid #333;
+            border-radius: 12px;
+            overflow: hidden;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        /* Красная полоса при наведении */
+        .tournament-tile::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background-color: #ff3333;
+            transition: width 0.2s ease;
+        }
+
+        .tournament-tile:hover {
+            transform: translateY(-5px);
+            border-color: #ff3333;
+            box-shadow: 0 15px 30px rgba(255, 51, 51, 0.2);
+        }
+
+        .tournament-tile:hover::before {
+            width: 8px;
+        }
+
+        .tile-content {
+            padding: 30px;
+        }
+
+        .tile-tag {
+            background-color: #ff3333;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        .tile-title {
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .tile-desc {
+            color: #aaa;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .tile-footer {
+            margin-top: 20px;
+            color: #ffcc00;
+            font-weight: bold;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Forza Motorsport <span>6</span></h1>
+        <p class="subtitle">Платформа Турниров</p>
+    </header>
+
+    <div class="grid-container">
+        <!-- Плитка турнира по Тачкам -->
+        <a href="cars-tournament.html" class="tournament-tile">
+            <div class="tile-content">
+                <span class="tile-tag">Гонка дня</span>
+                <h2 class="tile-title">Кубок Тачек</h2>
+                <p class="tile-desc">Легендарный заезд под трек Real Gone. Проверь свои силы на выносливость без помощников управления!</p>
+                <div class="tile-footer">Принять участие →</div>
+            </div>
+        </a>
+
+        <!-- Заглушка для будущего турнира -->
+        <div class="tournament-tile" style="opacity: 0.4; cursor: not-allowed;">
+            <div class="tile-content">
+                <span class="tile-tag" style="background: #555;">Скоро</span>
+                <h2 class="tile-title">Новый этап</h2>
+                <p class="tile-desc">Следующий чемпионат Forza 6 уже подготавливается. Следите за анонсами.</p>
+                <div class="tile-footer" style="color: #888;">В разработке...</div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
