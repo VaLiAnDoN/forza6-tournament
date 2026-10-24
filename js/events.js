@@ -16,10 +16,7 @@ if(a=='up'||a=='dn'){const L=dord(),i=+el.dataset.i,j=a=='up'?i-1:i+1;if(L[j]){[
 if(a=='shuf')S.dorder=dord().sort(()=>Math.random()-.5);
 if(a=='v'){const k=el.dataset.k;if(view!=k){wipe();setTimeout(()=>{view=k;mo=false;render()},420);return}view=k;mo=false}
 if(a=='mn')mo=!mo;if(a=='pop'){pop=el.dataset.k;mo=false}if(a=='pc')pop=null;if(a=='wspin'){wofSpin();return}
-if(a=='tkt')tkTab=el.dataset.k;if(a=='vid')vidOn=!vidOn;
-if(a=='snd'){snd=!snd;ytc(snd?'unMute':'mute')}
-if(a=='ytplay'){ytc('playVideo');ytc(snd?'unMute':'mute')}
-if(a=='tkadd'){const n=document.getElementById('tkn').value.trim();if(n)TK().races.push({n,t:document.getElementById('tkt').value,l:document.getElementById('tkl').value,code:document.getElementById('tkc').value.trim(),p:{}})}
+if(a=='tkt')tkTab=el.dataset.k;if(a=='tkadd'){const n=document.getElementById('tkn').value.trim();if(n)TK().races.push({n,t:document.getElementById('tkt').value,l:document.getElementById('tkl').value,code:document.getElementById('tkc').value.trim(),p:{}})}
 if(a=='tkdel')TK().races.splice(+el.dataset.i,1);
 if(a=='gen'){const n=+document.getElementById('nr').value||12;S.nr=n;if(!Object.keys(S.picks).length)return alert('Сначала проведите драфт');gen3(n)}
 if(a=='addp'){const n=document.getElementById('np').value.trim();if(n)S.players.push({n,c:code()})}
