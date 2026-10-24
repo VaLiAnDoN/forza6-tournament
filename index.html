@@ -1,4 +1,5 @@
 <!DOCTYPE html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Чемпионат 5. Страны</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{color-scheme:dark;--bg:#07080b;--c:#12141b;--l:#252a38;--t:#eef0f6;--m:#8a90a3;--a:#19e3c3;--b:#ff3d81;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 html,body{margin:0;background:var(--bg);color:var(--t);font:15px/1.4 system-ui,"Segoe UI",Roboto,sans-serif}
@@ -14,7 +15,7 @@ header{display:flex;align-items:center;gap:12px;flex-wrap:wrap}header .sp{flex:1
 .fl{width:30px;height:20px;border-radius:3px;margin-right:3px;vertical-align:middle;box-shadow:0 0 0 1px #fff2}
 .chip{display:inline-block;padding:1px 9px;border-radius:99px;border:1px solid var(--b);color:var(--b);font-weight:700;font-size:13px}
 .row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.sp{flex:1}.mut{color:var(--m)}
-.bar{height:8px;border-radius:9px;background:linear-gradient(90deg,var(--a),var(--b));box-shadow:0 0 10px #19e3c355}
+.bar{height:8px;border-radius:99px;background:linear-gradient(90deg,var(--a),var(--b));box-shadow:0 0 10px #19e3c355}
 .big{font-size:26px;font-weight:800}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px}
 .tm{cursor:pointer}.tm.x{opacity:.4;cursor:default}.tm:not(.x):hover{border-color:var(--a)}
 .lane{display:flex;align-items:center;gap:8px;padding:6px 0;border-top:1px solid var(--l);flex-wrap:wrap}.lane input{width:110px}
@@ -29,6 +30,11 @@ header{display:flex;align-items:center;gap:12px;flex-wrap:wrap}header .sp{flex:1
 #app{position:relative;z-index:1}#app,#app header,#app .tabs,#app .grid{pointer-events:none}#app .card,#app .btn,#app input,#app textarea,#app header>*{pointer-events:auto}
 #tip{position:fixed;left:16px;bottom:16px;z-index:2;font-weight:700;font-size:18px;color:var(--a);text-shadow:0 0 10px #000;pointer-events:none}.tbl{overflow-x:auto}table{border-collapse:collapse;font-size:13px}td,th{padding:4px 8px;border-bottom:1px solid var(--l)}
 </style></head><body><div id="app"></div><script>
+// --- SUPABASE ИНИЦИАЛИЗАЦИЯ ---
+const SUPABASE_URL = 'https://sxjrfbxqrsgszhmpzrak.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_FlcsmTdHbSu0laI_kZPlTQ_vAObuZba';
+const sbClient = (window.supabase && window.supabase.createClient) ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
 const D=['Автокросс Круг','Автокросс Спринт','Тогэ','Шоссе Спринт','Шоссе Круг','Грунт Круг','Грунт Спринт','Уличная гонка'],CL=['D','C','B','A','S1','S2','R'];
 const DB={'Шоссе Круг':'Гонка на автомагистрали|7|12R;Нарай-Дзюку|2.4|CBA12;Сиракава|3.2|CBA12R;Симанояма|1.1|DCBA;Хокубу|2.5|CBA12R;Сони|1.9|DCBA12R;Дайкоку|2.7|BA12R;Трасса электронного города|4.4|CBA12;Остров Легенд|4.7|12R;Ирокава|1.9|DCBA12;Эдамамэ|1.1|DCBA12R',
 'Шоссе Спринт':'Фестивальный спринт|7.8;Венера|8;Спринт по приморскому парку|7.3;Ито|9.3;Татэяма - Куробэ|6;Спринт по Симанояме|6.5;Спринт по перевалу Сатта|8.3;Спринт по побережью|8.1;Спринт по железной дороге|6.8;Спринт по Сикисай|7.7',
@@ -60,9 +66,31 @@ const tracks={};D.forEach(d=>tracks[d]=[1,2,3].map(i=>d+' — трасса '+i))
 return{players:['Женя','Максим','Влад','Богдан'].map(n=>({n,c:code()})),admin:'ADMIN',order:[],picks:{},compat,compatC:Object.fromEntries(T.map(t=>[t.id,Object.fromEntries(CL.map(c=>[c,true]))])),tracks,races:[]}}
 let S;try{S=JSON.parse(localStorage.getItem('nc5'))}catch(x){}S=S||init();function notify(m){const d=document.createElement('div');d.textContent=m;d.style.cssText='position:fixed;left:50%;top:20px;transform:translateX(-50%);background:#ff3d81;color:#fff;padding:10px 16px;border-radius:10px;z-index:9;max-width:90%';document.body.appendChild(d);setTimeout(()=>d.remove(),3000)}window.alert=notify;
 let me=null,tab='t',pend=null;try{me=localStorage.getItem('nc5me')}catch(x){}
+
+// Синхронизация с Supabase
+const save = () => {
+    try { localStorage.setItem('nc5', JSON.stringify(S)); } catch(x){}
+    if (sbClient) {
+        sbClient.from('tournament_data').upsert({ id: 1, payload: S }).then(({error}) => {
+            if(error) console.error('Supabase Save Error:', error);
+        });
+    }
+};
+async function loadFromSupabase() {
+    if(!sbClient) return;
+    try {
+        const { data, error } = await sbClient.from('tournament_data').select('payload').eq('id', 1).single();
+        if (data && data.payload) {
+            S = data.payload;
+            render();
+        }
+    } catch(e) {}
+}
+
+const adm=()=>me==='@admin';
 function migrate(){const f=x=>x==='Даня'?'Женя':x;S.players.forEach(p=>p.n=f(p.n));S.order=S.order.map(f);for(const t in S.picks)S.picks[t]=f(S.picks[t]);S.races.forEach(r=>{for(const o of['lanes','times']){const n={};for(const k in r[o])n[f(k)]=r[o][k];r[o]=n}});if(!S.compatC)S.compatC=init().compatC;if(S.tv!==2){D.forEach(d=>S.tracks[d]=Object.keys(TD[d]||{}));S.tv=2}if(S.cv!==3){applyCav();S.cv=3}me=f(me)}
 migrate();
-const save=()=>{try{localStorage.setItem('nc5',JSON.stringify(S))}catch(x){}};const adm=()=>me==='@admin';
+
 function ms(s){s=(s||'').trim().toLowerCase();if(!s)return;if(/^(н\/?ф|dnf|nf)$/.test(s))return null;const m=s.match(/^(\d+):(\d{1,2})[.,](\d{1,3})$/);if(!m)return;return(+m[1]*60+ +m[2])*1000+ +(m[3]+'00').slice(0,3)}
 function pts(r){const P=Object.keys(r.lanes),t={};for(const p of P){t[p]=ms(r.times[p]);if(t[p]===undefined)return null}
 const f=P.filter(p=>t[p]!==null),res={};P.forEach(p=>res[p]=0);const dn=P.length-f.length;
@@ -267,5 +295,7 @@ if(el.dataset.tr)S.tracks[el.dataset.tr]=el.value.split('\n').map(s=>s.trim()).f
 if(el.dataset.cp){const[t,d]=el.dataset.cp.split('|');S.compat[t][d]=el.checked}
 if(el.dataset.cc){const[t,c]=el.dataset.cc.split('|');S.compatC[t][c]=el.checked}
 save();render()});
-render();
+
+// Загрузка данных из базы данных при старте
+loadFromSupabase().then(() => render());
 </script></body></html>
