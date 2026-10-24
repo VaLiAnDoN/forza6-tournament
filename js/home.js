@@ -1,7 +1,8 @@
 /* Меню, главная, колесо фортуны, переключение разделов */
 const dord=()=>{const a=(S.dorder||[]).filter(n=>S.players.some(p=>p.n==n));S.players.forEach(p=>{if(!a.includes(p.n))a.push(p.n)});return a};
 let mo=false,pop=null;
-const nav=()=>`<div style="position:fixed;left:12px;top:calc(env(safe-area-inset-top,0px) + 12px);z-index:8"><button class="btn" data-a="mn">☰ Меню</button>${mo?`<div class="card" style="position:absolute;z-index:6;left:0;top:44px;width:250px"><button class="btn" data-a="v" data-k="home" style="width:100%;margin:3px 0">🏠 Главная</button><button class="btn" data-a="pop" data-k="cars" style="width:100%;margin:3px 0">🚗 Список машин</button><button class="btn" data-a="pop" data-k="me" style="width:100%;margin:3px 0">👤 Личная статистика</button></div>`:''}</div>`;
+const nav=()=>`<div style="position:fixed;left:12px;top:calc(env(safe-area-inset-top,0px) + 12px);z-index:8"><button class="btn" data-a="mn">☰ Меню</button>${mo?`<div class="card" style="position:absolute;z-index:6;left:0;top:44px;width:250px"><button class="btn" data-a="v" data-k="home" style="width:100%;margin:3px 0">🏠 Главная</button><button class="btn" data-a="pop" data-k="cars" style="width:100%;margin:3px 0">🚗 Список машин</button><button class="btn" data-a="pop" data-k="me" style="width:100%;margin:3px 0">👤 Личная статистика</button>${adm()?'<button class="btn" data-a="pop" data-k="set" style="width:100%;margin:3px 0">⚙️ Настройки</button>':''}</div>`:''}</div>`;
+const PLR=()=>`<h2 style="margin-top:4px">Игроки и коды</h2><div class="card">${S.players.map(p=>`<div class="row"><b class="sp">${e(p.n)}</b><code>${p.c}</code></div>`).join('')}<div class="row" style="margin-top:8px"><input id="np" placeholder="Новый игрок" class="sp"><button class="btn" data-a="addp">Добавить</button></div></div>`;
 const CF={'Австралия':'au','Австрия':'at','Канада':'ca','Китай':'cn','Хорватия':'hr','Дания':'dk','Франция':'fr','Германия':'de','Италия':'it','Япония':'jp','Корея':'kr','Швеция':'se','Великобритания':'gb','США':'us'};
 
 const DE=d=>/Шоссе/.test(d)?'🛣️':/Грунт/.test(d)?'🏜️':/Автокросс/.test(d)?'🌿':d=='Тогэ'?'⛰️':'🏙️';
@@ -15,4 +16,5 @@ if(view=='cars')b=carsView();
 if(view=='tachki')b=TACHKI2();
 if(view=='wof')b=WOF();
 if(view=='me')b=(stats()||'<h2>Личная статистика</h2><div class="card mut">Пока нет результатов.</div>')+'<div class="card mut">Статистика по машинам и маркам появится после загрузки списка машин и подключения общей базы.</div>';
-A.innerHTML=nav()+`<header><h1>Чемпионат 5 · <span>Страны</span></h1><div class="sp"></div><button class="btn" data-a="out">Выйти</button></header>`+b}
+const hd=view=='tachki'?`<header><div class="fh6"><div class="st"><div class="fz">Forza</div><div class="hz">Horizon</div></div><div class="n6">6</div></div><div class="tkl">ТАЧКИ</div><div class="sp"></div><button class="btn" data-a="out">Выйти</button></header>`:`<header><h1>Чемпионат 5 · <span>Страны</span></h1><div class="sp"></div><button class="btn" data-a="out">Выйти</button></header>`;
+A.innerHTML=nav()+hd+b}

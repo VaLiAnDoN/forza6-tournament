@@ -25,12 +25,13 @@ save();render()});
 document.addEventListener('mouseover',ev=>{const t=ev.target,m=t.closest&&t.closest('[data-hl]'),c=t.closest&&t.closest('#map')&&t.dataset&&t.dataset.c,tp=document.getElementById('tip');
 if(m){hl(m.dataset.hl.split(','));tp.textContent=''}else if(c){hl([c]);tp.textContent=CN[c]}else{hl([]);tp.textContent=''}});
 document.addEventListener('change',ev=>{const el=ev.target;
-if(['cd','tkn','tkt','tkl','tkc'].includes(el.id))return;
+if(['cd','tkn','tkt','tkl','tkc','np'].includes(el.id))return;
 if(el.dataset.sp){S.sp=el.value;save();render();return}
 if(el.dataset.wof){S.wof=el.value;save();return}
 if(el.dataset.tkf){const[i,f]=el.dataset.tkf.split('|');TK().races[i][f]=el.value;save();return}
 if(el.dataset.car!==undefined){const r=S.races[el.dataset.car];r.cars=r.cars||{};r.cars[el.dataset.p]=el.value;save();return}
 if(el.dataset.tkc!==undefined){const r=TK().races[el.dataset.tkc];r.c=r.c||{};r.c[el.dataset.p]=el.value;save();return}
+if(el.dataset.tkm!==undefined){const r=TK().races[el.dataset.tkm];r.tm=r.tm||{};r.tm[el.dataset.p]=el.value;save();render();return}
 if(el.dataset.tk!==undefined){const r=TK().races[el.dataset.tk];r.p=r.p||{};r.p[el.dataset.p]=el.value;save();render();return}
 if(el.dataset.sn){S.snake=el.checked;save();return}
 if(el.dataset.code!==undefined){S.races[el.dataset.code].code=el.value.trim();save();return}

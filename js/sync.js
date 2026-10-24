@@ -16,11 +16,11 @@ const sGet=async sel=>(await sFetch(SB_URL+'&select='+sel,{headers:SB_H}))[0];
 const sEditing=()=>{const a=document.activeElement;return !!a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)};
 /* подтянуть облако; false — облако пустое, нужно залить локальные данные */
 async function sApply(){
- const r=await sGet('rev,data');if(!r)throw new Error('нет строки main');
+ const first=sRev<0,r=await sGet('rev,data');if(!r)throw new Error('нет строки main');
  if(!r.data||!Object.keys(r.data).length){sRev=r.rev;sBase=null;sDirty=true;return false}
  const had=sDirty&&sBase;
  S=had?sMerge(sBase,S,r.data):sClone(r.data);sBase=sClone(r.data);sRev=r.rev;if(!had)sDirty=false;
- migrate();try{localStorage.setItem('nc5',sJ(S))}catch(x){}return true}
+ migrate();try{localStorage.setItem('nc5',sJ(S))}catch(x){}liveCheck(S.live,first);return true}
 async function sPush(){
  for(let i=0;i<4&&sDirty;i++){
   const snap=sClone(S);
@@ -33,8 +33,9 @@ async function sPoll(){
   if(sDirty){sSt(2);await sPush()}
   const r=await sGet('rev');
   if(r&&r.rev!==sRev&&!sDirty&&!sEditing()){await sApply();render()}
+  else if(r&&r.rev!==sRev&&me&&view=='champ'){const q=await sGet('l:data->live');q&&q.l&&liveCheck(q.l,false)}
   sSt(1)
  }catch(e){sSt(0)}
  sBusy=false;if(sDirty&&sOk!==0){clearTimeout(sTm);sTm=setTimeout(sPoll,400)}}
 window.syncKick=()=>{sDirty=sBase?!sEq(S,sBase):true;if(sDirty){clearTimeout(sTm);sTm=setTimeout(sPoll,400)}};
-setInterval(sPoll,4000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)sPoll()});window.addEventListener('online',sPoll);sPoll();
+setInterval(sPoll,2000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)sPoll()});window.addEventListener('online',sPoll);sPoll();
