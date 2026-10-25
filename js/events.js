@@ -18,6 +18,10 @@ if(a=='v'){const k=el.dataset.k;if(view!=k){wipe();setTimeout(()=>{view=k;mo=fal
 if(a=='mn')mo=!mo;if(a=='pop'){pop=el.dataset.k;mo=false}if(a=='pc')pop=null;if(a=='wspin'){wofSpin();return}
 if(a=='tkt')tkTab=el.dataset.k;if(a=='tkadd'){const n=document.getElementById('tkn').value.trim();if(n)TK().races.push({n,t:document.getElementById('tkt').value,l:document.getElementById('tkl').value,code:document.getElementById('tkc').value.trim(),p:{}})}
 if(a=='tkdel')TK().races.splice(+el.dataset.i,1);
+if(a=='wspinc'){wofSpinC();return}
+if(a=='wofall')S.wofx=[];
+if(a=='wofbest'){const c=wofCar();if(c){const k=new Set([...cids(c[11]),...cids(c[12])]);S.wofx=DISC.map((d,i)=>i).filter(i=>i&&!k.has(i))}}
+if(a=='wcar'){const c=CARS[+el.dataset.k];S.wofc=c[1]+' '+c[2];S.wofx=[];view='wof';pop=null;mo=false}
 if(a=='gen'){const n=+document.getElementById('nr').value||12;S.nr=n;if(!Object.keys(S.picks).length)return alert('Сначала проведите драфт');gen3(n)}
 if(a=='addp'){const n=document.getElementById('np').value.trim();if(n)S.players.push({n,c:code()})}
 save();render()});
@@ -27,6 +31,8 @@ if(m){hl(m.dataset.hl.split(','));tp.textContent=''}else if(c){hl([c]);tp.textCo
 document.addEventListener('change',ev=>{const el=ev.target;
 if(['cd','tkn','tkt','tkl','tkc','np'].includes(el.id))return;
 if(el.dataset.sp){S.sp=el.value;save();render();return}
+if(el.dataset.wofcar){const v=el.value.trim();S.wofc=CARS.some(c=>c[1]+' '+c[2]==v)?v:'';S.wofx=[];save();render();return}
+if(el.dataset.wofd!==undefined){const id=+el.dataset.wofd,x=S.wofx=S.wofx||[],i=x.indexOf(id);if(el.checked){if(i>=0)x.splice(i,1)}else if(i<0)x.push(id);save();render();return}
 if(el.dataset.wof){S.wof=el.value;save();return}
 if(el.dataset.tkf){const[i,f]=el.dataset.tkf.split('|');TK().races[i][f]=el.value;save();return}
 if(el.dataset.car!==undefined){const r=S.races[el.dataset.car];r.cars=r.cars||{};r.cars[el.dataset.p]=el.value;save();return}
