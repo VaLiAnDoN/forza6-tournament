@@ -16,7 +16,7 @@ for(const f of fin){const l=pick(f.d,f.c=='X'?'R':f.c,1);if(Object.keys(l).lengt
 
 function render(){const A=document.getElementById('app');
 const hd=`<header><svg width="40" height="40" viewBox="0 0 40 40"><defs><linearGradient id="g"><stop offset="0" stop-color="#19e3c3"/><stop offset="1" stop-color="#ff3d81"/></linearGradient></defs><circle cx="20" cy="20" r="17" fill="none" stroke="url(#g)" stroke-width="3"/><path d="M5 20h30M20 3c-9 9-9 25 0 34M20 3c9 9 9 25 0 34" stroke="url(#g)" fill="none" stroke-width="1.5"/></svg><div><h1>Чемпионат 5 · <span>Страны</span></h1><div class="mut">Nations Cup · демо-версия</div></div><div class="sp"></div>${me?`<span class="mut">${adm()?'Админ':e(me)}</span><button class="btn" data-a="out">Выйти</button>`:''}</header>`;
-if(!me){A.innerHTML=hd+`<div class="card" style="max-width:360px;margin:40px auto"><h2 style="margin-top:0">Вход по коду</h2><div class="row"><input id="cd" placeholder="Код" inputmode="numeric" class="sp"><button class="btn pri" data-a="in">Войти</button></div></div>`;return}
+if(!me){A.innerHTML=`<div class="card" style="max-width:360px;margin:34vh auto 0"><h2 style="margin-top:0">Вход по коду</h2><div class="row"><input id="cd" placeholder="Код" inputmode="numeric" class="sp"><button class="btn pri" data-a="in">Войти</button></div></div>`;return}
 const tabs=[['t','Таблица'],['d','Драфт'],['r','Гонки']].concat(adm()?[['s','Настройки']]:[]);
 let b=`<div class="tabs">${tabs.map(([k,n])=>`<button class="btn ${tab==k?'on':''}" data-a="tab" data-k="${k}">${n}</button>`).join('')}</div>`;
 if(tab=='t'){const tot={},tt={};S.players.forEach(p=>tot[p.n]=0);S.races.forEach(r=>{const x=pts(r);if(x)for(const p in x){tot[p]+=x[p];tt[r.lanes[p]]=(tt[r.lanes[p]]||0)+x[p]}});
