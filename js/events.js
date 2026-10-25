@@ -15,25 +15,23 @@ if(a=='cl'){const o=document.getElementById('ov');if(o)o.remove()}
 if(a=='up'||a=='dn'){const L=dord(),i=+el.dataset.i,j=a=='up'?i-1:i+1;if(L[j]){[L[i],L[j]]=[L[j],L[i]];S.dorder=L}}
 if(a=='shuf')S.dorder=dord().sort(()=>Math.random()-.5);
 if(a=='v'){const k=el.dataset.k;if(view!=k){wipe();setTimeout(()=>{view=k;mo=false;render()},420);return}view=k;mo=false}
-if(a=='mn')mo=!mo;if(a=='pop'){pop=el.dataset.k;mo=false}if(a=='pc')pop=null;if(a=='wspin'){wofSpin();return}
+if(a=='mn')mo=!mo;if(a=='pop'){pop=el.dataset.k;mo=false}if(a=='pc')pop=null;
 if(a=='tkt')tkTab=el.dataset.k;if(a=='tkadd'){const n=document.getElementById('tkn').value.trim();if(n)TK().races.push({n,t:document.getElementById('tkt').value,l:document.getElementById('tkl').value,code:document.getElementById('tkc').value.trim(),p:{}})}
 if(a=='tkdel')TK().races.splice(+el.dataset.i,1);
-if(a=='wspinc'){wofSpinC();return}
-if(a=='wofall')S.wofx=[];
-if(a=='wofbest'){const c=wofCar();if(c){const k=new Set([...cids(c[11]),...cids(c[12])]);S.wofx=DISC.map((d,i)=>i).filter(i=>i&&!k.has(i))}}
-if(a=='wcar'){const c=CARS[+el.dataset.k];S.wofc=c[1]+' '+c[2];S.wofx=[];view='wof';pop=null;mo=false}
 if(a=='gen'){const n=+document.getElementById('nr').value||12;S.nr=n;if(!Object.keys(S.picks).length)return alert('Сначала проведите драфт');gen3(n)}
 if(a=='addp'){const n=document.getElementById('np').value.trim();if(n)S.players.push({n,c:code()})}
+if(a!='wgdel')wgDel=null;if(a.slice(0,2)=='wg')wgAct(a,el);if(a=='ci'){const k=+el.dataset.k;ciOpen=ciOpen===k?-1:k}
 save();render()});
 
 document.addEventListener('mouseover',ev=>{const t=ev.target,m=t.closest&&t.closest('[data-hl]'),c=t.closest&&t.closest('#map')&&t.dataset&&t.dataset.c,tp=document.getElementById('tip');
 if(m){hl(m.dataset.hl.split(','));tp.textContent=''}else if(c){hl([c]);tp.textContent=CN[c]}else{hl([]);tp.textContent=''}});
 document.addEventListener('change',ev=>{const el=ev.target;
-if(['cd','tkn','tkt','tkl','tkc','np'].includes(el.id))return;
+if(['cd','tkn','tkt','tkl','tkc','np'].includes(el.id)||/^wg[pc]_/.test(el.id))return;
 if(el.dataset.sp){S.sp=el.value;save();render();return}
-if(el.dataset.wofcar){const v=el.value.trim();S.wofc=CARS.some(c=>c[1]+' '+c[2]==v)?v:'';S.wofx=[];save();render();return}
-if(el.dataset.wofd!==undefined){const id=+el.dataset.wofd,x=S.wofx=S.wofx||[],i=x.indexOf(id);if(el.checked){if(i>=0)x.splice(i,1)}else if(i<0)x.push(id);save();render();return}
-if(el.dataset.wof){S.wof=el.value;save();return}
+if(el.dataset.wgn){const g=(S.wg||{})[el.dataset.wgn];if(g&&adm())g.n=el.value.trim()||g.n;save();return}
+if(el.dataset.wgs){const g=S.wg[el.dataset.wgs];g.sn=el.checked?1:0;save();render();return}
+if(el.dataset.wgx){const[id,d]=el.dataset.wgx.split('|'),g=S.wg[id];g.ex=g.ex||[];const k=g.ex.indexOf(+d);if(el.checked){if(k>=0)g.ex.splice(k,1)}else if(k<0)g.ex.push(+d);save();return}
+if(el.dataset.ci!==undefined&&me){const[k,f]=el.dataset.ci.split('|'),c=CARS[+k],K=c[1]+' '+c[2];S.ci=S.ci||{};const u=S.ci[me]=S.ci[me]||{},o=u[K]=u[K]||{};o[f]=el.value.trim();save();return}
 if(el.dataset.tkf){const[i,f]=el.dataset.tkf.split('|');TK().races[i][f]=el.value;save();return}
 if(el.dataset.car!==undefined){const r=S.races[el.dataset.car];r.cars=r.cars||{};r.cars[el.dataset.p]=el.value;save();return}
 if(el.dataset.tkc!==undefined){const r=TK().races[el.dataset.tkc];r.c=r.c||{};r.c[el.dataset.p]=el.value;save();return}
