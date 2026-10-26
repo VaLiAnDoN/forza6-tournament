@@ -87,8 +87,13 @@ if(n>=g.k){cwEl(`<h2 style="margin-top:0">Готово!</h2><div class="big">${n
 if(cwS.pend){cwRes(g,n);return}
 const p=cwPick(g);if(!p){cwEl('<div class="mut">В рулетке не осталось машин.</div>');return}
 cwS.pend=p;const ang=p.ang;
-cwEl(`<div class="mut">Машина ${n+1} из ${g.k}</div>${cwSvg(p.items)}<div class="mut" style="font-size:12px">${TIERS.map(t=>`<span style="color:${t[3]}">${t[1]} ${t[2]}%</span>`).join(' · ')} <span class="mut">· на колесе все ещё не собранные машины</span></div>`);
+cwEl(`<div class="mut">Машина ${n+1} из ${g.k}</div>${cwSvg(p.items)}<div id="cwnow" class="cwnow"><div class="cwn0">Крутим…</div></div><div class="mut" style="font-size:12px">${TIERS.map(t=>`<span style="color:${t[3]}">${t[1]} ${t[2]}%</span>`).join(' · ')} <span class="mut">· на колесе все ещё не собранные машины</span></div>`);
 const w=document.getElementById('cwg');w.getBoundingClientRect();w.style.transform=`rotate(${360*6-ang}deg)`;
+(function(){const items=p.items,box=document.getElementById('cwnow'),col={};TIERS.forEach(t=>col[t[0]]=t[3]);let last=-1,hist=[];
+const find=a=>{let lo=0,hi=items.length-1;while(lo<hi){const m=(lo+hi+1)>>1;if(items[m].a0<=a)lo=m;else hi=m-1}return lo};
+const tick=()=>{const wh=document.getElementById('cwg');if(!wh||!box||!box.isConnected)return;const m=getComputedStyle(wh).transform;let ang=0;if(m&&m!='none'){const v=m.match(/matrix\(([^)]+)\)/);if(v){const q=v[1].split(',').map(Number);ang=Math.atan2(q[1],q[0])*180/Math.PI}}
+const i=find(((-ang)%360+360)%360);if(i!==last){last=i;const it=items[i];hist.push(it.c[1]+' '+it.c[2]);hist=hist.slice(-3);box.style.setProperty('--tc',col[it.t]);box.innerHTML=hist.slice(0,-1).map(x=>`<div class="cwn0">${e(x)}</div>`).join('')+`<div class="cwn1">${e(hist[hist.length-1])}</div>`}
+requestAnimationFrame(tick)};requestAnimationFrame(tick)})();
 clearTimeout(cwT);cwT=setTimeout(()=>{if(document.getElementById('cw')&&cwS&&cwS.pend===p)cwRes(g,n)},4900)}
 function cwRes(g,n){const p=cwS.pend,c=p.car,T=TIERS.find(t=>t[0]==p.t);
 cwEl(`<div class="mut">Машина ${n+1} из ${g.k}</div><div class="chip" style="color:${T[3]};border-color:${T[3]};margin:8px 0">${T[1]}</div><div class="big" style="margin:6px 0">${c[1]} ${e(c[2])}</div><div><span class="cl cl-${c[5]}">${c[5]}</span> <b class="pi">${c[4]}</b> <span class="mut">· ${c[7]||'—'} · ${e(c[3])}</span></div><div style="margin:8px 0">${c[9]?`<span class="pr pr-${c[8]}">${priceF(c[9])} CR</span>`:''}</div><div class="cwbt"><button class="btn cwno" data-a="wgrno" data-g="${g.id}">Нет такой машины в гараже</button><button class="btn pri" data-a="wgryes" data-g="${g.id}">Есть машина в гараже</button></div>`)}
@@ -145,5 +150,5 @@ if(view=='cars')b=carsView();
 if(view=='tachki')b=TACHKI2();
 if(view=='wof')b=WOF();
 if(view=='me')b=(stats()||'<h2>Личная статистика</h2><div class="card mut">Пока нет результатов.</div>')+'<div class="card mut">Статистика по машинам и маркам появится после загрузки списка машин и подключения общей базы.</div>';
-const hd=view=='tachki'?`<header><div class="fh6"><div class="st"><div class="fz">Forza</div><div class="hz">Horizon</div></div><div class="n6">6</div></div><div class="tkl">ТАЧКИ</div><div class="sp"></div><button class="btn" data-a="out">Выйти</button></header>`:`<header><div class="sp"></div><button class="btn" data-a="out">Выйти</button></header>`;
+const hd=view=='tachki'?`<header><div class="fh6"><div class="st"><div class="fz">Forza</div><div class="hz">Horizon</div></div><div class="n6">6</div></div><img class="tkl" src="img/tachki/cars-logo.png" alt="Тачки"><div class="sp"></div><button class="btn" data-a="out">Выйти</button></header>`:`<header><div class="sp"></div><button class="btn" data-a="out">Выйти</button></header>`;
 A.innerHTML=nav()+hd+b+wgFab()}
