@@ -8,7 +8,7 @@ const CF={'Австралия':'au','Австрия':'at','Канада':'ca','�
 const DE=d=>/Шоссе/.test(d)?'🛣️':/Грунт/.test(d)?'🏜️':/Автокросс/.test(d)?'🌿':d=='Тогэ'?'⛰️':'🏙️';
 const HOME=()=>`<h2 style="color:#fff;text-shadow:0 2px 8px #000">Чемпионаты</h2><div class="plate" data-a="v" data-k="champ" style="padding:30px 44px"><div style="font-size:12px;letter-spacing:4px">日本 · NATIONS CUP</div><div style="font-size:36px;letter-spacing:3px;margin:6px 0">5 · СТРАНЫ</div><div style="font-size:12px">ЧЕМПИОНАТ ПО FORZA · ДРАФТ СТРАН</div></div><div class="plate" data-a="v" data-k="tachki" style="padding:30px 44px"><div style="font-size:12px;letter-spacing:4px">TOURNAMENT</div><div style="font-size:36px;letter-spacing:3px;margin:6px 0">ТАЧКИ</div><div style="font-size:12px">ТУРНИР · ТАБЛИЦА · ГОНКИ</div></div><div class="plate" data-a="v" data-k="wof" style="padding:30px 44px"><div style="font-size:12px;letter-spacing:4px">WHEEL</div><div style="font-size:30px;letter-spacing:2px;margin:6px 0">КОЛЕСО ФОРТУНЫ</div><div style="font-size:12px">КРУТИ · ВЫБИРАЙ · СПОРЬ</div></div><div class="plate lk" style="padding:26px 44px"><div style="font-size:14px;letter-spacing:4px">🔒</div><div style="font-size:30px;letter-spacing:2px;margin:6px 0">ЧЕМПИОНАТ 6</div><div style="font-size:12px">СКОРО</div></div>`;
 /* Колесо Фортуны: игры. Драфт-исключение дисциплин → таблицы гонок → очки. Рулетка машин. */
-let wgOpen={},wgDel=null,cwS=null,cwT=0;
+let wgOpen={},wgDel=null,cwS=null,cwT=0,cwRAF=0;
 const DEM=['','🌿','🥊','🧭','⛰️','🏜️','🔁','🌄','🏁','🚦','🌃','📡','🛫','💥','💨','⚡','👑'],DGC=['#3ecf4a','#ff8a1f','#3b9cff','#a35cff'],
 WT={1:'time',5:'time',6:'time',8:'time',9:'time',10:'time',15:'time',2:'rank',4:'rank',13:'rank',16:'rank',3:'rev',11:'sum',12:'sum',14:'score',7:'toge'},
 WTL={time:'по времени',rank:'по местам',rev:'время · больше = лучше',sum:'сумма двух результатов',score:'очки · больше = лучше',toge:'круговой турнир'},
@@ -50,7 +50,7 @@ const wgRes=(g,d)=>WT[d]=='toge'?wgToge(g):wgRank(g,d);
 function wgTotals(g){const D=wgPool(g),tot={};g.pl.forEach(p=>tot[p]=0);const cols=D.map(d=>{const r=wgRes(g,d);g.pl.forEach(p=>{if(r.done&&r.res[p]&&r.res[p].pts!=null)tot[p]+=r.res[p].pts});return[d,r]});return{cols,tot}}
 /* действия */
 function wgAct(a,el){const d=el.dataset,g=(S.wg||{})[d.g],A=adm();
-if(a=='wgrx'){clearTimeout(cwT);const o=document.getElementById('cw');if(o)o.remove();return}
+if(a=='wgrx'){clearTimeout(cwT);cancelAnimationFrame(cwRAF);const o=document.getElementById('cw');if(o)o.remove();return}
 if(a=='wgnew'&&A){const id='g'+Date.now().toString(36)+rnd(1e4);S.wg=S.wg||{};S.wg[id]={id,n:'Игра '+(Object.keys(S.wg).length+1),t:Date.now(),pl:[],ord:[],sn:0,ex:[],rm:[],k:8,st:0,cr:{},rc:{}};wgOpen[id]=true;return}
 if(!g)return;
 if(a=='wgt'){wgOpen[d.g]=!wgIsOpen(g,wgList());return}
@@ -87,10 +87,21 @@ if(cwS.pend){cwRes(g,n);return}
 const p=cwPick(g);if(!p){cwEl('<div class="mut">В рулетке не осталось машин.</div>');return}
 cwS.pend=p;const pick=p.items.findIndex(x=>x.c===p.car&&x.t===p.t);
 cwEl(`<div class="mut">Машина ${n+1} из ${g.k}</div>${cwStrip(p.items)}<div id="cwnow" class="cwnow"><div class="cwn0">Рулетка разгоняется…</div></div><div class="mut" style="font-size:12px">${TIERS.map(t=>`<span style="color:${t[3]}">${t[1]} ${t[2]}%</span>`).join(' · ')} <span class="mut">· в ленте только ещё не собранные машины</span></div>`);
-const w=document.getElementById('cwg'),track=w&&w.parentElement;if(!w||!track)return;const stride=204,target=p.items.length*4+pick,shift=target*stride-(track.clientWidth/2-stride/2);w.getBoundingClientRect();w.style.transform=`translate3d(${-shift}px,0,0)`;
-(function(){const box=document.getElementById('cwnow'),col={};TIERS.forEach(t=>col[t[0]]=t[3]);let last=-1;
-const tick=()=>{const strip=document.getElementById('cwg');if(!strip||!box||!box.isConnected)return;const m=getComputedStyle(strip).transform;let x=0;if(m&&m!='none'){const v=m.match(/matrix\(([^)]+)\)/);if(v)x=+v[1].split(',')[4]||0}const i=((Math.round((track.clientWidth/2-x-stride/2)/stride)%p.items.length)+p.items.length)%p.items.length;if(i!==last){last=i;const it=p.items[i],title=it.c[1]+' '+it.c[2];box.style.setProperty('--tc',col[it.t]);box.innerHTML=`<div class="cwn0">${e(title)}</div>`}requestAnimationFrame(tick)};requestAnimationFrame(tick)})();
-clearTimeout(cwT);cwT=setTimeout(()=>{if(document.getElementById('cw')&&cwS&&cwS.pend===p)cwRes(g,n)},7800)}
+const w=document.getElementById('cwg'),track=w&&w.parentElement;if(!w||!track)return;
+const stride=204,target=p.items.length*4+pick,D=target*stride-(track.clientWidth/2-stride/2);
+const ovR=Math.random(),ovCards=ovR<.5?0:(ovR<.85?1:2),ov=ovCards*stride;
+const t1=1000,t2=1000,t3=1000+Math.random()*1000,t4=1500+Math.random()*500,T=t1+t2+t3+t4;
+const box=document.getElementById('cwnow'),col={};TIERS.forEach(t=>col[t[0]]=t[3]);
+const ei2=x=>x*x,eo2=x=>1-(1-x)*(1-x),eio2=x=>x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2;
+const Dmax=D+ov,a1=.06*Dmax,a2=.75*Dmax,a3=.93*Dmax;
+const posAt=t=>{if(t<=t1)return a1*ei2(t/t1);if(t<=t1+t2)return a1+(a2-a1)*((t-t1)/t2);if(t<=t1+t2+t3)return a2+(a3-a2)*eo2((t-t1-t2)/t3);const tt=t-t1-t2-t3,h=t4/2;if(tt<=h)return a3+(Dmax-a3)*eio2(tt/h);return Dmax+(D-Dmax)*eio2((tt-h)/h)};
+w.style.transition='none';let last=-1,start=0;
+const frame=now=>{if(!start)start=now;const t=now-start,done=t>=T,x=done?D:posAt(t);
+w.style.transform=`translate3d(${-x}px,0,0)`;
+const idx=(((Math.round((track.clientWidth/2+x-stride/2)/stride))%p.items.length)+p.items.length)%p.items.length;
+if(idx!==last&&box&&box.isConnected){last=idx;const it=p.items[idx];box.style.setProperty('--tc',col[it.t]);box.innerHTML=`<div class="cwn0">${e(it.c[1]+' '+it.c[2])}</div>`}
+if(!done){cwRAF=requestAnimationFrame(frame)}else if(cwS&&cwS.pend===p){cwRes(g,n)}};
+cwRAF=requestAnimationFrame(frame)}
 function cwRes(g,n){const p=cwS.pend,c=p.car,T=TIERS.find(t=>t[0]==p.t);
 cwEl(`<div class="mut">Машина ${n+1} из ${g.k}</div><div class="chip" style="color:${T[3]};border-color:${T[3]};margin:8px 0">${T[1]}</div><div class="big" style="margin:6px 0">${c[1]} ${e(c[2])}</div><div><span class="cl cl-${c[5]}">${c[5]}</span> <b class="pi">${c[4]}</b> <span class="mut">· ${c[7]||'—'} · ${e(c[3])}</span></div><div style="margin:8px 0">${c[9]?`<span class="pr pr-${c[8]}">${priceF(c[9])} CR</span>`:''}</div><div class="cwbt"><button class="btn cwno" data-a="wgrno" data-g="${g.id}">Нет такой машины в гараже</button><button class="btn pri" data-a="wgryes" data-g="${g.id}">Есть машина в гараже</button></div>`)}
 const wgActive=()=>wgList().find(g=>me&&g.st&&g.k&&g.pl.includes(me)&&((g.cr||{})[me]||[]).length<g.k),
