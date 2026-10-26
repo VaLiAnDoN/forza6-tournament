@@ -79,3 +79,31 @@ body.wf .card{background:rgba(14,10,32,.78)}
 @media(max-width:560px){.wfab{width:74px;height:74px}.wfab span{font-size:28px}}
 
 .hv{position:relative;cursor:help;outline:none}.hvp{display:none;position:absolute;left:0;top:100%;z-index:12;margin-top:4px;padding:8px 10px;background:#12141bf5;border:1px solid var(--l);border-radius:12px;width:min(560px,86vw);box-shadow:0 10px 30px #000a;font-size:13px}.hv:hover .hvp,.hv:focus .hvp,.hv:focus-within .hvp{display:block}
+
+/* --- Тачки: страницы гонок --- */
+body.vd #app{max-width:1280px}
+#app .chr,#app .tkh,#app .tkmc .card{pointer-events:auto}
+.tkl{height:62px;width:auto;margin:0 0 0 12px;padding:0;border:0;border-radius:0;box-shadow:none;transform:none;filter:drop-shadow(0 4px 10px #000)}
+.tkh{width:100%;box-sizing:border-box;position:relative;border-radius:18px;overflow:hidden;aspect-ratio:21/8;max-height:46vh;min-height:210px;margin:8px 0 16px;border:1px solid var(--l);background:#0b0d16}
+.tkh.tkh0{aspect-ratio:auto;min-height:150px;background:radial-gradient(900px 300px at 80% 0,#ff3d8133,transparent),linear-gradient(120deg,#16192a,#0b0d16)}
+.hs img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;animation:hsl 15s infinite}
+@keyframes hsl{0%{opacity:0}4%{opacity:1}33%{opacity:1}38%{opacity:0}100%{opacity:0}}
+.hsh{position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,#05060ccf 100%),linear-gradient(90deg,#05060c99,transparent 60%)}
+.hti{position:absolute;left:22px;right:22px;bottom:16px}.hti h1{margin:4px 0 8px;font-size:clamp(26px,5vw,54px);font-style:italic;font-weight:900;text-transform:uppercase;letter-spacing:2px;color:#fff;text-shadow:0 4px 20px #000}
+.hk{font-size:12px;letter-spacing:5px;text-transform:uppercase;color:var(--a)}
+.tkg{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,560px) minmax(0,1fr);gap:18px;align-items:start}.tkg1{max-width:760px}
+.tkc{display:flex;flex-direction:column;gap:14px}
+.chr{position:relative;display:block;width:100%;padding:10px 10px 12px;border-radius:16px;cursor:pointer;color:var(--t);text-align:center;font:inherit;border:1px solid color-mix(in srgb,var(--hc) 65%,#2a2f42);background:linear-gradient(160deg,color-mix(in srgb,var(--hc) 30%,transparent),transparent 70%),#0e1018d0;transition:transform .2s}
+.chr:hover{transform:translateY(-3px)}.chr img{width:100%;height:auto;display:block;filter:drop-shadow(0 8px 10px #000a)}.chr b{display:block;font-size:16px;margin-top:4px}.chr span{display:block;font-size:12px;color:var(--m)}
+.chown{position:absolute;top:8px;right:8px;font-style:normal;font-size:12px;font-weight:800;background:var(--a);color:#001;border-radius:99px;padding:2px 10px}
+.kv{width:100%;border-collapse:collapse}.kv td{padding:8px 4px;border-bottom:1px solid var(--l);vertical-align:top;text-align:left}.kv td:first-child{color:var(--m);width:38%}
+#chm{position:fixed;inset:0;z-index:25;display:flex;align-items:center;justify-content:center;padding:16px;overflow:auto}
+.chbk{position:absolute;inset:0;background:#000000c0;backdrop-filter:blur(3px)}
+.chw{position:relative;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:18px;width:min(900px,96vw);padding:20px;border-radius:20px;border:1px solid color-mix(in srgb,var(--hc) 70%,#2a2f42);background:linear-gradient(150deg,color-mix(in srgb,var(--hc) 26%,#0e1018),#0b0d16 70%);box-shadow:0 20px 60px #000}
+.chx{position:absolute;right:12px;top:12px;z-index:2}.chimg{display:flex;align-items:center}.chimg img{width:100%;height:auto;filter:drop-shadow(0 12px 14px #000)}
+.chh{margin:2px 0 4px;font-size:22px}.chsp{height:1px;background:var(--l);margin:14px 0}.chwho{color:var(--a);font-size:13px;margin-bottom:6px}.chb p{margin:6px 0 14px;line-height:1.5}
+.cwnow{min-height:74px;margin:10px auto 6px;padding:8px 14px;border-radius:14px;border:2px solid var(--tc,#7c5cff);background:#0b0d16f2;box-shadow:0 0 22px color-mix(in srgb,var(--tc,#7c5cff) 45%,transparent)}.cwn1{font-weight:800;font-size:16px}.cwn0{font-size:12px;color:var(--m);opacity:.6}
+@media(max-width:900px){.tkg{grid-template-columns:1fr 1fr}.tkmc{grid-column:1/-1;order:-1}.chw{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.hs img{animation:none}.hs img:first-child{opacity:1}}
+
+.chh{color:#fff;text-transform:none;letter-spacing:0}
