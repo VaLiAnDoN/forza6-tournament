@@ -20,6 +20,7 @@ if(a=='tkt')tkTab=el.dataset.k;if(a=='tkadd'){const n=document.getElementById('t
 if(a=='tkdel')TK().races.splice(+el.dataset.i,1);
 if(a=='gen'){const n=+document.getElementById('nr').value||12;S.nr=n;if(!Object.keys(S.picks).length)return alert('Сначала проведите драфт');gen3(n)}
 if(a=='addp'){const n=document.getElementById('np').value.trim();if(n)S.players.push({n,c:code()})}
+if(a=='delp'&&adm()){const n=el.dataset.n;if(S.players.length>2&&confirm('Удалить игрока «'+n+'»?'))S.players=S.players.filter(p=>p.n!==n)}
 if(window.tkAct)tkAct(a,el);
 if(a!='wgdel')wgDel=null;if(a.slice(0,2)=='wg')wgAct(a,el);if(a=='ci'){const k=+el.dataset.k;ciOpen=ciOpen===k?-1:k}
 save();render()});
