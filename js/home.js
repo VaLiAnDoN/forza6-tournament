@@ -78,23 +78,19 @@ for(let i=items.length-1;i>0;i--){const j=rnd(i+1);[items[i],items[j]]=[items[j]
 let s=0;items.forEach(it=>{it.a0=s;s+=it.a});const x=Math.random()*360,it=items.find(i=>x>=i.a0&&x<i.a0+i.a)||items[items.length-1];
 return{t:it.t,car:it.c,items,ang:it.a0+it.a*(.2+Math.random()*.6)}}
 function cwEl(h){let o=document.getElementById('cw');if(!o){document.body.insertAdjacentHTML('beforeend','<div id="cw"></div>');o=document.getElementById('cw')}o.innerHTML=`<button class="btn cwx" data-a="wgrx" title="Закрыть (результаты сохраняются)">✕</button><div class="cwb">${h}</div>`}
-function cwSvg(items){const pt=(a,r)=>[(r*Math.sin(a*Math.PI/180)).toFixed(2),(-r*Math.cos(a*Math.PI/180)).toFixed(2)],col={};TIERS.forEach(t=>col[t[0]]=t[3]);let s='',a0=0;
-items.forEach((it,k)=>{const a1=a0+it.a,[x0,y0]=pt(a0,140),[x1,y1]=pt(a1,140),c=col[it.t];s+=`<path d="M0 0L${x0} ${y0}A140 140 0 0 1 ${x1} ${y1}Z" fill="${c}" fill-opacity="${(.72+(k*7%5)*.07).toFixed(2)}" stroke="${c}" stroke-width=".35"/>`;a0=a1});
-let b='';for(let k=0;k<24;k++){const[x,y]=pt(k*15,150);b+=`<circle class="bl" cx="${x}" cy="${y}" r="3" fill="#ffd25a"/>`}
-return`<svg viewBox="-160 -172 320 332"><circle r="154" fill="#12141b" stroke="#7c5cff" stroke-width="3"/>${b}<g id="cwg" style="transform:rotate(0deg);transform-origin:0 0;transition:transform 4.6s cubic-bezier(.12,.65,.1,1)">${s}</g><circle r="16" fill="#07080b" stroke="#ffffff44"/><path d="M-11 -170L11 -170L0 -142Z" fill="#fff" stroke="#ff3d81" stroke-width="2"/></svg>`}
+function cwStrip(items){const col={};TIERS.forEach(t=>col[t[0]]=t[3]);const rounds=7,all=[];
+for(let r=0;r<rounds;r++)items.forEach((it,i)=>all.push(`<div class="cwcard" data-ci="${i}" style="--tc:${col[it.t]}"><span>${TIERS.find(t=>t[0]==it.t)[1]}</span><b>${it.c[1]} ${e(it.c[2])}</b><small>${it.c[5]} ${it.c[4]} · ${e(it.c[3])}</small></div>`));
+return`<div class="cwline"><div class="cwp">▼</div><div class="cwtrack"><div id="cwg" class="cwstrip">${all.join('')}</div></div></div>`}
 function cwStep(){const g=(S.wg||{})[cwS&&cwS.g];if(!g||!me)return;const n=((g.cr||{})[me]||[]).length;
 if(n>=g.k){cwEl(`<h2 style="margin-top:0">Готово!</h2><div class="big">${n}/${g.k}</div><div class="mut" style="margin:6px 0 12px">Все машины собраны</div><button class="btn pri" data-a="wgrx">Закрыть</button>`);return}
 if(cwS.pend){cwRes(g,n);return}
 const p=cwPick(g);if(!p){cwEl('<div class="mut">В рулетке не осталось машин.</div>');return}
-cwS.pend=p;const ang=p.ang;
-cwEl(`<div class="mut">Машина ${n+1} из ${g.k}</div>${cwSvg(p.items)}<div id="cwnow" class="cwnow"><div class="cwn0">Крутим…</div></div><div class="mut" style="font-size:12px">${TIERS.map(t=>`<span style="color:${t[3]}">${t[1]} ${t[2]}%</span>`).join(' · ')} <span class="mut">· на колесе все ещё не собранные машины</span></div>`);
-const w=document.getElementById('cwg');w.getBoundingClientRect();w.style.transform=`rotate(${360*6-ang}deg)`;
-(function(){const items=p.items,box=document.getElementById('cwnow'),col={};TIERS.forEach(t=>col[t[0]]=t[3]);let last=-1,hist=[];
-const find=a=>{let lo=0,hi=items.length-1;while(lo<hi){const m=(lo+hi+1)>>1;if(items[m].a0<=a)lo=m;else hi=m-1}return lo};
-const tick=()=>{const wh=document.getElementById('cwg');if(!wh||!box||!box.isConnected)return;const m=getComputedStyle(wh).transform;let ang=0;if(m&&m!='none'){const v=m.match(/matrix\(([^)]+)\)/);if(v){const q=v[1].split(',').map(Number);ang=Math.atan2(q[1],q[0])*180/Math.PI}}
-const i=find(((-ang)%360+360)%360);if(i!==last){last=i;const it=items[i];hist.push(it.c[1]+' '+it.c[2]);hist=hist.slice(-3);box.style.setProperty('--tc',col[it.t]);box.innerHTML=hist.slice(0,-1).map(x=>`<div class="cwn0">${e(x)}</div>`).join('')+`<div class="cwn1">${e(hist[hist.length-1])}</div>`}
-requestAnimationFrame(tick)};requestAnimationFrame(tick)})();
-clearTimeout(cwT);cwT=setTimeout(()=>{if(document.getElementById('cw')&&cwS&&cwS.pend===p)cwRes(g,n)},4900)}
+cwS.pend=p;const pick=p.items.findIndex(x=>x.c===p.car&&x.t===p.t);
+cwEl(`<div class="mut">Машина ${n+1} из ${g.k}</div>${cwStrip(p.items)}<div id="cwnow" class="cwnow"><div class="cwn0">Рулетка разгоняется…</div></div><div class="mut" style="font-size:12px">${TIERS.map(t=>`<span style="color:${t[3]}">${t[1]} ${t[2]}%</span>`).join(' · ')} <span class="mut">· в ленте только ещё не собранные машины</span></div>`);
+const w=document.getElementById('cwg'),track=w&&w.parentElement;if(!w||!track)return;const stride=204,target=p.items.length*4+pick,shift=target*stride-(track.clientWidth/2-stride/2);w.getBoundingClientRect();w.style.transform=`translate3d(${-shift}px,0,0)`;
+(function(){const box=document.getElementById('cwnow'),col={};TIERS.forEach(t=>col[t[0]]=t[3]);let last=-1;
+const tick=()=>{const strip=document.getElementById('cwg');if(!strip||!box||!box.isConnected)return;const m=getComputedStyle(strip).transform;let x=0;if(m&&m!='none'){const v=m.match(/matrix\(([^)]+)\)/);if(v)x=+v[1].split(',')[4]||0}const i=((Math.round((track.clientWidth/2-x-stride/2)/stride)%p.items.length)+p.items.length)%p.items.length;if(i!==last){last=i;const it=p.items[i],title=it.c[1]+' '+it.c[2];box.style.setProperty('--tc',col[it.t]);box.innerHTML=`<div class="cwn0">${e(title)}</div>`}requestAnimationFrame(tick)};requestAnimationFrame(tick)})();
+clearTimeout(cwT);cwT=setTimeout(()=>{if(document.getElementById('cw')&&cwS&&cwS.pend===p)cwRes(g,n)},7800)}
 function cwRes(g,n){const p=cwS.pend,c=p.car,T=TIERS.find(t=>t[0]==p.t);
 cwEl(`<div class="mut">Машина ${n+1} из ${g.k}</div><div class="chip" style="color:${T[3]};border-color:${T[3]};margin:8px 0">${T[1]}</div><div class="big" style="margin:6px 0">${c[1]} ${e(c[2])}</div><div><span class="cl cl-${c[5]}">${c[5]}</span> <b class="pi">${c[4]}</b> <span class="mut">· ${c[7]||'—'} · ${e(c[3])}</span></div><div style="margin:8px 0">${c[9]?`<span class="pr pr-${c[8]}">${priceF(c[9])} CR</span>`:''}</div><div class="cwbt"><button class="btn cwno" data-a="wgrno" data-g="${g.id}">Нет такой машины в гараже</button><button class="btn pri" data-a="wgryes" data-g="${g.id}">Есть машина в гараже</button></div>`)}
 const wgActive=()=>wgList().find(g=>me&&g.st&&g.k&&g.pl.includes(me)&&((g.cr||{})[me]||[]).length<g.k),
