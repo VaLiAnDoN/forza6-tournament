@@ -87,18 +87,20 @@ if(cwS.pend){cwRes(g,n);return}
 const p=cwPick(g);if(!p){cwEl('<div class="mut">В рулетке не осталось машин.</div>');return}
 cwS.pend=p;const pick=p.items.findIndex(x=>x.c===p.car&&x.t===p.t);
 cwEl(`<div class="mut">Машина ${n+1} из ${g.k}</div>${cwStrip(p.items)}<div id="cwnow" class="cwnow"><div class="cwn0">Рулетка разгоняется…</div></div><div class="mut" style="font-size:12px">${TIERS.map(t=>`<span style="color:${t[3]}">${t[1]} ${t[2]}%</span>`).join(' · ')} <span class="mut">· в ленте только ещё не собранные машины</span></div>`);
-const w=document.getElementById('cwg'),track=w&&w.parentElement;if(!w||!track)return;
-const stride=204,target=p.items.length*4+pick,shift=target*stride-(track.clientWidth/2-stride/2),total=12600,fast=4200,fastPart=.78;
-/* Две реальные фазы без CSS-transition: быстрый старт, затем долгое медленное чтение карточек. */
-w.style.transition='none';w.style.transform='translate3d(0,0,0)';
-const box=document.getElementById('cwnow'),col={};TIERS.forEach(t=>col[t[0]]=t[3]);let last=-1,started=performance.now();
-const show=pos=>{const i=((Math.round((track.clientWidth/2-pos-stride/2)/stride)%p.items.length)+p.items.length)%p.items.length;if(i===last)return;last=i;const it=p.items[i],title=it.c[1]+' '+it.c[2];box.style.setProperty('--tc',col[it.t]);box.innerHTML=`<div class="cwnk">Сейчас в центре</div><div class="cwn0">${e(title)}</div>`};
-const run=now=>{if(!document.getElementById('cw')||!cwS||cwS.pend!==p)return;const t=Math.min(now-started,total);let q;
-if(t<fast){const x=t/fast;q=fastPart*(1-Math.pow(1-x,3))}else{const x=(t-fast)/(total-fast);q=fastPart+(1-fastPart)*(1-Math.pow(1-x,1.35))}
-const pos=shift*q;w.style.transform=`translate3d(${-pos}px,0,0)`;show(pos);
-if(t<total)requestAnimationFrame(run);else{w.style.transform=`translate3d(${-shift}px,0,0)`;show(shift)}};
-show(0);requestAnimationFrame(run);
-clearTimeout(cwT);cwT=setTimeout(()=>{if(document.getElementById('cw')&&cwS&&cwS.pend===p)cwRes(g,n)},total+120)}
+const w=document.getElementById('cwg'),track=w&&w.parentElement;if(!w||!track)return;const stride=204,target=p.items.length*4+pick,shift=target*stride-(track.clientWidth/2-stride/2);
+w.style.transition='none';w.style.transform='translate3d(0px,0,0)';
+(function(){const box=document.getElementById('cwnow'),col={};TIERS.forEach(t=>col[t[0]]=t[3]);let last=-1;const n2=p.items.length;
+const FAST=1600,SLOW=5400,TOTAL=FAST+SLOW,startX=0,endX=-shift;
+const easeFast=u=>u*u,easeSlow=u=>1-Math.pow(1-u,4);let t0=null;
+const upd=x=>{const i=((Math.round((track.clientWidth/2-x-stride/2)/stride)%n2)+n2)%n2;if(i!==last){last=i;const it=p.items[i],title=it.c[1]+' '+it.c[2];box.style.setProperty('--tc',col[it.t]);box.innerHTML=`<div class="cwn0">${e(title)}</div>`}};
+const frame=ts=>{if(t0===null)t0=ts;const el=ts-t0;let prog;
+if(el<FAST){prog=easeFast(el/FAST)*0.3}
+else if(el<TOTAL){prog=0.3+easeSlow((el-FAST)/SLOW)*0.7}
+else{prog=1}
+const x=startX+(endX-startX)*prog;w.style.transform=`translate3d(${x}px,0,0)`;upd(x);
+if(el<TOTAL)requestAnimationFrame(frame)};
+requestAnimationFrame(frame);
+clearTimeout(cwT);cwT=setTimeout(()=>{if(document.getElementById('cw')&&cwS&&cwS.pend===p)cwRes(g,n)},TOTAL+150)}())}
 function cwRes(g,n){const p=cwS.pend,c=p.car,T=TIERS.find(t=>t[0]==p.t);
 cwEl(`<div class="mut">Машина ${n+1} из ${g.k}</div><div class="chip" style="color:${T[3]};border-color:${T[3]};margin:8px 0">${T[1]}</div><div class="big" style="margin:6px 0">${c[1]} ${e(c[2])}</div><div><span class="cl cl-${c[5]}">${c[5]}</span> <b class="pi">${c[4]}</b> <span class="mut">· ${c[7]||'—'} · ${e(c[3])}</span></div><div style="margin:8px 0">${c[9]?`<span class="pr pr-${c[8]}">${priceF(c[9])} CR</span>`:''}</div><div class="cwbt"><button class="btn cwno" data-a="wgrno" data-g="${g.id}">Нет такой машины в гараже</button><button class="btn pri" data-a="wgryes" data-g="${g.id}">Есть машина в гараже</button></div>`)}
 const wgActive=()=>wgList().find(g=>me&&g.st&&g.k&&g.pl.includes(me)&&((g.cr||{})[me]||[]).length<g.k),
