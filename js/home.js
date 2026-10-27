@@ -87,10 +87,22 @@ if(cwS.pend){cwRes(g,n);return}
 const p=cwPick(g);if(!p){cwEl('<div class="mut">В рулетке не осталось машин.</div>');return}
 cwS.pend=p;const pick=p.items.findIndex(x=>x.c===p.car&&x.t===p.t);
 cwEl(`<div class="mut">Машина ${n+1} из ${g.k}</div>${cwStrip(p.items)}<div id="cwnow" class="cwnow"><div class="cwn0">Рулетка разгоняется…</div></div><div class="mut" style="font-size:12px">${TIERS.map(t=>`<span style="color:${t[3]}">${t[1]} ${t[2]}%</span>`).join(' · ')} <span class="mut">· в ленте только ещё не собранные машины</span></div>`);
-const w=document.getElementById('cwg'),track=w&&w.parentElement;if(!w||!track)return;const stride=204,target=p.items.length*4+pick,shift=target*stride-(track.clientWidth/2-stride/2);w.getBoundingClientRect();w.style.transform=`translate3d(${-shift}px,0,0)`;
-(function(){const box=document.getElementById('cwnow'),col={};TIERS.forEach(t=>col[t[0]]=t[3]);let last=-1;
-const tick=()=>{const strip=document.getElementById('cwg');if(!strip||!box||!box.isConnected)return;const m=getComputedStyle(strip).transform;let x=0;if(m&&m!='none'){const v=m.match(/matrix\(([^)]+)\)/);if(v)x=+v[1].split(',')[4]||0}const i=((Math.round((track.clientWidth/2-x-stride/2)/stride)%p.items.length)+p.items.length)%p.items.length;if(i!==last){last=i;const it=p.items[i],title=it.c[1]+' '+it.c[2];box.style.setProperty('--tc',col[it.t]);box.innerHTML=`<div class="cwn0">${e(title)}</div>`}requestAnimationFrame(tick)};requestAnimationFrame(tick)})();
-clearTimeout(cwT);cwT=setTimeout(()=>{if(document.getElementById('cw')&&cwS&&cwS.pend===p)cwRes(g,n)},7800)}
+const w=document.getElementById('cwg'),track=w&&w.parentElement;if(!w||!track)return;
+const card=w.querySelector('.cwcard'),gap=parseFloat(getComputedStyle(w).gap)||10,stride=(card?card.getBoundingClientRect().width:174)+gap;
+/* Победитель выбирается случайно в cwPick(). Быстрый этап скрывает большую часть ленты,
+   затем последние пять карточек проходят под стрелкой почти по одной в секунду. */
+const target=p.items.length*4+pick,end=target*stride-(track.clientWidth/2-stride/2);
+const FAST=1500,SLOW=6000,slowDistance=Math.min(end,5*stride),fastDistance=Math.max(0,end-slowDistance),TOTAL=FAST+SLOW;
+w.style.transition='none';w.style.transform='translate3d(0,0,0)';
+const box=document.getElementById('cwnow'),col={};TIERS.forEach(t=>col[t[0]]=t[3]);let last=-1,slowShown=false;
+const show=x=>{const i=((Math.round((track.clientWidth/2-x-stride/2)/stride)%p.items.length)+p.items.length)%p.items.length;if(i!==last){last=i;const it=p.items[i],title=it.c[1]+' '+it.c[2];if(box){box.style.setProperty('--tc',col[it.t]);box.innerHTML=`<div class="cwn0">${e(title)}</div>`}}};
+const t0=performance.now();
+const frame=now=>{const strip=document.getElementById('cwg');if(!strip||!strip.isConnected||!cwS||cwS.pend!==p)return;const elapsed=now-t0;let x;
+if(elapsed<FAST){const t=elapsed/FAST;x=fastDistance*(t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2)}
+else if(elapsed<TOTAL){const t=(elapsed-FAST)/SLOW;/* скорость плавно падает: первая карточка ~0,9 с, последняя ~1,2 с */const eased=t+.16*t*(1-t);x=fastDistance+slowDistance*eased;if(!slowShown){slowShown=true;if(box)box.innerHTML='<div class="cwn0">Медленный выбор…</div>'}}
+else{x=end;strip.style.transform=`translate3d(${-x}px,0,0)`;show(x);return}
+strip.style.transform=`translate3d(${-x}px,0,0)`;show(x);requestAnimationFrame(frame)};
+requestAnimationFrame(frame);clearTimeout(cwT);cwT=setTimeout(()=>{if(document.getElementById('cw')&&cwS&&cwS.pend===p)cwRes(g,n)},TOTAL+220)}
 function cwRes(g,n){const p=cwS.pend,c=p.car,T=TIERS.find(t=>t[0]==p.t);
 cwEl(`<div class="mut">Машина ${n+1} из ${g.k}</div><div class="chip" style="color:${T[3]};border-color:${T[3]};margin:8px 0">${T[1]}</div><div class="big" style="margin:6px 0">${c[1]} ${e(c[2])}</div><div><span class="cl cl-${c[5]}">${c[5]}</span> <b class="pi">${c[4]}</b> <span class="mut">· ${c[7]||'—'} · ${e(c[3])}</span></div><div style="margin:8px 0">${c[9]?`<span class="pr pr-${c[8]}">${priceF(c[9])} CR</span>`:''}</div><div class="cwbt"><button class="btn cwno" data-a="wgrno" data-g="${g.id}">Нет такой машины в гараже</button><button class="btn pri" data-a="wgryes" data-g="${g.id}">Есть машина в гараже</button></div>`)}
 const wgActive=()=>wgList().find(g=>me&&g.st&&g.k&&g.pl.includes(me)&&((g.cr||{})[me]||[]).length<g.k),
