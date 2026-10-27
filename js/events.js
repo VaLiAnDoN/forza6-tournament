@@ -37,8 +37,7 @@ if(el.dataset.wr){const[id,d,pi,f]=el.dataset.wr.split('|'),g=S.wg[id],p=g.pl[+p
 if(el.dataset.wm){const[id,i,sd]=el.dataset.wm.split('|'),g=S.wg[id];g.rc=g.rc||{};const r=g.rc[7]=g.rc[7]||{};r.m=r.m||{};(r.m[i]=r.m[i]||{})[sd]=el.value.trim();save();render();return}
 if(el.dataset.ci!==undefined&&me){const[k,f]=el.dataset.ci.split('|'),c=CARS[+k],K=c[1]+' '+c[2];S.ci=S.ci||{};const u=S.ci[me]=S.ci[me]||{},o=u[K]=u[K]||{};o[f]=el.value.trim();save();return}
 if(el.dataset.tkpg){const[i,f]=el.dataset.tkpg.split('|'),g=tkPg();(g[i]=g[i]||{})[f]=el.value.trim();save();return}
-if(el.dataset.tktime){const [id,ri,n]=el.dataset.tktime.split('|'),g=tkPg();(g[id]=g[id]||{}).times=(g[id].times||[]);(g[id].times[+ri]=g[id].times[+ri]||{n:'Заезд '+(+ri+1),v:{}}).v[n]=el.value.trim();save();render();return}
-if(el.dataset.tkrn){const [id,ri]=el.dataset.tkrn.split('|'),g=tkPg();if(g[id]&&g[id].times&&g[id].times[+ri])g[id].times[+ri].n=el.value.trim()||('Заезд '+(+ri+1));save();return}
+if(el.dataset.tkrt){const[i,h,p]=el.dataset.tkrt.split('|'),x=tkRaceData(+i),q=x.heats.find(z=>z.id==h);if(q&&adm()){q.t=q.t||{};q.t[p]=el.value.trim()}save();render();return}
 if(el.dataset.tkf){const[i,f]=el.dataset.tkf.split('|');TK().races[i][f]=el.value;save();return}
 if(el.dataset.car!==undefined){const r=S.races[el.dataset.car];r.cars=r.cars||{};r.cars[el.dataset.p]=el.value;save();return}
 if(el.dataset.tkc!==undefined){const r=TK().races[el.dataset.tkc];r.c=r.c||{};r.c[el.dataset.p]=el.value;save();return}
