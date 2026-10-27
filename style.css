@@ -110,18 +110,14 @@ body.vd #app{max-width:1280px}
 .chh{color:#fff;text-transform:none;letter-spacing:0}
 
 
-/* --- Тачки: гоночная сетка и машины по бокам --- */
-body.vd #app{max-width:1420px}
-.tkg{grid-template-columns:minmax(230px,1fr) minmax(500px,720px) minmax(230px,1fr);gap:22px;align-items:stretch}
-.tkc{justify-content:center;gap:20px;padding-top:12px}
-.chr{min-height:230px;padding:12px 12px 14px;border-radius:18px;background:linear-gradient(145deg,color-mix(in srgb,var(--hc) 26%,transparent),transparent 65%),linear-gradient(160deg,#242a33,#090b10);border-color:color-mix(in srgb,var(--hc) 55%,#bdc4ca);box-shadow:inset 0 1px #fff2,0 12px 24px #0008}
-.chr:before{content:"";position:absolute;left:12px;right:12px;top:8px;height:2px;background:linear-gradient(90deg,transparent,#e9eef5aa,transparent)}
-.chr img{height:165px;object-fit:contain;filter:drop-shadow(0 15px 12px #000);transition:transform .25s}.chr:hover img{transform:scale(1.08)}.chr b{font-size:17px}.chr span{font-size:12px}
-.tkmc{min-width:0}.tkmc>.card{background:linear-gradient(145deg,#202631,#0a0c11 65%);border-color:#aeb8c455;box-shadow:inset 0 1px #ffffff20,0 10px 28px #0007}
-.tktime{margin-top:18px;border:1px solid #c1c9d060;border-radius:18px;overflow:hidden;background:linear-gradient(145deg,#202631,#080a0f 62%);box-shadow:inset 0 1px #fff2,0 12px 30px #0008}
-.tktime-head{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 18px 14px;border-bottom:1px solid #c1c9d033;background:linear-gradient(90deg,#9d101d55,transparent 55%)}
-.tk-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#d8dde2}.tktime h2{margin:3px 0;font-size:24px;font-style:italic;text-transform:uppercase;letter-spacing:1px;color:#fff}.tktime-head p{margin:0;color:#aeb5be;font-size:12px}
-.tktime-tabs{display:flex;gap:7px;padding:12px 14px 0;overflow-x:auto}.tktime-tab{position:relative;display:flex;align-items:center;gap:6px;min-width:max-content;border:1px solid #adb7c150;background:#0b0d13;color:#cdd3da;border-radius:10px 10px 0 0;padding:9px 12px;font:inherit;cursor:pointer}.tktime-tab.on{background:linear-gradient(180deg,#b31326,#640a14);color:#fff;border-color:#e4aeb5}.tktime-tab input{width:88px;padding:0;border:0;background:transparent;color:inherit;font:inherit;font-weight:800}.tktime-tab i{font-style:normal;font-size:18px;line-height:13px;color:#fff8;cursor:pointer}.tktime-panel{padding:0 14px 14px}.tktime-panel.is-hidden{display:none}
-.race-table-wrap{overflow-x:auto;border:1px solid #bdc6d240;border-radius:12px;background:#080a0e}.race-table{width:100%;border-collapse:collapse;min-width:440px}.race-table th{padding:10px 12px;background:linear-gradient(90deg,#151b24,#2b333d,#151b24);color:#e9edf2;font-size:10px;letter-spacing:1.5px;text-transform:uppercase}.race-table td{padding:11px 12px;border-top:1px solid #aeb8c122;text-align:center}.race-table td:nth-child(2){text-align:left}.race-table tr.leader{background:linear-gradient(90deg,#8f101d45,transparent 65%)}.race-table small{display:block;color:#d7a6ad;font-size:10px;text-transform:uppercase;letter-spacing:1px}.race-place{display:inline-grid;place-items:center;width:27px;height:27px;border-radius:8px;background:#252d37;border:1px solid #c2c9d166;font-weight:900}.race-place.gold{background:linear-gradient(135deg,#e02b3b,#7c0814);border-color:#ffd4d8;color:#fff;box-shadow:0 0 15px #de243a66}.race-time-input{box-sizing:border-box;width:112px;padding:7px 8px;text-align:center;font-weight:800;background:#0a0c11;border:1px solid #aeb8c144;border-radius:8px;color:#fff}.race-status{font-size:12px;font-weight:800;color:#cbd2db}.race-status.dnf{color:#ff8995}.race-note{padding:10px 2px 0;color:#9ba4af;font-size:11px}
-@media(max-width:1050px){.tkg{grid-template-columns:180px minmax(0,1fr) 180px;gap:12px}.chr{min-height:170px}.chr img{height:115px}.chr b{font-size:14px}}
-@media(max-width:760px){.tkg{grid-template-columns:1fr}.tkmc{order:0}.tkc{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));padding:0;gap:8px}.chr{min-height:0;padding:7px}.chr img{height:85px}.chr b{font-size:11px}.chr span{font-size:9px}.tktime-head{align-items:flex-start;flex-direction:column}.tktime h2{font-size:20px}}
+/* Тачки: крупные машины по бокам от гоночной сетки */
+@media (min-width:981px){
+  .tkg{grid-template-columns:minmax(250px,1.5fr) minmax(280px,560px) minmax(250px,1.5fr);gap:22px}
+  .tkc{gap:20px}
+  .chr{padding:14px 14px 16px;border-radius:20px}
+  .chr img{min-height:180px;object-fit:contain;filter:drop-shadow(0 12px 16px #000c)}
+  .chr b{font-size:19px;margin-top:8px}
+  .chr span{font-size:13px}
+}
+/* Рулетка машин: движение задаёт покадрово JS, без прежнего равномерного CSS-перехода */
+.cwstrip{transition:none}
