@@ -87,10 +87,23 @@ if(cwS.pend){cwRes(g,n);return}
 const p=cwPick(g);if(!p){cwEl('<div class="mut">В рулетке не осталось машин.</div>');return}
 cwS.pend=p;const pick=p.items.findIndex(x=>x.c===p.car&&x.t===p.t);
 cwEl(`<div class="mut">Машина ${n+1} из ${g.k}</div>${cwStrip(p.items)}<div id="cwnow" class="cwnow"><div class="cwn0">Рулетка разгоняется…</div></div><div class="mut" style="font-size:12px">${TIERS.map(t=>`<span style="color:${t[3]}">${t[1]} ${t[2]}%</span>`).join(' · ')} <span class="mut">· в ленте только ещё не собранные машины</span></div>`);
-const w=document.getElementById('cwg'),track=w&&w.parentElement;if(!w||!track)return;const stride=204,target=p.items.length*4+pick,shift=target*stride-(track.clientWidth/2-stride/2);w.getBoundingClientRect();w.style.transform=`translate3d(${-shift}px,0,0)`;
-(function(){const box=document.getElementById('cwnow'),col={};TIERS.forEach(t=>col[t[0]]=t[3]);let last=-1;
-const tick=()=>{const strip=document.getElementById('cwg');if(!strip||!box||!box.isConnected)return;const m=getComputedStyle(strip).transform;let x=0;if(m&&m!='none'){const v=m.match(/matrix\(([^)]+)\)/);if(v)x=+v[1].split(',')[4]||0}const i=((Math.round((track.clientWidth/2-x-stride/2)/stride)%p.items.length)+p.items.length)%p.items.length;if(i!==last){last=i;const it=p.items[i],title=it.c[1]+' '+it.c[2];box.style.setProperty('--tc',col[it.t]);box.innerHTML=`<div class="cwn0">${e(title)}</div>`}requestAnimationFrame(tick)};requestAnimationFrame(tick)})();
-clearTimeout(cwT);cwT=setTimeout(()=>{if(document.getElementById('cw')&&cwS&&cwS.pend===p)cwRes(g,n)},7800)}
+const w=document.getElementById('cwg'),track=w&&w.parentElement;if(!w||!track)return;
+/* 1,7 с быстрого прокрута + 5 с медленного: стрелка задерживается на каждой машине примерно 1 секунду. */
+const stride=204,target=p.items.length*4+pick,D=target*stride-(track.clientWidth/2-stride/2),slowCards=5;
+const fastEnd=Math.max(0,D-slowCards*stride),FAST=1700,SLOW=5000,TOTAL=FAST+SLOW;
+w.style.transition='none';
+const box=document.getElementById('cwnow'),col={};TIERS.forEach(t=>col[t[0]]=t[3]);let last=-1;
+const showTitle=x=>{const i=((Math.round((track.clientWidth/2-x-stride/2)/stride)%p.items.length)+p.items.length)%p.items.length;if(i!==last){last=i;const it=p.items[i],title=it.c[1]+' '+it.c[2];if(box){box.style.setProperty('--tc',col[it.t]);box.innerHTML=`<div class="cwn0">${e(title)}</div>`}}};
+const easeOut=t=>1-Math.pow(1-t,3),t0=performance.now();
+const frame=now=>{const el=document.getElementById('cwg');if(!el||!cwS||cwS.pend!==p)return;const elapsed=now-t0;let x;
+ if(elapsed<=FAST){x=fastEnd*easeOut(elapsed/FAST)}
+ else if(elapsed<TOTAL){const t=(elapsed-FAST)/SLOW;x=fastEnd+(D-fastEnd)*t}
+ else{x=D}
+ el.style.transform=`translate3d(${-x}px,0,0)`;showTitle(x);
+ if(elapsed<TOTAL)requestAnimationFrame(frame);
+};
+requestAnimationFrame(frame);clearTimeout(cwT);cwT=setTimeout(()=>{if(document.getElementById('cw')&&cwS&&cwS.pend===p)cwRes(g,n)},TOTAL+250)
+}
 function cwRes(g,n){const p=cwS.pend,c=p.car,T=TIERS.find(t=>t[0]==p.t);
 cwEl(`<div class="mut">Машина ${n+1} из ${g.k}</div><div class="chip" style="color:${T[3]};border-color:${T[3]};margin:8px 0">${T[1]}</div><div class="big" style="margin:6px 0">${c[1]} ${e(c[2])}</div><div><span class="cl cl-${c[5]}">${c[5]}</span> <b class="pi">${c[4]}</b> <span class="mut">· ${c[7]||'—'} · ${e(c[3])}</span></div><div style="margin:8px 0">${c[9]?`<span class="pr pr-${c[8]}">${priceF(c[9])} CR</span>`:''}</div><div class="cwbt"><button class="btn cwno" data-a="wgrno" data-g="${g.id}">Нет такой машины в гараже</button><button class="btn pri" data-a="wgryes" data-g="${g.id}">Есть машина в гараже</button></div>`)}
 const wgActive=()=>wgList().find(g=>me&&g.st&&g.k&&g.pl.includes(me)&&((g.cr||{})[me]||[]).length<g.k),
@@ -139,7 +152,7 @@ let b=ph==0?wgSetup(g):wgDraft(g)+(ph==2?wgRaces(g):'');
 if(mine)b+=wgCars(g);
 return`<div class="card wg">${hd}${b}</div>`}
 const WOF=()=>{const L=wgList();return`<div class="wfh"><div class="h1">Forza Horizon 6</div><div class="h2">Колесо</div><div class="h3">Фортуны</div></div>${adm()?'<div class="card row"><button class="btn pri" data-a="wgnew">➕ Новая игра</button><span class="mut">Каждая игра — отдельный драфт дисциплин. Игры можно сворачивать и удалять.</span></div>':''}${L.length?L.map(g=>WGAME(g,L)).join(''):`<div class="card mut">Игр пока нет.${adm()?'':' Админ создаст новую игру.'}</div>`}`};
-globalThis.renderPage=function(A){let b='';
+function alt(A){let b='';
 if(view=='home')b=`<h2>Чемпионаты</h2><div class="card" data-a="v" data-k="champ" style="cursor:pointer;padding:30px;border-color:var(--a)"><div class="big">🏆 Чемпионат 5 · Страны</div><div class="mut">Nations Cup — драфт стран, расписание гонок, таблица</div></div><div class="grid"><div class="card" style="opacity:.5;text-align:center;padding:24px">🔒<br>Скоро</div><div class="card" style="opacity:.5;text-align:center;padding:24px">🔒<br>Скоро</div></div>`;
 if(view=='home')b=HOME();
 if(view=='cars')b=carsView();
