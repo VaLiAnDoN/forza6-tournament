@@ -3,7 +3,7 @@ document.addEventListener('keydown',ev=>{if(ev.key=='Enter'&&ev.target.id=='cd')
 window.addEventListener('error',x=>{alert('Ошибка: '+x.message)});
 document.addEventListener('click',ev=>{const el=ev.target.closest('[data-a]');if(!el)return;const a=el.dataset.a;
 if(a=='in'){const c=document.getElementById('cd').value.replace(/\s/g,'');const p=S.players.find(p=>p.c==c);me=c.toUpperCase()==S.admin?'@admin':p?p.n:null;if(!me)return alert('Код не найден');try{localStorage.setItem('nc5me',me)}catch(x){}}
-if(a=='out'){me=null;try{localStorage.removeItem('nc5me')}catch(x){}}
+if(a=='out'){me=null;view='champ';tab='t';pend=null;mo=false;pop=null;try{localStorage.removeItem('nc5me')}catch(x){}}
 if(a=='tab')tab=el.dataset.k;
 if(a=='start'){S.order=dord().slice();S.picks={}}
 if(a=='pick'){const c=turn();if(c){S.picks[el.dataset.k]=c}}
@@ -36,7 +36,6 @@ if(el.dataset.wgk){const g=S.wg[el.dataset.wgk];g.k=Math.max(1,Math.min(16,+el.v
 if(el.dataset.wr){const[id,d,pi,f]=el.dataset.wr.split('|'),g=S.wg[id],p=g.pl[+pi];g.rc=g.rc||{};const r=g.rc[d]=g.rc[d]||{},m=r[f]=r[f]||{};m[p]=el.value.trim();save();render();return}
 if(el.dataset.wm){const[id,i,sd]=el.dataset.wm.split('|'),g=S.wg[id];g.rc=g.rc||{};const r=g.rc[7]=g.rc[7]||{};r.m=r.m||{};(r.m[i]=r.m[i]||{})[sd]=el.value.trim();save();render();return}
 if(el.dataset.ci!==undefined&&me){const[k,f]=el.dataset.ci.split('|'),c=CARS[+k],K=c[1]+' '+c[2];S.ci=S.ci||{};const u=S.ci[me]=S.ci[me]||{},o=u[K]=u[K]||{};o[f]=el.value.trim();save();return}
-if(el.dataset.tktime){const [rid,heat,player]=el.dataset.tktime.split('|'),g=tkPg(),pg=g[rid]=g[rid]||{},tm=pg.times=pg.times||{},row=tm[heat]=tm[heat]||{};row[player]=el.value.trim();save();render();return}
 if(el.dataset.tkpg){const[i,f]=el.dataset.tkpg.split('|'),g=tkPg();(g[i]=g[i]||{})[f]=el.value.trim();save();return}
 if(el.dataset.tkf){const[i,f]=el.dataset.tkf.split('|');TK().races[i][f]=el.value;save();return}
 if(el.dataset.car!==undefined){const r=S.races[el.dataset.car];r.cars=r.cars||{};r.cars[el.dataset.p]=el.value;save();return}

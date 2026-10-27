@@ -8,7 +8,7 @@ const TKC={
  doc:{n:'Док Хадсон',short:'Chevrolet One-Fifty (150)',car:'1955 Chevrolet 150 Utility Sedan',img:'c_doc',hue:'#2b49c9',who:'Hudson Hornet №51 · судья и врач',bio:'Трёхкратный чемпион Кубка Поршня, а теперь городской судья и врач Радиатор-Спрингс и наставник Маккуина. Опыт и точность: в дерби играет на технике, а не на силе.'}};
 const TKR=[
  {id:1,n:'Радиатор Спрингс ГП',cls:'B 600',clsNote:'Класс B 600, кроме Салли: она едет на стоке.',fmt:'—',pick:['Porsche 911 GT3 2004','Chevrolet 150 (Шериф и Хадсон)','Impala 64','Abarth 595','Peel P50','Impala 57','Ford Deluxe 1932']},
- {id:2,n:'Безумная восьмерка',cls:'A 700',clsNote:'Класс A 700',fmt:'Дерби',rules:'Гонка без правил, повреждения включены',chars:['mcqueen','mater','cruz','fillmore','sarge','doc'],photos:3},
+ {id:2,n:'Безумная восьмерка',cls:'A 700',clsNote:'Класс A 700',fmt:'Дерби · 3 машины',rules:'Гонка без правил, повреждения включены',chars:['mcqueen','mater','cruz','fillmore','sarge','doc'],photos:3},
  {id:3,n:'Ночное происшествие',cls:'S1 750–780',clsNote:'Класс S1 750–780',fmt:'Спринт по хайвею · 5 заездов',rules:'Каждый побывает в роли Мака (Mercedes-Benz Unimog, A 700). Цель Мака — проехать как можно быстрее, цель гонщиков — помешать; гонщики едут с повреждениями. Очки начисляются по времени каждого «Мака».',pick:['Eclipse','S15','Challenger 70','VW Scirocco / Golf']},
  {id:4,n:'Кубок Поршня',cls:'S1 800 · RWD',clsNote:'Класс S1 800, только RWD',fmt:'Наскар · 20–25 кругов',rules:'Стандартный наскар.',pick:['Viper','Regal','Daytona','Corvette C8 2023','AM Vantage']},
  {id:5,n:'ГП в Токио',cls:'S1 800 – S2 850',clsNote:'Класс S1 800 – S2 850',fmt:'Кольцо в Токио + грунтовые участки',rules:'Кольцевая гонка в Токио с грунтовыми участками.',pick:['Viper GTS','Ariel Atom','Focus RS 2009','Ultima','Corvette ZR1 2009','AM DBS 2019','Radical']},
@@ -17,19 +17,12 @@ const tkPg=()=>{const t=TK();return t.pg=t.pg||{}},tkPk=id=>{const t=TK();t.pk=t
 let chOpen=null;
 const tkClsChip=s=>{const m=s.match(/^([A-Z0-9]+)\s*(\d+)?/);return m?`<span class="cl cl-${m[1]}">${m[1]}</span>${m[2]?` <b class="pi">${m[2]}</b>`:''}${s.slice(m[0].length)?` <span class="mut">${e(s.slice(m[0].length))}</span>`:''}`:e(s)};
 function TKPAGE(id){const r=TKR.find(x=>x.id==id);if(!r)return'';return r.chars?TKFULL(r):TKSOON(r)}
-function tkRaceBoard(r,P,pg,A){
- const tm=pg.times=pg.times||{}, heats=pg.heats=pg.heats||[{n:'Заезд 1'}], active=Math.max(0,Math.min(+pg.active||0,heats.length-1)), h=heats[active], vals=tm[active]||{};
- const sec=v=>{if(!v||/^нф$/i.test(v.trim()))return Infinity;const m=v.trim().match(/^(?:(\d+):)?(\d{1,2})(?:[,.](\d{1,3}))?$/);return m?(+(m[1]||0)*60 + +m[2] + +(m[3]||0)/1000):Infinity};
- const ranked=P.slice().sort((a,b)=>sec(vals[a])-sec(vals[b]));
- const place=n=>{const v=sec(vals[n]);return v===Infinity?'—':ranked.indexOf(n)+1};
- return `<section class="tkboard"><div class="tkboard-head"><div><span class="tkboard-kicker">Гоночная сетка</span><h2>Время гонок</h2><p>Лучшее время и места считаются автоматически для каждого заезда.</p></div>${A?`<button class="btn pri tkheatadd" data-a="tkaddheat" data-r="${r.id}">+ Заезд</button>`:''}</div><div class="tkheats">${heats.map((x,i)=>`<button class="tkheat ${i==active?'on':''}" data-a="tkheat" data-r="${r.id}" data-i="${i}">${e(x.n||('Заезд '+(i+1)))}</button>`).join('')}${A&&heats.length>1?`<button class="tkheat-del" title="Удалить заезд" data-a="tkdelheat" data-r="${r.id}" data-i="${active}">×</button>`:''}</div><div class="tktime-head"><span>Место</span><span>Гонщик</span><span>Время круга</span><span>Статус</span></div><div class="tktime-list">${P.map(n=>{const v=vals[n]||'',pl=place(n),dnf=/^нф$/i.test(v.trim());return `<div class="tktime-row ${pl==1?'leader':''}"><strong class="tktime-place">${pl==='—'?'—':'#'+pl}</strong><b>${e(n)}</b>${A?`<input class="tktime-input" data-tktime="${r.id}|${active}|${e(n)}" value="${e(v)}" placeholder="м:сс,ммм / НФ">`:`<span class="tktime-value">${e(v||'—')}</span>`}<span class="tktime-status ${dnf?'dnf':''}">${dnf?'НФ':v?'Финиш':'Ожидает'}</span></div>`}).join('')}</div><div class="tktime-foot">Формат: м:сс,ммм. Для не финишировавшего участника укажи НФ.</div></section>`
-}
 function TKFULL(r){const A=adm(),pk=tkPk(r.id),pg=tkPg()[r.id]||{},ch=k=>{const c=TKC[k],o=pk[k];return`<button class="chr" data-a="chr" data-r="${r.id}" data-k="${k}" style="--hc:${c.hue}"><img src="img/tachki/${c.img}.png" onerror="this.onerror=null;this.src=this.src.replace(/\.png$/,'.webp')" alt="${e(c.n)}" loading="lazy">${o?`<i class="chown">${e(o)}</i>`:''}<b>${e(c.n)}</b><span>${e(c.short)}</span></button>`},
 P=S.players.map(p=>p.n),by={};Object.keys(pk).forEach(k=>by[pk[k]]=k);
 return`<div class="tkh"><div class="hs">${[1,2,3].slice(0,r.photos).map(i=>`<img src="img/tachki/track${i}.jpg" data-track="${i}" onerror="this.onerror=null;this.src='img/tachki/track'+this.dataset.track+'.png'" alt="Ночная арена Безумной восьмёрки" style="animation-delay:${(i-1)*5}s">`).join('')}</div><div class="hsh"></div><div class="hti"><div class="hk">${e(r.fmt)}</div><h1>${e(r.n)}</h1><div class="row"><span class="chip">${tkClsChip(r.cls)}</span><span class="chip">Без правил</span><span class="chip">Повреждения</span></div></div></div>
 <div class="tkg"><div class="tkc">${r.chars.slice(0,3).map(ch).join('')}</div>
 <div class="tkmc"><div class="card"><h2 style="margin-top:0">Данные трассы</h2><table class="kv"><tr><td>Тип гонки</td><td>${e(r.fmt)}</td></tr><tr><td>Класс</td><td>${tkClsChip(r.cls)}</td></tr><tr><td>Правила</td><td>${e(r.rules)}</td></tr><tr><td>Машины на выбор</td><td>${r.chars.length} персонажей</td></tr><tr><td>Код трассы</td><td><input data-tkpg="${r.id}|code" placeholder="Код трассы" value="${e(pg.code||'')}" ${A?'':'disabled'} style="width:100%;box-sizing:border-box"></td></tr></table></div>
-<div class="card tkdrivers"><h2 style="margin-top:0">Кто на ком</h2>${P.map(n=>`<div class="lane"><b class="sp">${e(n)}</b>${by[n]?`<span class="chip" style="border-color:${TKC[by[n]].hue};color:${TKC[by[n]].hue}">${e(TKC[by[n]].n)}</span>`:'<span class="mut">ещё не выбрал</span>'}</div>`).join('')}<div class="mut" style="font-size:12px;margin-top:8px">Нажми на персонажа: откроется сводка о машине и герое, там же можно выбрать его.</div></div>${tkRaceBoard(r,P,pg,A)}</div>
+<div class="card"><h2 style="margin-top:0">Кто на ком</h2>${P.map(n=>`<div class="lane"><b class="sp">${e(n)}</b>${by[n]?`<span class="chip" style="border-color:${TKC[by[n]].hue};color:${TKC[by[n]].hue}">${e(TKC[by[n]].n)}</span>`:'<span class="mut">ещё не выбрал</span>'}</div>`).join('')}<div class="mut" style="font-size:12px;margin-top:8px">Нажми на персонажа: откроется сводка о машине и герое, там же можно выбрать его.</div></div></div>
 <div class="tkc">${r.chars.slice(3).map(ch).join('')}</div></div>`}
 function TKSOON(r){return`<div class="tkh tkh0"><div class="hsh"></div><div class="hti"><div class="hk">${e(r.fmt)}</div><h1>${e(r.n)}</h1><div class="row"><span class="chip">${tkClsChip(r.cls)}</span></div></div></div>
 <div class="tkg1"><div class="card"><h2 style="margin-top:0">Данные гонки</h2><table class="kv"><tr><td>Формат</td><td>${e(r.fmt)}</td></tr><tr><td>Класс</td><td>${e(r.clsNote)}</td></tr>${r.rules?`<tr><td>Правила</td><td>${e(r.rules)}</td></tr>`:''}<tr><td>Выбор машин</td><td>${r.pick.map(x=>`<span class="chip" style="margin:2px">${e(x)}</span>`).join(' ')}</td></tr></table><div class="mut" style="margin-top:10px">Оформление этой гонки (фото трека и персонажи) появится позже.</div></div></div>`}
@@ -46,11 +39,4 @@ if(a=='chc')chOpen=null;
 if(!chOpen)return;const pk=tkPk(chOpen.r),clr=n=>Object.keys(pk).forEach(k=>{if(pk[k]==n)delete pk[k]});
 if(a=='chpick'&&me&&me!='@admin'&&!pk[chOpen.k]){clr(me);pk[chOpen.k]=me}
 if(a=='chas'&&adm()){const v=document.getElementById('chsel').value;clr(v);pk[chOpen.k]=v}
-if(a=='chclr'&&(adm()||pk[chOpen.k]==me))delete pk[chOpen.k];
-if(a=='tkheat'||a=='tkaddheat'||a=='tkdelheat'){
- const rr=+d.r,g=tkPg(),pg=g[rr]=g[rr]||{},hs=pg.heats=pg.heats||[{n:'Заезд 1'}];
- if(a=='tkheat')pg.active=+d.i;
- if(a=='tkaddheat'){hs.push({n:'Заезд '+(hs.length+1)});pg.active=hs.length-1}
- if(a=='tkdelheat'&&hs.length>1){hs.splice(+d.i,1);const tm=pg.times||{};delete tm[d.i];const fixed={};Object.keys(tm).forEach(k=>{fixed[k>(+d.i)?k-1:k]=tm[k]});pg.times=fixed;pg.active=Math.max(0,Math.min(+pg.active||0,hs.length-1))}
-}
-};
+if(a=='chclr'&&(adm()||pk[chOpen.k]==me))delete pk[chOpen.k]};
