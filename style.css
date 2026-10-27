@@ -109,10 +109,64 @@ body.vd #app{max-width:1280px}
 
 .chh{color:#fff;text-transform:none;letter-spacing:0}
 
-/* --- доп. правки: равное выравнивание карточек персонажей Тачки --- */
-.tkc{display:flex;flex-wrap:wrap;gap:14px;justify-content:flex-start;align-items:stretch}
-.tkc .chr{flex:1 1 220px;max-width:260px;min-width:180px;display:flex;flex-direction:column;align-items:center;box-sizing:border-box}
-.tkc .chr img{width:100%;height:140px;object-fit:contain}
 
-/* Таблицы времени гонок */
-.tk-times{margin-top:18px}.tk-times>.row{margin-bottom:10px}.tk-time-run{margin:10px 0}.tk-run-name{font:inherit;font-weight:700;width:100%;max-width:300px}.tk-time-input{width:150px;max-width:100%;box-sizing:border-box}.tk-time-run td:first-child{width:70px;text-align:center;font-weight:700}@media(max-width:560px){.tk-time-input{width:122px}.tk-time-run table{font-size:13px}.tk-time-run th,.tk-time-run td{padding:7px 5px}}
+/* === Тачки — Cars: хром, красный лак и ночной трек ===
+   Палитра взята из эмблемы Cars и ночных трасс: холодный металл + красный,
+   без жёлто-оранжевой темы. Все правила ограничены разделом Тачки. */
+body.vd{
+  --a:#d61b31;
+  --a2:#8e0d1e;
+  --l:#34424f;
+  --t:#eef3f6;
+  --m:#aebbc5;
+  background-color:#05080d;
+  background-image:radial-gradient(1100px 520px at 75% -8%,#172431 0%,transparent 58%),linear-gradient(180deg,#09111a 0%,#04070b 62%,#080b0f 100%);
+}
+body.vd #app{max-width:1280px}
+body.vd .tkl{filter:drop-shadow(0 4px 12px #000) drop-shadow(0 0 5px #b4c4d0aa)}
+body.vd .tkh{
+  border:1px solid #667887;
+  border-top-color:#c3d0d9;
+  background:linear-gradient(145deg,#111b25,#06090e 64%);
+  box-shadow:inset 0 1px 0 #e7f1f755,0 18px 45px #0009;
+}
+body.vd .tkh:before{
+  content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(104deg,transparent 0 35%,#d5e4ed18 42%,transparent 49%),linear-gradient(180deg,transparent 48%,#05070be8 100%);
+}
+body.vd .hsh{z-index:2;background:linear-gradient(90deg,#05070bdc 0%,#05070b86 42%,transparent 75%),linear-gradient(180deg,transparent 25%,#05070be8 100%)}
+body.vd .hti{z-index:3}
+body.vd .hk{color:#c9d6df;text-shadow:0 1px 2px #000}
+body.vd .hti h1{color:#f5f8fa;text-shadow:0 3px 0 #470510,0 7px 22px #000;font-style:italic;letter-spacing:1px}
+body.vd .tabs button,body.vd .tab,body.vd .tbt{
+  border:1px solid #526473;background:linear-gradient(180deg,#25323e,#101820);color:#dbe5eb;
+  box-shadow:inset 0 1px 0 #dcecf022,0 3px 8px #0008;
+}
+body.vd .tabs button.active,body.vd .tab.active,body.vd .tbt.active{
+  border-color:#f0a2ad;background:linear-gradient(180deg,#df273b,#840b1c);color:#fff;
+  box-shadow:inset 0 1px 0 #fff5,0 0 0 1px #520713,0 6px 18px #0009;
+}
+body.vd .card,body.vd .tkmc .card,body.vd .chr{
+  border-color:#3c4d5a;background:linear-gradient(145deg,#1b2731,#0b1118 70%);box-shadow:inset 0 1px 0 #dae7ef15,0 10px 24px #0006;
+}
+body.vd .chr{
+  min-height:128px;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
+  overflow:hidden;
+}
+body.vd .chr:before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,#dcecf00d,transparent 34%,#c312270b);pointer-events:none}
+body.vd .chr img{height:88px;width:100%;object-fit:contain;object-position:center bottom;margin:auto auto 2px;position:relative;z-index:1}
+body.vd .chr b,body.vd .chr span{position:relative;z-index:1}
+body.vd .chr:hover{border-color:#bac9d2;box-shadow:inset 0 1px 0 #fff4,0 11px 26px #000a;transform:translateY(-3px)}
+body.vd .chown{background:linear-gradient(180deg,#e52a3e,#970b1d);color:#fff;border:1px solid #ffb7c0;box-shadow:0 3px 9px #0009}
+body.vd .btn,body.vd button:not(.tabs button):not(.tab):not(.tbt){
+  border-color:#647583;background:linear-gradient(180deg,#2c3a45,#111920);color:#edf4f7;
+}
+body.vd .btn.primary,body.vd button.primary{border-color:#ef98a4;background:linear-gradient(180deg,#e22a3d,#850b1b);color:#fff;box-shadow:inset 0 1px 0 #fff5,0 5px 14px #0009}
+body.vd .kv td{border-bottom-color:#2d3b46}
+body.vd .kv td:first-child{color:#aebec9}
+body.vd .chsp{background:linear-gradient(90deg,transparent,#8496a1,transparent)}
+body.vd .chw{border-color:#607381;background:linear-gradient(145deg,#26343e,#0b1016 72%);box-shadow:inset 0 1px 0 #eaf4f622,0 26px 70px #000}
+body.vd .chh{color:#f5f8fa}
+/* Металлическая нижняя кромка секции, как у эмблемы */
+body.vd .tkh:after{content:"";position:absolute;z-index:4;left:0;right:0;bottom:0;height:4px;background:linear-gradient(90deg,#354753,#dae4e8 22%,#7d929e 49%,#eef5f7 75%,#354753);box-shadow:0 -1px 5px #000}
+@media(max-width:560px){body.vd .chr{min-height:115px}body.vd .chr img{height:76px}}
