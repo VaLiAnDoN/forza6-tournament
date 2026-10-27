@@ -109,22 +109,23 @@ body.vd #app{max-width:1280px}
 
 .chh{color:#fff;text-transform:none;letter-spacing:0}
 
+/* --- доп. правки: равное выравнивание карточек персонажей Тачки --- */
+.tkc{display:flex;flex-wrap:wrap;gap:14px;justify-content:flex-start;align-items:stretch}
+.tkc .chr{flex:1 1 220px;max-width:260px;min-width:180px;display:flex;flex-direction:column;align-items:center;box-sizing:border-box}
+.tkc .chr img{width:100%;height:140px;object-fit:contain}
 
-/* Рулетка машин: читаемый центр и контролируемые две фазы кручения */
-.cwline{max-width:900px;margin-top:22px}
-.cwtrack{height:146px;border-color:#b7bcc8;background:linear-gradient(90deg,#08090d,#20242d 50%,#08090d);box-shadow:inset 0 0 34px #000,0 0 18px #d31925aa}
-.cwtrack:before,.cwtrack:after{width:110px}
-.cwtrack:after{background:linear-gradient(270deg,#08090d 8%,transparent)}
-.cwtrack:before{background:linear-gradient(90deg,#08090d 8%,transparent)}
-.cwtrack:after,.cwtrack:before{z-index:2}
-.cwtrack::selection{background:transparent}
-.cwtrack .cwstrip{top:15px;gap:12px;transition:none!important}
-.cwcard{flex-basis:204px;height:112px;padding:14px 12px;border-width:2px;background:linear-gradient(145deg,#242933,#0a0c12);box-shadow:0 0 15px #000}
-.cwcard b{font-size:16px;line-height:1.18;margin:7px 0 5px;white-space:normal}
-.cwcard span,.cwcard small{font-size:11px}
-.cwp{z-index:4;top:-5px;font-size:32px;color:#f4f5f7;text-shadow:0 2px 2px #000,0 0 14px #d31925}
-.cwtrack:focus-within{outline:2px solid #d31925}
-.cwnow{max-width:560px;text-align:center;border-color:#d31925;background:linear-gradient(180deg,#20242ef7,#090a0ff7);box-shadow:inset 0 1px #ffffff38,0 0 22px #d3192566}
-.cwnk{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#aeb5c2;font-weight:800;margin-bottom:3px}
-.cwn0{font-size:21px;line-height:1.15;color:#fff;font-weight:900}
-@media(max-width:560px){.cwtrack{height:134px}.cwtrack .cwstrip{top:13px}.cwcard{flex-basis:184px;height:104px;padding:12px}.cwcard b{font-size:15px}.cwn0{font-size:18px}}
+
+/* === ТАЧКИ: полноэкранные боковые машины и широкий центр ===
+   Эта секция должна быть последней: она отменяет старое ограничение 260px,
+   из-за которого карточки оставались маленькими и переносились. */
+body.vd #app{max-width:none;width:calc(100% - 48px);margin-left:auto;margin-right:auto}
+.tkg{grid-template-columns:minmax(320px,1fr) minmax(560px,640px) minmax(320px,1fr);gap:28px;align-items:stretch}
+.tkg>.tkc{display:flex;flex-direction:column;flex-wrap:nowrap;justify-content:space-between;align-items:stretch;gap:28px;min-width:0}
+.tkg>.tkc .chr{display:flex;flex:0 0 auto;box-sizing:border-box;width:100%;max-width:none;min-width:0;min-height:286px;padding:18px 18px 16px;border-radius:20px;justify-content:flex-end;overflow:hidden}
+.tkg>.tkc .chr img{width:100%;height:224px;min-height:224px;object-fit:contain;object-position:center;filter:drop-shadow(0 14px 16px #000c)}
+.tkg>.tkc .chr b{font-size:19px;line-height:1.1;margin-top:8px}.tkg>.tkc .chr span{font-size:13px;margin-top:4px}
+.tkmc{min-width:0}.tkmc>.card{border-radius:18px}
+@media (min-width:1450px){body.vd #app{width:calc(100% - 80px)}.tkg{grid-template-columns:minmax(380px,1fr) minmax(580px,660px) minmax(380px,1fr);gap:36px}.tkg>.tkc .chr{min-height:330px;padding:22px}.tkg>.tkc .chr img{height:260px;min-height:260px}}
+@media (max-width:1100px){body.vd #app{width:calc(100% - 32px)}.tkg{grid-template-columns:minmax(240px,1fr) minmax(500px,580px) minmax(240px,1fr);gap:18px}.tkg>.tkc .chr{min-height:240px;padding:14px}.tkg>.tkc .chr img{height:180px;min-height:180px}}
+@media (max-width:900px){body.vd #app{width:calc(100% - 24px)}.tkg{grid-template-columns:1fr 1fr;gap:14px}.tkmc{grid-column:1/-1;order:-1}.tkg>.tkc .chr{min-height:220px}.tkg>.tkc .chr img{height:170px;min-height:170px}}
+@media (max-width:560px){body.vd #app{width:calc(100% - 16px)}.tkg{grid-template-columns:1fr;gap:12px}.tkmc{grid-column:auto}.tkg>.tkc{display:grid;grid-template-columns:1fr 1fr;gap:10px}.tkg>.tkc .chr{min-height:170px;padding:10px}.tkg>.tkc .chr img{height:118px;min-height:118px}.tkg>.tkc .chr b{font-size:14px}.tkg>.tkc .chr span{font-size:11px}}
