@@ -1,9 +1,10 @@
-/* Запрет случайного выделения интерфейса; редактируемые поля остаются доступными. */
-body {
-  -webkit-user-select: none;
-  user-select: none;
+/* Запрет выделения интерфейса; поля ввода остаются редактируемыми. */
+html, body, body *, body *::before, body *::after {
+  -webkit-user-select: none !important;
+  user-select: none !important;
 }
-body input, body textarea, body [contenteditable="true"], body [contenteditable=""] {
-  -webkit-user-select: text;
-  user-select: text;
+input, textarea, [contenteditable=""], [contenteditable="true"],
+[contenteditable=""] *, [contenteditable="true"] * {
+  -webkit-user-select: text !important;
+  user-select: text !important;
 }
