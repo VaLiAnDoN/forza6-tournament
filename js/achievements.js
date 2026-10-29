@@ -31,7 +31,7 @@ const fm=n=>(+Number(n).toFixed(1)).toLocaleString('ru-RU');
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
 /* ===== История чемпионатов в достижениях ===== */
-const HIST_VER='h3';
+const HIST_VER='h4';
 function hInfo(name){const x=((window.HISTORY_EXTRA||{}).cinfo||{})[name];if(!x||!x[0])return null;const r=[];r[0]=x[0];r[6]=x[1]||'';return r}
 function hCars(e){const o=(((window.HISTORY_EXTRA||{}).cars||{})[e.ti]||{})[e.ri];return o?Object.assign({},o):{}}
 /* Имя в архиве -> имя на сайте. Если Даня и Женя — один человек, раскомментируйте: {'Даня':'Женя'} */
@@ -62,14 +62,16 @@ function calc(p){let races=[];try{(S.races||[]).forEach(r=>{if(!r.lanes||!(p in 
 races=histRaces(p).concat(races);let drift=0;(((window.HISTORY_EXTRA||{}).drift)||[]).forEach(d=>{drift+=+((d.pts||{})[p])||0});const histT=histTitles(p);const wins=races.filter(x=>x.win),seconds=races.filter(x=>!x.dnf&&!x.win&&x.fin[1]===p),longest=()=>{let n=0,m=0;for(const x of races){if(x.unord){n=0;continue}n=x.win?n+1:0;m=Math.max(m,n)}return m};
 let cmps=[];if(races.some(x=>!x.hist)&&(S.races||[]).length&&S.races.every(r=>{try{return !!pts(r)}catch(_){return false}})){const sums={};S.players.forEach(x=>sums[x.n]=0);S.races.forEach(r=>{let z=pts(r);Object.keys(z||{}).forEach(n=>sums[n]=(sums[n]||0)+z[n])});let max=Math.max(...Object.values(sums));if((sums[p]||0)===max)cmps.push(1)}
 let cars=[],carNames=[],marks={},countries={},bySeason=new Set(),byClass=new Set(),byType=new Set(),winsByMark={},wheel=[];
-function carInfo(name){if(!name)return null;let c=CARS.find(c=>(c[1]+' '+c[2]).toLowerCase()===String(name).trim().toLowerCase());return c||hInfo(name)}
+function carInfo(name){if(!name)return null;let c=CARS.find(c=>(c[1]+' '+c[2]).toLowerCase()===String(name).trim().toLowerCase());return hInfo(name)||c}
+/* Совпадающие модели из архива и каталога не должны считаться дважды. */
+function carKey(name){const n=String(name).trim().toLowerCase().replace(/\s+/g,' ');const aliases={'bmw m3 2005':'bmw m3 2005','m3 2005':'bmw m3 2005','evija':'lotus evija','lotus evija':'lotus evija','rally fighter':'local motors rally fighter','local motors rally fighter':'local motors rally fighter','centenario':'lamborghini centenario','сентенарио':'lamborghini centenario','lambo centenario':'lamborghini centenario','pulsar gti-r':'nissan pulsar gti-r','mclaren p1':'mclaren p1','p1':'mclaren p1'};return aliases[n]||n}
 races.forEach(x=>{let name=(x.r.cars||{})[p];if(name){carNames.push(name);let c=carInfo(name);if(c){marks[c[0]]=(marks[c[0]]||0)+1;countries[c[6]]=(countries[c[6]]||0);if(x.win&&c[6])winsByMark[c[6]]=(winsByMark[c[6]]||0)+1}}if(x.win){let d=x.r.d||'';byType.add(/шоссе/i.test(d)?'Шоссе':/грунт/i.test(d)?'Грунт':/автокросс/i.test(d)?'Автокросс':/улиц/i.test(d)?'Улица':/тогэ/i.test(d)?'Тогэ':'');if(x.r.s)bySeason.add(String(x.r.s).toLowerCase());if(x.r.c)byClass.add(x.r.c)} });
 try{(TK().races||[]).forEach(r=>{let name=(r.c||{})[p];if(name){carNames.push(name);let c=carInfo(name);if(c)marks[c[0]]=(marks[c[0]]||0)+1}})}catch(_){}
 try{Object.values(S.wg||{}).forEach(g=>{(g.cr&&g.cr[p]||[]).forEach(name=>{wheel.push(name);carNames.push(name);let c=carInfo(name);if(c)marks[c[0]]=(marks[c[0]]||0)+1})})}catch(_){}
 let km=races.reduce((a,x)=>a+x.km,0),maxStreak=longest(),iron=0,seq=0;for(const x of races){if(x.unord){seq=0;continue}seq=x.dnf?0:seq+1;iron=Math.max(iron,seq)}
 let secondNoWin=wins.length===0?seconds.length:0, close=races.some(x=>x.fin.some(n=>n!==p&&x.t[n]!==null&&Math.abs(x.t[n]-x.t[p])<100));let prev=false,comeback=false;races.forEach(x=>{if(x.unord){prev=false;return}if(x.win&&prev)comeback=true;prev=x.dnf});
 let types=['Шоссе','Грунт','Автокросс','Улица','Тогэ'].filter(x=>byType.has(x)).length,seas=['весна','зима','лето','осень'].filter(x=>[...bySeason].some(y=>y.includes(x))).length,classes=['D','C','B','A','S1','S2'].filter(x=>byClass.has(x)).length;
-let allCarNames=[...new Set(carNames)],brands=Object.keys(marks).length,brandMax=Math.max(0,...Object.values(marks)),countryMax=Math.max(0,...Object.values(winsByMark));
+let allCarNames=[...new Set(carNames.map(carKey))],brands=Object.keys(marks).length,brandMax=Math.max(0,...Object.values(marks)),countryMax=Math.max(0,...Object.values(winsByMark));
 let tkWins=0,tkPts=0;try{(TK().races||[]).forEach(r=>{let t=ms((r.tm||{})[p]);let all=Object.keys(r.tm||{}).map(n=>[n,ms(r.tm[n])]).filter(x=>x[1]!==undefined&&x[1]!==null).sort((a,b)=>a[1]-b[1]);if(all.length&&all[0][0]===p)tkWins++;tkPts+=+(r.p||{})[p]||0})}catch(_){}
 let wheelCount=wheel.length;return {first_win:wins.length?1:0,streak:maxStreak,champion:cmps.length+histT,hattrick:cmps.length+histT,sniper:wins.some(x=>x.fin[1]&&x.t[x.fin[1]]-x.t[p]<1000)?1:0,crush:wins.some(x=>x.fin[1]&&x.t[x.fin[1]]-x.t[p]>30000)?1:0,comeback:comeback?1:0,eternal_second:secondNoWin,photofinish:close?1:0,iron,tank:tankOk(races)?1:0,marathon:km,world:km,universal:types,seasons:seas,classic:classes,garage:allCarNames.length,brand_fan:brandMax,brand_collector:brands,patriot:countryMax,wheel_pick:wheelCount,tachki_win:tkWins,tachki_points:tkPts,drifter:drift,drift_king:drift};}
 const tiered=a=>!!(a.th&&a.th.length>1);
