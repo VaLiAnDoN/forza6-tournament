@@ -14,6 +14,8 @@ const ACH=[
 {id:'tank',n:'Семья одобряет',d:'Финишировать во всех гонках турнира (не менее 5 гонок).',r:'rare',ico:'✅'},
 {id:'marathon',n:'Дальнобойщик',d:'Проехать за турнир 100, 250 и 500 км.',r:'rare',th:[100,250,500],ico:'🛣️'},
 {id:'world',n:'Объехал планету (почти)',d:'Проехать 1000 км в завершённых заездах.',r:'legendary',th:[1000],ico:'🌍'},
+{id:'drifter',n:'Дрифтер',d:'Набрать 5 000 000 очков дрифта в сумме.',r:'rare',th:[5000000],ico:'🌀'},
+{id:'drift_king',n:'Король дрифта',d:'Набрать 10 000 000 очков дрифта в сумме.',r:'legendary',th:[10000000],ico:'👑'},
 {id:'universal',n:'Швец, жнец и гонщик',d:'Побеждать в шоссе, грунте, автокроссе, улице и тогэ.',r:'rare',th:[5],ico:'🧭'},
 {id:'seasons',n:'Сезонный доминатор',d:'Победить весной, зимой, летом и осенью.',r:'rare',th:[4],ico:'🌦️'},
 {id:'classic',n:'Путь самурая',d:'Победить в классах D, C, B, A, S1 и S2.',r:'legendary',th:[6],ico:'⚔️'},
@@ -25,10 +27,11 @@ const ACH=[
 {id:'tachki_win',n:'Чемпион Тачек',d:'Победить в заезде турнира «Тачки».',r:'rare',ico:'🏎️'},
 {id:'tachki_points',n:'Очковый запас',d:'Набрать 100 очков в турнире «Тачки».',r:'rare',th:[100],ico:'📊'}
 ];
+const fm=n=>(+Number(n).toFixed(1)).toLocaleString('ru-RU');
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
 /* ===== История чемпионатов в достижениях ===== */
-const HIST_VER='h1';
+const HIST_VER='h2';
 /* Имя в архиве -> имя на сайте. Если Даня и Женя — один человек, раскомментируйте: {'Даня':'Женя'} */
 const HIST_ALIAS={};
 const hAlias=n=>HIST_ALIAS[n]||n;
@@ -43,18 +46,18 @@ D.forEach((h,ti)=>{const sec=h&&h.sections&&h.sections[0];if(!sec)return;const h
 hd.forEach((t,i)=>{const m=t.match(/^Время (.+)$/);if(m)tcols.push([i,hAlias(m[1])])});
 const iC=hd.indexOf('Кл.'),iT=hd.indexOf('Тип Гонки'),iS=hd.indexOf('Сезон'),iG=hd.indexOf('Гонка'),iTh=hd.indexOf('Тема'),types={},sch=h.sections[1],si=sch?sch.headers.map(hClean).indexOf('Тип Гонки'):-1;
 if(iTh>=0&&sch&&si>=0)sch.rows.forEach(r=>{types[hClean(r[1])]=hClean(r[si])});
-sec.rows.forEach(row=>{const t={};tcols.forEach(([i,n])=>{let raw=row[i];HIST_FIX.forEach(f=>{if(f.ti===ti&&iTh>=0&&hClean(row[iTh])===f.theme&&hAlias(f.player)===n&&!hClean(raw))raw=f.time});const v=hTime(raw);if(v!==undefined)t[n]=v});
+sec.rows.forEach((row,ri)=>{const t={};tcols.forEach(([i,n])=>{let raw=row[i];HIST_FIX.forEach(f=>{if(f.ti===ti&&iTh>=0&&hClean(row[iTh])===f.theme&&hAlias(f.player)===n&&!hClean(raw))raw=f.time});const v=hTime(raw);if(v!==undefined)t[n]=v});
 const type=iT>=0?hClean(row[iT]):(iG>=0&&ti===1?hClean(row[iG]):(iTh>=0?(types[hClean(row[iTh])]||''):''));
 if(Object.keys(t).length<2||/дрифт/i.test(type))return;
 const cls=hNorm(iC>=0?row[iC]:(iG>=0?hClean(row[iG]).split(' ')[0]:'')),season=iS>=0?hClean(row[iS]).replace(/\(.*\)/,''):'';
-list.push({ti,t,type,cls,season,unord:ti===1})})});
+const EXx=window.HISTORY_EXTRA||{};list.push({ti,ri,t,type,cls,season,ord:((EXx.ord||{})[ti]||{})[ri]!=null?EXx.ord[ti][ri]:ri,km:((EXx.km||{})[ti]||{})[ri]||0})})});list.sort((a,b)=>a.ti-b.ti||a.ord-b.ord);
 hCache={src:D,list};return list}
 /* Порядок гонок 2-го чемпионата в таблице не совпадает с расписанием, поэтому он не участвует в «подряд» */
-function histRaces(p){return hParse().filter(e=>p in e.t).map(e=>{const t=e.t,fin=Object.keys(t).filter(n=>t[n]!==null).sort((a,b)=>t[a]-t[b]);return{r:{d:e.type,c:e.cls,s:e.season,cars:{}},t,z:null,fin,win:fin[0]===p,dnf:t[p]===null,km:0,hist:true,unord:e.unord,grp:'h'+e.ti}})}
+function histRaces(p){return hParse().filter(e=>p in e.t).map(e=>{const t=e.t,fin=Object.keys(t).filter(n=>t[n]!==null).sort((a,b)=>t[a]-t[b]);return{r:{d:e.type,c:e.cls,s:e.season,cars:{}},t,z:null,fin,win:fin[0]===p,dnf:t[p]===null,km:t[p]===null?0:e.km,hist:true,grp:'h'+e.ti}})}
 function histTitles(p){const D=window.HISTORY_DATA;if(!Array.isArray(D))return 0;return D.reduce((n,h)=>n+((h&&h.standings&&h.standings[0]&&hAlias(h.standings[0][0])===p)?1:0),0)}
 function tankOk(rs){const g={};rs.forEach(x=>{const k=x.grp||'cur';(g[k]=g[k]||[]).push(x)});return Object.values(g).some(a=>a.length>=5&&a.every(x=>!x.dnf))}
 function calc(p){let races=[];try{(S.races||[]).forEach(r=>{if(!r.lanes||!(p in r.lanes))return;let z=pts(r);if(!z)return;let t={};Object.keys(r.lanes).forEach(n=>t[n]=ms(r.times[n]));let fin=Object.keys(t).filter(n=>t[n]!==null).sort((a,b)=>t[a]-t[b]);races.push({r,t,z,fin,win:fin[0]===p,dnf:t[p]===null,km:t[p]===null?0:+r.km||0})})}catch(_){}
-races=histRaces(p).concat(races);const histT=histTitles(p);const wins=races.filter(x=>x.win),seconds=races.filter(x=>!x.dnf&&!x.win&&x.fin[1]===p),longest=()=>{let n=0,m=0;for(const x of races){if(x.unord){n=0;continue}n=x.win?n+1:0;m=Math.max(m,n)}return m};
+races=histRaces(p).concat(races);let drift=0;(((window.HISTORY_EXTRA||{}).drift)||[]).forEach(d=>{drift+=+((d.pts||{})[p])||0});const histT=histTitles(p);const wins=races.filter(x=>x.win),seconds=races.filter(x=>!x.dnf&&!x.win&&x.fin[1]===p),longest=()=>{let n=0,m=0;for(const x of races){if(x.unord){n=0;continue}n=x.win?n+1:0;m=Math.max(m,n)}return m};
 let cmps=[];if(races.some(x=>!x.hist)&&(S.races||[]).length&&S.races.every(r=>{try{return !!pts(r)}catch(_){return false}})){const sums={};S.players.forEach(x=>sums[x.n]=0);S.races.forEach(r=>{let z=pts(r);Object.keys(z||{}).forEach(n=>sums[n]=(sums[n]||0)+z[n])});let max=Math.max(...Object.values(sums));if((sums[p]||0)===max)cmps.push(1)}
 let cars=[],carNames=[],marks={},countries={},bySeason=new Set(),byClass=new Set(),byType=new Set(),winsByMark={},wheel=[];
 function carInfo(name){if(!name)return null;let c=CARS.find(c=>(c[1]+' '+c[2]).toLowerCase()===String(name).trim().toLowerCase());return c||null}
@@ -66,7 +69,7 @@ let secondNoWin=wins.length===0?seconds.length:0, close=races.some(x=>x.fin.some
 let types=['Шоссе','Грунт','Автокросс','Улица','Тогэ'].filter(x=>byType.has(x)).length,seas=['весна','зима','лето','осень'].filter(x=>[...bySeason].some(y=>y.includes(x))).length,classes=['D','C','B','A','S1','S2'].filter(x=>byClass.has(x)).length;
 let allCarNames=[...new Set(carNames)],brands=Object.keys(marks).length,brandMax=Math.max(0,...Object.values(marks)),countryMax=Math.max(0,...Object.values(winsByMark));
 let tkWins=0,tkPts=0;try{(TK().races||[]).forEach(r=>{let t=ms((r.tm||{})[p]);let all=Object.keys(r.tm||{}).map(n=>[n,ms(r.tm[n])]).filter(x=>x[1]!==undefined&&x[1]!==null).sort((a,b)=>a[1]-b[1]);if(all.length&&all[0][0]===p)tkWins++;tkPts+=+(r.p||{})[p]||0})}catch(_){}
-let wheelCount=wheel.length;return {first_win:wins.length?1:0,streak:maxStreak,champion:cmps.length+histT,hattrick:cmps.length+histT,sniper:wins.some(x=>x.fin[1]&&x.t[x.fin[1]]-x.t[p]<1000)?1:0,crush:wins.some(x=>x.fin[1]&&x.t[x.fin[1]]-x.t[p]>30000)?1:0,comeback:comeback?1:0,eternal_second:secondNoWin,photofinish:close?1:0,iron,tank:tankOk(races)?1:0,marathon:km,world:km,universal:types,seasons:seas,classic:classes,garage:allCarNames.length,brand_fan:brandMax,brand_collector:brands,patriot:countryMax,wheel_pick:wheelCount,tachki_win:tkWins,tachki_points:tkPts};}
+let wheelCount=wheel.length;return {first_win:wins.length?1:0,streak:maxStreak,champion:cmps.length+histT,hattrick:cmps.length+histT,sniper:wins.some(x=>x.fin[1]&&x.t[x.fin[1]]-x.t[p]<1000)?1:0,crush:wins.some(x=>x.fin[1]&&x.t[x.fin[1]]-x.t[p]>30000)?1:0,comeback:comeback?1:0,eternal_second:secondNoWin,photofinish:close?1:0,iron,tank:tankOk(races)?1:0,marathon:km,world:km,universal:types,seasons:seas,classic:classes,garage:allCarNames.length,brand_fan:brandMax,brand_collector:brands,patriot:countryMax,wheel_pick:wheelCount,tachki_win:tkWins,tachki_points:tkPts,drifter:drift,drift_king:drift};}
 const tiered=a=>!!(a.th&&a.th.length>1);
 function levels(val,a){const ts=a.th||[];if(!ts.length)return val?1:0;return ts.reduce((n,t)=>n+(val>=t?1:0),0)}
 let toastQ=[],toastBusy=false;
@@ -85,7 +88,7 @@ function title(n){return n>=700?'Легенда':n>=350?'Профи':n>=100?'Г�
 function page(){let current=window.achPlayer||me||((S.players[0]||{}).n),ob=S.ach&&S.ach[current]||{lv:{},at:{},pin:[]},sc=score(current),next=sc<100?100:sc<350?350:sc<700?700:1080,prev=sc<100?0:sc<350?100:sc<700?350:700;
 let sel=adm()?'<label class="ach-select">Игрок <select data-ach-player>'+S.players.map(p=>'<option '+(p.n===current?'selected':'')+'>'+esc(p.n)+'</option>').join('')+'</select></label>':'';
 let allVals=calc(current),cards=ACH.map(a=>{let lv=+(ob.lv||{})[a.id]||0,val=allVals[a.id]||0,th=a.th||[1],target=th[th.length-1],pct=Math.min(100,Math.floor(val/(tiered(a)&&lv<3?th[lv]:target)*100)),owned=Object.values(S.ach||{}).filter(x=>(x.lv||{})[a.id]>0).length,dt=lv&&ob.at&&ob.at[lv]?new Date(ob.at[lv]).toLocaleDateString('ru-RU'):'',name=a.names&&lv?a.names[Math.min(lv-1,2)]:a.n;
-return '<article class="ach-card '+(lv?'earned':'locked')+' '+a.r+'" title="'+esc(a.d)+'"><div class="ach-top"><span class="ach-ico">'+a.ico+'</span><span class="ach-rarity">'+({common:'Обычная',rare:'Редкая',legendary:'Легендарная'}[a.r])+'</span></div><b>'+esc(name)+'</b><p>'+esc(a.d)+'</p><div class="ach-levels">'+(tiered(a)?[1,2,3]:[1]).map(i=>'<span class="'+(lv>=i?'on l'+i:'')+'" title="'+(tiered(a)?['','Бронза','Серебро','Золото'][i]:'Получено')+'">'+(tiered(a)?['','🥉','🥈','🥇'][i]:'✅')+'</span>').join('')+'</div>'+(lv&&!(tiered(a)&&lv<3)?'<small>Получено: '+dt+'</small>':(lv?'<small>Уровень '+lv+' получен: '+dt+'</small>':'')+'<div class="ach-bar"><i style="width:'+pct+'%"></i></div><small>'+pct+'% · '+val+(a.th?' / '+(tiered(a)?th[lv]:target):'')+'</small>')+'<small class="ach-count">Есть у '+owned+' из '+S.players.length+'</small><button class="ach-pin" data-ach-pin="'+a.id+'">'+(ob.pin.includes(a.id)?'★ Закреплено':'☆ Закрепить')+'</button></article>'}).join('');
+return '<article class="ach-card '+(lv?'earned':'locked')+' '+a.r+'" title="'+esc(a.d)+'"><div class="ach-top"><span class="ach-ico">'+a.ico+'</span><span class="ach-rarity">'+({common:'Обычная',rare:'Редкая',legendary:'Легендарная'}[a.r])+'</span></div><b>'+esc(name)+'</b><p>'+esc(a.d)+'</p><div class="ach-levels">'+(tiered(a)?[1,2,3]:[1]).map(i=>'<span class="'+(lv>=i?'on l'+i:'')+'" title="'+(tiered(a)?['','Бронза','Серебро','Золото'][i]:'Получено')+'">'+(tiered(a)?['','🥉','🥈','🥇'][i]:'✅')+'</span>').join('')+'</div>'+(lv&&!(tiered(a)&&lv<3)?'<small>Получено: '+dt+'</small>':(lv?'<small>Уровень '+lv+' получен: '+dt+'</small>':'')+'<div class="ach-bar"><i style="width:'+pct+'%"></i></div><small>'+pct+'% · '+fm(val)+(a.th?' / '+fm(tiered(a)?th[lv]:target):'')+'</small>')+'<small class="ach-count">Есть у '+owned+' из '+S.players.length+'</small><button class="ach-pin" data-ach-pin="'+a.id+'">'+(ob.pin.includes(a.id)?'★ Закреплено':'☆ Закрепить')+'</button></article>'}).join('');
 return '<div class="ach-wrap"><div class="ach-head"><div><h2>🏆 Достижения</h2><p>Игрок: <b>'+esc(current)+'</b></p></div>'+sel+'</div><div class="ach-rank"><b>'+title(sc)+'</b><span>'+sc+' очков</span><div class="ach-bar"><i style="width:'+Math.min(100,Math.max(0,(sc-prev)/(next-prev)*100))+'%"></i></div><small>До следующего звания: '+Math.max(0,next-sc)+' очков</small></div><div class="ach-grid">'+cards+'</div></div>'}
 
 const oldPop=window.popR;if(oldPop)window.popR=function(){if(pop!=='ach')return oldPop();let o=document.getElementById('pop'),html='<div id="pop"><div class="pw"><div class="row"><b class="sp" style="font-size:18px">🏆 Достижения</b><button class="btn" data-a="pc">✕ Закрыть</button></div>'+page()+'</div></div>';if(o)o.outerHTML=html;else document.body.insertAdjacentHTML('beforeend',html)};
