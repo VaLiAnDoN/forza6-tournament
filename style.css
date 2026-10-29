@@ -129,3 +129,30 @@ body.vd #app{max-width:none;width:calc(100% - 48px);margin-left:auto;margin-righ
 @media (max-width:1100px){body.vd #app{width:calc(100% - 32px)}.tkg{grid-template-columns:minmax(240px,1fr) minmax(500px,580px) minmax(240px,1fr);gap:18px}.tkg>.tkc .chr{min-height:240px;padding:14px}.tkg>.tkc .chr img{height:180px;min-height:180px}}
 @media (max-width:900px){body.vd #app{width:calc(100% - 24px)}.tkg{grid-template-columns:1fr 1fr;gap:14px}.tkmc{grid-column:1/-1;order:-1}.tkg>.tkc .chr{min-height:220px}.tkg>.tkc .chr img{height:170px;min-height:170px}}
 @media (max-width:560px){body.vd #app{width:calc(100% - 16px)}.tkg{grid-template-columns:1fr;gap:12px}.tkmc{grid-column:auto}.tkg>.tkc{display:grid;grid-template-columns:1fr 1fr;gap:10px}.tkg>.tkc .chr{min-height:170px;padding:10px}.tkg>.tkc .chr img{height:118px;min-height:118px}.tkg>.tkc .chr b{font-size:14px}.tkg>.tkc .chr span{font-size:11px}}
+
+
+/* === Единый стиль полей: выпадающие меню как текстовые поля === */
+select{appearance:none;-webkit-appearance:none;-moz-appearance:none;background:#1a1d27 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%238a90a3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 12px center/12px 8px;color:var(--t);border:1px solid var(--l);border-radius:10px;padding:8px 34px 8px 12px;font:inherit;line-height:inherit;cursor:pointer;max-width:100%;box-sizing:border-box}
+select option{background:#1a1d27;color:var(--t)}
+select:disabled{opacity:.55;cursor:default}
+input:not([type=checkbox]):not([type=range]):hover,select:hover,textarea:hover{border-color:#3a4258}
+input:not([type=checkbox]):not([type=range]):focus,select:focus,textarea:focus{outline:none;border-color:var(--a);box-shadow:0 0 0 2px #19e3c322}
+
+/* === Личная статистика: ровные плитки и столбцы === */
+.pst .grid{grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin:8px 0}
+.pst .grid .card{display:flex;flex-direction:column;align-items:center;justify-content:center;box-sizing:border-box;min-height:92px;margin:0;padding:10px 12px;text-align:center}
+.pst .grid .card .mut{font-size:13px;margin-bottom:2px}
+.pst .grid .big{font-size:22px;line-height:1.2;overflow-wrap:anywhere}
+.pst .dg{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.pst .dg .card{margin:0;box-sizing:border-box}
+.pst .dg .big{font-size:22px}
+.pw .pst .tbl{overflow-x:auto}
+.pw .pst table{width:100%;table-layout:fixed;border-collapse:collapse}
+.pw .pst .tbl td:nth-child(n),.pw .pst .tbl th:nth-child(n){text-align:center;white-space:nowrap;min-width:0;padding:7px 8px;vertical-align:middle}
+.pw .pst .tbl td:first-child,.pw .pst .tbl th:first-child{text-align:left;white-space:normal;overflow-wrap:anywhere;width:32%}
+.pw .pst .tbl th{color:var(--m);font-weight:600}
+.pst>h2{margin-top:22px}
+
+/* === Подсказка «Подходит для»: все дисциплины в одну строку === */
+.hvp{width:max-content;max-width:92vw;white-space:nowrap;overflow-x:auto}
+.hvp .chip{margin:0 4px 0 0;padding:1px 7px;font-size:12px}
