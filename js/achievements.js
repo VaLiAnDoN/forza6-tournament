@@ -31,7 +31,7 @@ const fm=n=>(+Number(n).toFixed(1)).toLocaleString('ru-RU');
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
 /* ===== История чемпионатов в достижениях ===== */
-const HIST_VER='h4';
+const HIST_VER='h5';
 function hInfo(name){const x=((window.HISTORY_EXTRA||{}).cinfo||{})[name];if(!x||!x[0])return null;const r=[];r[0]=x[0];r[6]=x[1]||'';return r}
 function hCars(e){const o=(((window.HISTORY_EXTRA||{}).cars||{})[e.ti]||{})[e.ri];return o?Object.assign({},o):{}}
 /* Имя в архиве -> имя на сайте. Если Даня и Женя — один человек, раскомментируйте: {'Даня':'Женя'} */
@@ -46,17 +46,23 @@ let hCache=null;
 function hParse(){const D=window.HISTORY_DATA;if(!Array.isArray(D))return[];if(hCache&&hCache.src===D)return hCache.list;const list=[];
 D.forEach((h,ti)=>{const sec=h&&h.sections&&h.sections[0];if(!sec)return;const hd=sec.headers.map(hClean),tcols=[];
 hd.forEach((t,i)=>{const m=t.match(/^Время (.+)$/);if(m)tcols.push([i,hAlias(m[1])])});
-const iC=hd.indexOf('Кл.'),iT=hd.indexOf('Тип Гонки'),iS=hd.indexOf('Сезон'),iG=hd.indexOf('Гонка'),iTh=hd.indexOf('Тема'),types={},sch=h.sections[1],si=sch?sch.headers.map(hClean).indexOf('Тип Гонки'):-1;
+const iC=hd.indexOf('Кл.'),iT=hd.indexOf('Тип Гонки'),iS=hd.indexOf('Сезон'),iG=hd.indexOf('Гонка'),iTh=hd.indexOf('Тема'),iW=hd.indexOf('Погода'),types={},sch=h.sections[1],si=sch?sch.headers.map(hClean).indexOf('Тип Гонки'):-1;
 if(iTh>=0&&sch&&si>=0)sch.rows.forEach(r=>{types[hClean(r[1])]=hClean(r[si])});
 sec.rows.forEach((row,ri)=>{const t={};tcols.forEach(([i,n])=>{let raw=row[i];HIST_FIX.forEach(f=>{if(f.ti===ti&&iTh>=0&&hClean(row[iTh])===f.theme&&hAlias(f.player)===n&&!hClean(raw))raw=f.time});const v=hTime(raw);if(v!==undefined)t[n]=v});
 const type=iT>=0?hClean(row[iT]):(iG>=0&&ti===1?hClean(row[iG]):(iTh>=0?(types[hClean(row[iTh])]||''):''));
 if(Object.keys(t).length<2||/дрифт/i.test(type))return;
 const cls=hNorm(iC>=0?row[iC]:(iG>=0?hClean(row[iG]).split(' ')[0]:'')),season=iS>=0?hClean(row[iS]).replace(/\(.*\)/,''):'';
-const EXx=window.HISTORY_EXTRA||{};list.push({ti,ri,t,type,cls,season,ord:((EXx.ord||{})[ti]||{})[ri]!=null?EXx.ord[ti][ri]:ri,km:((EXx.km||{})[ti]||{})[ri]||0})})});list.sort((a,b)=>a.ti-b.ti||a.ord-b.ord);
+const pz={};tcols.forEach(([i,n])=>{const k=hd.indexOf(n);if(k>=0&&/^-?\d+$/.test(hClean(row[k])))pz[n]=+hClean(row[k])});const wth=iW>=0?hClean(row[iW]):'';const EXx=window.HISTORY_EXTRA||{};list.push({ti,ri,t,type,cls,season,pz,wth,ord:((EXx.ord||{})[ti]||{})[ri]!=null?EXx.ord[ti][ri]:ri,km:((EXx.km||{})[ti]||{})[ri]||0})})});list.sort((a,b)=>a.ti-b.ti||a.ord-b.ord);
 hCache={src:D,list};return list}
 /* Порядок гонок 2-го чемпионата в таблице не совпадает с расписанием, поэтому он не участвует в «подряд» */
 function histRaces(p){return hParse().filter(e=>p in e.t).map(e=>{const t=e.t,fin=Object.keys(t).filter(n=>t[n]!==null).sort((a,b)=>t[a]-t[b]);return{r:{d:e.type,c:e.cls,s:e.season,cars:hCars(e)},t,z:null,fin,win:fin[0]===p,dnf:t[p]===null,km:t[p]===null?0:e.km,hist:true,grp:'h'+e.ti}})}
 function histTitles(p){const D=window.HISTORY_DATA;if(!Array.isArray(D))return 0;return D.reduce((n,h)=>n+((h&&h.standings&&h.standings[0]&&hAlias(h.standings[0][0])===p)?1:0),0)}
+
+/* Записи архива для личной статистики (stats.js) */
+function hPts(t){const f=Object.keys(t).filter(n=>t[n]!==null),res={};Object.keys(t).forEach(n=>res[n]=0);const dn=Object.keys(t).length-f.length;f.forEach(x=>{f.forEach(y=>{if(t[x]<t[y])res[x]+=Math.floor((t[y]-t[x])/1000)});res[x]+=30*dn});if(f.length){const w=f.reduce((x,y)=>t[y]<t[x]?y:x);res[w]+=1}return res}
+window.histStatEntries=function(p){try{return hParse().filter(e=>p in e.t).map(e=>{const t=e.t,fin=Object.keys(t).filter(n=>t[n]!==null).sort((x,y)=>t[x]-t[y]),m=t[p],win=fin[0]===p,z=hPts(t),cars=hCars(e);
+return{hist:1,d:e.type||'—',c:e.cls||'—',w:e.wth||'—',s:e.season||'—',car:cars[p]||'—',team:'—',pts:e.pz&&e.pz[p]!=null?e.pz[p]:z[p],win,dnf:m===null,gap:m===null||win?0:(m-t[fin[0]])/1000,mar:win&&fin[1]?(t[fin[1]]-m)/1000:0,km:m===null?0:(e.km||0),h:Object.keys(t).filter(q=>q!=p).map(q=>[q,m!==null&&(t[q]===null||m<t[q])])}})}catch(_){return[]}};
+window.histBrand=function(name){const i=hInfo(name);return i?i[0]:null};
 function tankOk(rs){const g={};rs.forEach(x=>{const k=x.grp||'cur';(g[k]=g[k]||[]).push(x)});return Object.values(g).some(a=>a.length>=5&&a.every(x=>!x.dnf))}
 function calc(p){let races=[];try{(S.races||[]).forEach(r=>{if(!r.lanes||!(p in r.lanes))return;let z=pts(r);if(!z)return;let t={};Object.keys(r.lanes).forEach(n=>t[n]=ms(r.times[n]));let fin=Object.keys(t).filter(n=>t[n]!==null).sort((a,b)=>t[a]-t[b]);races.push({r,t,z,fin,win:fin[0]===p,dnf:t[p]===null,km:t[p]===null?0:+r.km||0})})}catch(_){}
 races=histRaces(p).concat(races);let drift=0;(((window.HISTORY_EXTRA||{}).drift)||[]).forEach(d=>{drift+=+((d.pts||{})[p])||0});const histT=histTitles(p);const wins=races.filter(x=>x.win),seconds=races.filter(x=>!x.dnf&&!x.win&&x.fin[1]===p),longest=()=>{let n=0,m=0;for(const x of races){if(x.unord){n=0;continue}n=x.win?n+1:0;m=Math.max(m,n)}return m};
