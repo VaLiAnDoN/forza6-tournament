@@ -1,0 +1,9 @@
+/* Запрет случайного выделения интерфейса; редактируемые поля остаются доступными. */
+body {
+  -webkit-user-select: none;
+  user-select: none;
+}
+body input, body textarea, body [contenteditable="true"], body [contenteditable=""] {
+  -webkit-user-select: text;
+  user-select: text;
+}
