@@ -28,6 +28,7 @@ document.addEventListener('mouseover',ev=>{const t=ev.target,m=t.closest&&t.clos
 if(m){hl(m.dataset.hl.split(','));tp.textContent=''}else if(c){hl([c]);tp.textContent=CN[c]}else{hl([]);tp.textContent=''}});
 document.addEventListener('change',ev=>{const el=ev.target;
 if(['cd','tkn','tkt','tkl','tkc','np','chsel'].includes(el.id)||/^wg[pc]_/.test(el.id))return;
+if(el.dataset.cpart){const[k,i]=el.dataset.cpart.split('|'),pl=S.players[+i];if(pl){const o=k=='c'?(S.cp=S.cp||{}):(S.tp=S.tp||{});o[pl.n]=el.checked?1:0;if(k=='c')S.dorder=dord()}save();render();return}
 if(el.dataset.sp){S.sp=el.value;save();render();return}
 if(el.dataset.wgn){const g=(S.wg||{})[el.dataset.wgn];if(g&&adm())g.n=el.value.trim()||g.n;save();return}
 if(el.dataset.wgs){const g=S.wg[el.dataset.wgs];g.sn=el.checked?1:0;save();render();return}

@@ -49,7 +49,7 @@ hd.forEach((t,i)=>{const m=t.match(/^Время (.+)$/);if(m)tcols.push([i,hAlia
 const iC=hd.indexOf('Кл.'),iT=hd.indexOf('Тип Гонки'),iS=hd.indexOf('Сезон'),iG=hd.indexOf('Гонка'),iTh=hd.indexOf('Тема'),iW=hd.indexOf('Погода'),types={},sch=h.sections[1],si=sch?sch.headers.map(hClean).indexOf('Тип Гонки'):-1;
 if(iTh>=0&&sch&&si>=0)sch.rows.forEach(r=>{types[hClean(r[1])]=hClean(r[si])});
 sec.rows.forEach((row,ri)=>{const t={};tcols.forEach(([i,n])=>{let raw=row[i];HIST_FIX.forEach(f=>{if(f.ti===ti&&iTh>=0&&hClean(row[iTh])===f.theme&&hAlias(f.player)===n&&!hClean(raw))raw=f.time});const v=hTime(raw);if(v!==undefined)t[n]=v});
-const type=(ti===0&&((window.HISTORY_EXTRA||{}).discipline1||{})[ri])||(ti===3?(((window.HISTORY_EXTRA||{}).discipline4||{})[ri]||''):(iT>=0?hClean(row[iT]):(iG>=0&&ti===1?hClean(row[iG]):(iTh>=0?(types[hClean(row[iTh])]||''):''))));
+const type=ti===3?(((window.HISTORY_EXTRA||{}).discipline4||{})[ri]||''):(iT>=0?hClean(row[iT]):(iG>=0&&ti===1?hClean(row[iG]):(iTh>=0?(types[hClean(row[iTh])]||''):'')));
 if(Object.keys(t).length<2||/дрифт/i.test(type))return;
 const cls=hNorm(iC>=0?row[iC]:(iG>=0?hClean(row[iG]).split(' ')[0]:'')),season=iS>=0?hClean(row[iS]).replace(/\(.*\)/,''):'';
 const pz={};tcols.forEach(([i,n])=>{const k=hd.indexOf(n);if(k>=0&&/^-?\d+$/.test(hClean(row[k])))pz[n]=+hClean(row[k])});const wth=iW>=0?hClean(row[iW]):'';const EXx=window.HISTORY_EXTRA||{};list.push({ti,ri,t,type,cls,season,pz,wth,ord:((EXx.ord||{})[ti]||{})[ri]!=null?EXx.ord[ti][ri]:ri,km:((EXx.km||{})[ti]||{})[ri]||0})})});list.sort((a,b)=>a.ti-b.ti||a.ord-b.ord);
