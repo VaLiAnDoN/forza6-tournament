@@ -1,10 +1,20 @@
 /* Запрет выделения интерфейса; поля ввода остаются редактируемыми. */
 html, body, body *, body *::before, body *::after {
   -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
   user-select: none !important;
+  -webkit-touch-callout: none !important;
+  -webkit-tap-highlight-color: transparent;
 }
+::selection { background: transparent !important; color: inherit !important; }
+::-moz-selection { background: transparent !important; color: inherit !important; }
 input, textarea, [contenteditable=""], [contenteditable="true"],
 [contenteditable=""] *, [contenteditable="true"] * {
   -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  -ms-user-select: text !important;
   user-select: text !important;
 }
+input::selection, textarea::selection { background: #19e3c377 !important; color: #fff !important; }
+input::-moz-selection, textarea::-moz-selection { background: #19e3c377 !important; color: #fff !important; }
