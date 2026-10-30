@@ -61,7 +61,7 @@ function histTitles(p){const D=window.HISTORY_DATA;if(!Array.isArray(D))return 0
 /* Записи архива для личной статистики (stats.js) */
 function hPts(t){const f=Object.keys(t).filter(n=>t[n]!==null),res={};Object.keys(t).forEach(n=>res[n]=0);const dn=Object.keys(t).length-f.length;f.forEach(x=>{f.forEach(y=>{if(t[x]<t[y])res[x]+=Math.floor((t[y]-t[x])/1000)});res[x]+=30*dn});if(f.length){const w=f.reduce((x,y)=>t[y]<t[x]?y:x);res[w]+=1}return res}
 window.histStatEntries=function(p){try{return hParse().filter(e=>p in e.t).map(e=>{const t=e.t,fin=Object.keys(t).filter(n=>t[n]!==null).sort((x,y)=>t[x]-t[y]),m=t[p],win=fin[0]===p,z=hPts(t),cars=hCars(e);
-return{hist:1,d:e.type||'—',c:e.cls||'—',w:e.wth||'—',s:e.season||'—',car:cars[p]||'—',team:'—',pts:e.pz&&e.pz[p]!=null?e.pz[p]:z[p],win,dnf:m===null,gap:m===null||win?0:(m-t[fin[0]])/1000,mar:win&&fin[1]?(t[fin[1]]-m)/1000:0,km:m===null?0:(e.km||0),h:Object.keys(t).filter(q=>q!=p).map(q=>[q,m!==null&&(t[q]===null||m<t[q])])}})}catch(_){return[]}};
+return{hist:1,champNo:e.ti+1,raceNo:e.ord,d:e.type||'—',c:e.cls||'—',w:e.wth||'—',s:e.season||'—',car:cars[p]||'—',team:'—',pts:e.pz&&e.pz[p]!=null?e.pz[p]:z[p],win,dnf:m===null,gap:m===null||win?0:(m-t[fin[0]])/1000,mar:win&&fin[1]?(t[fin[1]]-m)/1000:0,km:m===null?0:(e.km||0),h:Object.keys(t).filter(q=>q!=p).map(q=>[q,m!==null&&(t[q]===null||m<t[q])])}})}catch(_){return[]}};
 window.histBrand=function(name){const i=hInfo(name);return i?i[0]:null};
 window.histCountry=function(name){const i=hInfo(name);return i?i[6]:null};
 function tankOk(rs){const g={};rs.forEach(x=>{const k=x.grp||'cur';(g[k]=g[k]||[]).push(x)});return Object.values(g).some(a=>a.length>=5&&a.every(x=>!x.dnf))}

@@ -1,5 +1,6 @@
 /* Обработчики кликов/изменений/наведения */
 document.addEventListener('keydown',ev=>{if(ev.key=='Enter'&&ev.target.id=='cd')document.querySelector('[data-a=in]').click()});
+document.addEventListener('keydown',ev=>{const b=ev.target.closest&&ev.target.closest('.plate[role=button]');if(b&&(ev.key==='Enter'||ev.key===' ')){ev.preventDefault();b.click()}});
 window.addEventListener('error',x=>{alert('Ошибка: '+x.message)});
 document.addEventListener('click',ev=>{const el=ev.target.closest('[data-a]');if(!el)return;const a=el.dataset.a;
 if(a=='in'){const c=document.getElementById('cd').value.replace(/\s/g,'');const p=S.players.find(p=>p.c==c);me=c.toUpperCase()==S.admin?'@admin':p?p.n:null;if(!me)return alert('Код не найден');view='home';tab='t';mo=false;pop=null;try{localStorage.setItem('nc5me',me)}catch(x){}}
