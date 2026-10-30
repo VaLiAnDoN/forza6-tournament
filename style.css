@@ -169,3 +169,11 @@ input:not([type=checkbox]):not([type=range]):focus,select:focus,textarea:focus{o
 
 /* Сворачиваемые таблицы личной статистики */
 .pst-details{margin:12px 0;border:1px solid #354458;border-radius:12px;background:#121a26;overflow:hidden}.pst-details summary{cursor:pointer;padding:14px 16px;font-weight:700;color:#edf5fc;list-style:none}.pst-details summary::-webkit-details-marker{display:none}.pst-details summary:after{content:"＋";float:right;color:#8bcaff}.pst-details[open] summary:after{content:"−"}.pst-details summary:focus-visible{outline:2px solid #8bcaff;outline-offset:-3px}.pst-details .card{margin:0;border-radius:0}
+
+
+/* Главная: компактные номерные знаки, разбросанные под небольшим углом. */
+#app .plate.pl-s{width:min(290px,72vw);margin:16px auto;box-sizing:border-box;transform:translateX(calc(var(--k,0)*min(110px,16vw))) rotate(var(--rot,0deg));transition:transform .18s}
+#app .plate.pl-s:hover{transform:translateX(calc(var(--k,0)*min(110px,16vw))) rotate(var(--rot,0deg)) translateY(-3px) scale(1.03)}
+#app .plate.pl-s.lk:hover{transform:translateX(calc(var(--k,0)*min(110px,16vw))) rotate(var(--rot,0deg))}
+#app .plate.pl-t{padding:20px 30px;font-size:22px;letter-spacing:1.5px}
+@media(prefers-reduced-motion:reduce){#app .plate.pl-s{transition:none}}
