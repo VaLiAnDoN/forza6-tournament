@@ -31,6 +31,6 @@ return`<svg id="fuji" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMax slice
 <g fill="#0a0716"><use href="#pn" transform="translate(50 540) scale(1.7)"/><use href="#pn" transform="translate(120 548) scale(1.3)"/><use href="#pn" transform="translate(940 534) scale(1.8)"/><use href="#pn" transform="translate(870 546) scale(1.3)"/></g>
 <path d="M1000 30C940 50 880 60 810 108M900 56C880 40 860 36 840 44" stroke="#2a1218" stroke-width="4" fill="none" stroke-linecap="round"/>${bl}
 <rect width="1000" height="600" filter="url(#gr)" opacity=".07" style="mix-blend-mode:overlay"/></svg>`}
-document.body.insertAdjacentHTML('afterbegin',FUJI());
+/* Фон Фудзи создаётся внутри сцены главного экрана. */
 
 function wipe(){document.querySelectorAll('#wipe').forEach(x=>x.remove());const d=document.createElement('div');d.id='wipe';let p='';for(let i=0;i<46;i++){const w=8+Math.random()*10;p+=`<i class="pt" style="left:${Math.random()*100}%;width:${w}px;height:${w*.75}px;--dx:${(Math.random()-.3)*260}px;--r:${(Math.random()-.5)*1080}deg;animation-delay:${Math.random()*.45}s;animation-duration:${.8+Math.random()*.6}s"></i>`}d.innerHTML=p+'<div class="ft">Forza <b>Horizon</b> 6</div><div class="fs">日本 · JAPAN</div>';document.body.appendChild(d);setTimeout(()=>d.remove(),1250)}
