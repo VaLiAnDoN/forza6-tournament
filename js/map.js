@@ -5,7 +5,7 @@ const CT={gb:GBR,dk:'7,54 13,54 13,58 7,58',at:'10,46.5 17,46.5 17,50 10,50',hr:
 for(const k in CT)CT[k]=PP(CT[k]);
 const CN={us:'США',ca:'Канада',gb:'Великобритания',de:'Германия',fr:'Франция',it:'Италия',se:'Швеция',dk:'Дания',at:'Австрия',hr:'Хорватия',kr:'Корея',cn:'Китай',jp:'Япония',au:'Австралия'};
 const pip=(x,y,P)=>{let r=false;for(let i=0,j=P.length-1;i<P.length;j=i++){const[a,b]=P[i],[c,d]=P[j];if((b>y)!=(d>y)&&x<(c-a)*(y-b)/(d-b)+a)r=!r}return r};
-(function(){let s='';for(let X=5;X<1000;X+=10)for(let Y=35;Y<415;Y+=10){const lon=X*.36-180,lat=90-Y*.36,c=Object.keys(CT).find(k=>pip(lon,lat,CT[k]));if(c||LAND.some(P=>pip(lon,lat,P)))s+=`<circle cx="${X}" cy="${Y}" r="3"${c?` class="k" data-c="${c}"`:''}/>`}
+(function(){const countryKeys=Object.keys(CT);let s='';for(let X=5;X<1000;X+=10)for(let Y=35;Y<415;Y+=10){const lon=X*.36-180,lat=90-Y*.36,c=countryKeys.find(k=>pip(lon,lat,CT[k]));if(c||LAND.some(P=>pip(lon,lat,P)))s+=`<circle cx="${X}" cy="${Y}" r="3"${c?` class="k" data-c="${c}"`:''}/>`}
 document.body.insertAdjacentHTML('afterbegin',`<svg id="map" viewBox="0 30 1000 390" preserveAspectRatio="xMidYMid meet">${s}</svg><div id="tip"></div>`)})();
 
 function paint(){document.querySelectorAll('#map circle.k').forEach(c=>{const t=T.find(t=>t.f.includes(c.dataset.c));c.classList.toggle('g',!!(t&&S.picks[t.id]));c.classList.toggle('r',!!S.order.length&&!(t&&S.picks[t.id]))})}
