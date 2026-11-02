@@ -205,3 +205,17 @@ body.fj .home-scene #fuji{position:absolute;left:0;top:0;width:100%;height:100%;
  .scene-post{display:none}
 }
 @media (prefers-reduced-motion:reduce){.board-plate{transition:none}}
+
+/* Интерфейс не выделяется, но поля и данные таблиц доступны для копирования. */
+html, body, body *, body *::before, body *::after {
+  -webkit-user-select: none !important;
+  user-select: none !important;
+}
+/* Таблицы в окне со списком машин и другими данными. */
+body .pw .tbl td, body .pw .tbl td *,
+body input, body textarea,
+body [contenteditable]:not([contenteditable="false"]),
+body [contenteditable]:not([contenteditable="false"]) * {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
