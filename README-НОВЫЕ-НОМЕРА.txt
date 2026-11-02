@@ -1,1 +1,0 @@
-Установка: замените index.html, style.css и js/home.js; скопируйте img/champ5-plate.png, img/tachki-plate.png, img/champ6-plate.png и img/wheel-plate.png. Обновите страницу с очисткой кеша. Номер чемпионата 6 остаётся закрытым. Данные игроков и настройки не изменены.
