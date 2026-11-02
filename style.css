@@ -177,3 +177,6 @@ input:not([type=checkbox]):not([type=range]):focus,select:focus,textarea:focus{o
 #app .plate.pl-s.lk:hover{transform:translateX(calc(var(--k,0)*min(110px,16vw))) rotate(var(--rot,0deg))}
 #app .plate.pl-t{padding:20px 30px;font-size:22px;letter-spacing:1.5px}
 @media(prefers-reduced-motion:reduce){#app .plate.pl-s{transition:none}}
+
+/* Замок поверх номера закрытого чемпионата */
+.plate.champ5-plate.lk .plate-lock{position:absolute;z-index:2;top:7px;right:8px;line-height:1;font-size:18px;background:#111b;color:white;border-radius:8px;padding:5px;pointer-events:none}
