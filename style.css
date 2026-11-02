@@ -181,10 +181,27 @@ input:not([type=checkbox]):not([type=range]):focus,select:focus,textarea:focus{o
 /* Замок поверх номера закрытого чемпионата */
 .plate.champ5-plate.lk .plate-lock{position:absolute;z-index:2;top:7px;right:8px;line-height:1;font-size:18px;background:#111b;color:white;border-radius:8px;padding:5px;pointer-events:none}
 
-/* Временная единая сцена: положение знаков задаётся внутри доски. */
-body.fj #app{max-width:none;width:100%;padding:0;margin:0} body.fj #app>header{position:fixed;right:12px;top:8px;z-index:9;background:transparent;border:0;padding:0;width:auto} body.fj #app>header .sp{display:none}
-.home-scene{position:relative;width:min(100vw,166.6667vh);aspect-ratio:5/3;margin:0 auto;overflow:hidden;background:#211634}
-body.fj .home-scene #fuji{position:absolute;inset:0;display:block;width:100%;height:100%;z-index:0}
-.scene-board{position:absolute;left:73%;top:8%;width:24%;height:84%;box-sizing:border-box;border:clamp(3px,.5vw,8px) solid #57361f;border-radius:3%;background:repeating-linear-gradient(0deg,#7c4d2d 0%,#a26d42 7%,#75462b 13%,#684028 14%,#9c6944 17%);box-shadow:0 1vw 2vw #160b09aa,inset 0 0 1vw #261305;display:flex;flex-direction:column;justify-content:space-evenly;align-items:center}
-.board-plate{position:relative;width:85%;line-height:0;transform:rotate(var(--angle));filter:drop-shadow(0 .25vw .2vw #190d0a99);cursor:pointer;pointer-events:auto;transition:filter .15s}.board-plate img{display:block;width:100%;height:auto}.board-plate:hover{filter:brightness(1.13) drop-shadow(0 .25vw .2vw #190d0a99)}.board-plate:focus-visible{outline:3px solid #65d6ff;outline-offset:3px}.board-plate.locked{cursor:default}
-@media(max-width:650px){.home-scene{width:100vw;margin-top:60px}.scene-board{border-width:3px}}
+/* Главная: сцена на весь экран. Фон Фудзи всегда заполняет окно (без тёмных полос),
+   а доска со знаками привязана к центру и масштабируется единицей --u, поэтому знаки не уходят с доски. */
+body.fj #app{max-width:none;width:100%;padding:0;margin:0}
+body.fj #app>header{position:fixed;right:12px;top:8px;z-index:9;background:transparent;border:0;padding:0;width:auto}
+body.fj #app>header .sp{display:none}
+.home-scene{--u:min(1vw,1.6667vh);position:fixed;left:0;top:0;right:0;bottom:0;overflow:hidden;isolation:isolate;touch-action:manipulation}
+body.fj .home-scene #fuji{position:absolute;left:0;top:0;width:100%;height:100%;display:block;z-index:0}
+.scene-post{position:absolute;z-index:1;width:calc(2.6*var(--u));left:calc(50% + 29.5*var(--u));top:calc(50% + 4*var(--u));height:60vh;background:linear-gradient(90deg,#3b2312,#6a4226 45%,#4a2d19);box-shadow:0 0 calc(1.2*var(--u)) #0009;border-radius:2px}
+.scene-post.p2{left:calc(50% + 40.5*var(--u))}
+.scene-board{position:absolute;z-index:2;left:calc(50% + 26*var(--u));top:calc(50% - 26*var(--u));width:calc(19*var(--u));padding:calc(2.6*var(--u)) 0 calc(2.2*var(--u));box-sizing:border-box;display:flex;flex-direction:column;align-items:center;gap:calc(1.6*var(--u));border:calc(.5*var(--u)) solid #3e2412;border-radius:calc(.8*var(--u));background:repeating-linear-gradient(90deg,rgba(0,0,0,.28) 0,rgba(0,0,0,.28) 1px,transparent 1px,transparent calc(4.75*var(--u))),linear-gradient(180deg,#a8744a,#8a5a36 50%,#7a4d2c);box-shadow:0 calc(1.1*var(--u)) calc(2.2*var(--u)) #000a,inset 0 0 calc(1.4*var(--u)) #2a1608}
+.scene-board:before{content:"";position:absolute;left:-4%;right:-4%;top:calc(-2.3*var(--u));height:calc(2.3*var(--u));background:linear-gradient(180deg,#3a2415,#241309);border-radius:calc(.6*var(--u)) calc(.6*var(--u)) 0 0;box-shadow:0 calc(.4*var(--u)) calc(.8*var(--u)) #0008}
+.scene-board:after{content:"";position:absolute;inset:calc(.7*var(--u));pointer-events:none;background:radial-gradient(circle,#d9c6a0 0 22%,#3a2a18 26% 100%) left top/calc(1.1*var(--u)) calc(1.1*var(--u)) no-repeat,radial-gradient(circle,#d9c6a0 0 22%,#3a2a18 26% 100%) right top/calc(1.1*var(--u)) calc(1.1*var(--u)) no-repeat,radial-gradient(circle,#d9c6a0 0 22%,#3a2a18 26% 100%) left bottom/calc(1.1*var(--u)) calc(1.1*var(--u)) no-repeat,radial-gradient(circle,#d9c6a0 0 22%,#3a2a18 26% 100%) right bottom/calc(1.1*var(--u)) calc(1.1*var(--u)) no-repeat}
+.board-plate{position:relative;z-index:1;width:84%;line-height:0;transform:rotate(var(--angle));filter:drop-shadow(0 calc(.3*var(--u)) calc(.3*var(--u)) #190d0acc);cursor:pointer;pointer-events:auto;transition:transform .15s,filter .15s}
+.board-plate img{display:block;width:100%;height:auto;pointer-events:none;-webkit-user-drag:none}
+.board-plate:hover{transform:rotate(var(--angle)) translateY(-2px) scale(1.03);filter:brightness(1.1) drop-shadow(0 calc(.3*var(--u)) calc(.3*var(--u)) #190d0acc)}
+.board-plate:focus-visible{outline:3px solid #65d6ff;outline-offset:3px}
+.board-plate.locked{cursor:default}.board-plate.locked:hover{transform:rotate(var(--angle));filter:drop-shadow(0 calc(.3*var(--u)) calc(.3*var(--u)) #190d0acc)}
+/* Портретный экран (телефон, планшет вертикально): доска по центру внизу, под вершиной Фудзи. */
+@media (max-aspect-ratio:1/1){
+ .scene-board{left:50%;top:auto;bottom:4vh;width:min(74vw,46vh);margin-left:calc(min(74vw,46vh)/-2);padding:3.2vw 0 2.8vw;gap:2.4vw;border-width:max(3px,.7vw)}
+ .scene-board:before{top:-3.4vw;height:3.4vw}
+ .scene-post{display:none}
+}
+@media (prefers-reduced-motion:reduce){.board-plate{transition:none}}
