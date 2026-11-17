@@ -9,6 +9,8 @@ const DB={'Шоссе Круг':'Гонка на автомагистрали|7|
 'Грунт Спринт':'Нукабира|8;Спринт-кросс у водопада|5.8;Спринт-кросс Хокубу|5.8;Спринт-кросс Ито|7;По аэродрому|6.7;По вишневому полю|7.3;Кинкаку-дзи|5.5;Спринт-кросс по Острову легенд|5.4;Оясирадзу|5.1;Такасиро|5.7',
 'Тогэ':'Хаконэ Нанамагари|2.7;Трасса Норикура|5.8;Арасияма Такао|4.8;Бандай - Адзума|4.7;Гора Харуна|6.9'};
 const TD=Object.fromEntries(Object.entries(DB).map(([d,s])=>[d,Object.fromEntries(s.split(';').map(x=>{const[n,k,c]=x.split('|');return[n,{km:+k,cl:c?[...c].map(h=>({1:'S1',2:'S2'}[h]||h)):null}]}))]));
+/* Общие характеристики: пользовательские данные берутся из синхронизируемого состояния. */
+function trackData(d,n){const m=(typeof S!=='undefined'&&S.trackPhotos||{})[d+'|'+n],base=(TD[d]||{})[n];if(m&&Number(m.km)>0)return {km:Number(m.km),cl:Array.isArray(m.cl)?m.cl:null};return base||null}
 const CAV={au:['D','A'],athr:['S1','R'],dkca:['B','R'],cn:['D','S1'],kr:['B','A'],se:['C','S2'],fr:['D','A'],gb:['D','R'],de:['D','R'],it:['D','R'],us:['D','R'],jp:['D','R']};
 function applyCav(){T.forEach(t=>{const[lo,hi]=CAV[t.id].map(c=>CL.indexOf(c));CL.forEach((c,i)=>{S.compatC[t.id][c]=i==6?hi>=5:lo<=i})})}
 const CIRC=d=>/Круг/.test(d),RNG={D:[5,8],C:[6.5,10],B:[7,13.5],A:[9,15],S1:[11,18],S2:[15,23],R:[18,30]},lapsFor=(len,c)=>{const g=RNG[c],o=[];if(!g||!len)return o;for(let k=1;k<=40;k++){const x=k*len;if(x>=g[0]-1e-9&&x<=g[1]+1e-9)o.push(k)}return o};
