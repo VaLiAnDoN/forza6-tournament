@@ -16,7 +16,7 @@ for(const f of fin){const l=pick(f.d,f.c=='X'?'R':f.c,1);if(Object.keys(l).lengt
 
 function render(){const A=document.getElementById('app');
 const hd=`<header><img src="img/champ5-emblem.png" alt="Эмблема чемпионата 5" width="64" height="64" style="width:64px;height:64px;object-fit:contain"><div><h1>Чемпионат 5 · <span>Страны</span></h1><div class="mut">Nations Cup</div></div><div class="sp"></div>${me?`<span class="mut">${adm()?'Админ':e(me)}</span><button class="btn" data-a="out">Выйти</button>`:''}</header>`;
-if(!me){A.innerHTML=`<div class="card" style="max-width:360px;margin:34vh auto 0"><h2 style="margin-top:0">Вход по коду</h2><div class="row"><input id="cd" placeholder="Код" inputmode="numeric" class="sp"><button class="btn pri" data-a="in">Войти</button></div></div>`;return}
+if(!me){A.innerHTML=`<div class="login-scene workshop-viewport" aria-hidden="true"><div class="workshop-canvas"></div></div><div class="workshop-login"><div class="workshop-login-card"><div class="workshop-login-kicker">FORZA · ТУРНИР</div><h1>Добро пожаловать</h1><p>Введите свой код, чтобы войти</p><div class="workshop-login-row"><label class="workshop-label" for="cd">Код игрока</label><input id="cd" placeholder="Код" inputmode="numeric" autocomplete="off"><button class="btn pri" data-a="in">Войти</button></div></div></div>`;return}
 const tabs=[['t','Таблица'],['d','Драфт'],['r','Гонки']].concat(adm()?[['s','Настройки']]:[]);
 let b=`<div class="tabs">${tabs.map(([k,n])=>`<button class="btn ${tab==k?'on':''}" data-a="tab" data-k="${k}">${n}</button>`).join('')}</div>`;
 if(tab=='t'){const tot={},tt={};CP().forEach(p=>tot[p.n]=0);S.races.forEach(r=>{const x=pts(r);if(x)for(const p in x){if(p in tot)tot[p]+=x[p];tt[r.lanes[p]]=(tt[r.lanes[p]]||0)+x[p]}});

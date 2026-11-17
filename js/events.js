@@ -3,7 +3,7 @@ document.addEventListener('keydown',ev=>{if(ev.key=='Enter'&&ev.target.id=='cd')
 document.addEventListener('keydown',ev=>{const b=ev.target.closest&&ev.target.closest('.plate[role=button], .board-plate[role=button]');if(b&&(ev.key==='Enter'||ev.key===' ')){ev.preventDefault();b.click()}});
 window.addEventListener('error',x=>{alert('Ошибка: '+x.message)});
 document.addEventListener('click',ev=>{const el=ev.target.closest('[data-a]');if(!el)return;const a=el.dataset.a;
-if(a=='in'){const c=document.getElementById('cd').value.replace(/\s/g,'');const p=S.players.find(p=>p.c==c);me=c.toUpperCase()==S.admin?'@admin':p?p.n:null;if(!me)return alert('Код не найден');view='home';tab='t';mo=false;pop=null;try{localStorage.setItem('nc5me',me)}catch(x){}}
+if(a=='in'){const c=document.getElementById('cd').value.replace(/\s/g,'');const p=S.players.find(p=>p.c==c);me=c.toUpperCase()==S.admin?'@admin':p?p.n:null;if(!me)return alert('Код не найден');workshopLoginTransition();view='home';tab='t';mo=false;pop=null;try{localStorage.setItem('nc5me',me)}catch(x){}}
 if(a=='out'){me=null;view='home';tab='t';pend=null;mo=false;pop=null;try{localStorage.removeItem('nc5me')}catch(x){}}
 if(a=='tab')tab=el.dataset.k;
 if(a=='start'){S.order=dord().slice();S.picks={}}

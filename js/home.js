@@ -6,7 +6,13 @@ const PLR=()=>`<h2 style="margin-top:4px">Игроки и коды</h2><div clas
 const CF={'Австралия':'au','Австрия':'at','Канада':'ca','Китай':'cn','Хорватия':'hr','Дания':'dk','Франция':'fr','Германия':'de','Италия':'it','Япония':'jp','Корея':'kr','Швеция':'se','Великобритания':'gb','США':'us'};
 
 const DE=d=>/Шоссе/.test(d)?'🛣️':/Грунт/.test(d)?'🏜️':/Автокросс/.test(d)?'🌿':d=='Тогэ'?'⛰️':'🏙️';
-const HOME=()=>`<div class="home-scene" aria-label="Главная страница">${FUJI()}<i class="scene-post p1"></i><i class="scene-post p2"></i><div class="scene-board" aria-label="Меню"><div class="board-plate" style="--angle:-3deg" data-a="v" data-k="champ" role="button" tabindex="0" aria-label="Чемпионат 5: Страны"><img src="img/champ5-plate.png" alt="Страны"></div><div class="board-plate" style="--angle:3deg" data-a="v" data-k="tachki" role="button" tabindex="0" aria-label="Турнир Тачки"><img src="img/tachki-plate.png" alt="Тачки"></div><div class="board-plate" style="--angle:-2deg" data-a="v" data-k="wof" role="button" tabindex="0" aria-label="Колесо фортуны"><img src="img/wheel-plate.png" alt="Колесо фортуны"></div><div class="board-plate locked" style="--angle:3deg" aria-label="Чемпионат 6 закрыт"><img src="img/champ6-plate.png" alt="Чемпионат 6 закрыт"></div></div></div>`;
+const HOME=()=>`<div class="home-scene workshop-viewport" aria-label="Главное меню"><div class="workshop-canvas"><div class="workshop-board" aria-label="Меню"><div class="board-plate" style="--angle:-2deg" data-a="v" data-k="champ" role="button" tabindex="0" aria-label="Чемпионат 5: Страны"><img src="img/champ5-plate.png" alt="Страны"></div><div class="board-plate" style="--angle:2deg" data-a="v" data-k="tachki" role="button" tabindex="0" aria-label="Турнир Тачки"><img src="img/tachki-plate.png" alt="Тачки"></div><div class="board-plate" style="--angle:-1deg" data-a="v" data-k="wof" role="button" tabindex="0" aria-label="Колесо фортуны"><img src="img/wheel-plate.png" alt="Колесо фортуны"></div><div class="board-plate locked" style="--angle:2deg" aria-label="Чемпионат 6 закрыт"><img src="img/champ6-plate.png" alt="Чемпионат 6 закрыт"></div></div></div></div>`;
+/* Во время входа анимируется тот же фон, который виден в меню. */
+function workshopLoginTransition(){
+ const bg=document.querySelector('.login-scene');if(!bg||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+ const layer=bg.cloneNode(true);layer.classList.remove('login-scene');layer.classList.add('login-transition');layer.setAttribute('aria-hidden','true');document.body.appendChild(layer);setTimeout(()=>layer.remove(),1500);
+}
+
 /* Колесо Фортуны: игры. Драфт-исключение дисциплин → таблицы гонок → очки. Рулетка машин. */
 let wgOpen={},wgDel=null,cwS=null,cwT=0;
 const DEM=['','🌿','🥊','🧭','⛰️','🏜️','🔁','🌄','🏁','🚦','🌃','📡','🛫','💥','💨','⚡','👑'],DGC=['#3ecf4a','#ff8a1f','#3b9cff','#a35cff'],
