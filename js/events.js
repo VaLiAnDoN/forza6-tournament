@@ -21,14 +21,14 @@ if(a=='tkt')tkTab=el.dataset.k;if(a=='tkadd'){const n=document.getElementById('t
 if(a=='tkdel')TK().races.splice(+el.dataset.i,1);
 if(a=='gen'){const n=+document.getElementById('nr').value||12;S.nr=n;if(!Object.keys(S.picks).length)return alert('Сначала проведите драфт');gen3(n)}
 if(a=='addp'){const n=document.getElementById('np').value.trim();if(n)S.players.push({n,c:code()})}
-if(window.ctAct&&ctAct(a,el))return;if(window.tkAct)tkAct(a,el);
+if(window.tkAct)tkAct(a,el);
 if(a!='wgdel')wgDel=null;if(a.slice(0,2)=='wg')wgAct(a,el);if(a=='ci'){const k=+el.dataset.k;ciOpen=ciOpen===k?-1:k}if(a=='cisave'&&me){const tr=el.closest('tr'),c=CARS[+el.dataset.k];if(tr&&c){S.cs=S.cs||{};const o=S.cs[c[1]+' '+c[2]]=S.cs[c[1]+' '+c[2]]||{};tr.querySelectorAll('[data-ci]').forEach(i=>{o[i.dataset.ci.split('|')[1]]=i.value.trim()});ciOpen=-1;notify('Сохранено')}}
 save();render()});
 
 document.addEventListener('mouseover',ev=>{const t=ev.target,m=t.closest&&t.closest('[data-hl]'),c=t.closest&&t.closest('#map')&&t.dataset&&t.dataset.c,tp=document.getElementById('tip');
 if(m){hl(m.dataset.hl.split(','));tp.textContent=''}else if(c){hl([c]);tp.textContent=CN[c]}else{hl([]);tp.textContent=''}});
 document.addEventListener('change',ev=>{const el=ev.target;
-if(['cd','tkn','tkt','tkl','tkc','np','chsel','ctd','ctn','ctk'].includes(el.id)||/^wg[pc]_/.test(el.id)||el.dataset.ctc!==undefined)return;
+if(['cd','tkn','tkt','tkl','tkc','np','chsel'].includes(el.id)||/^wg[pc]_/.test(el.id))return;
 if(el.dataset.cpart){const[k,i]=el.dataset.cpart.split('|'),pl=S.players[+i];if(pl){const o=k=='c'?(S.cp=S.cp||{}):(S.tp=S.tp||{});o[pl.n]=el.checked?1:0;if(k=='c')S.dorder=dord()}save();render();return}
 if(el.dataset.sp){S.sp=el.value;save();render();return}
 if(el.dataset.wgn){const g=(S.wg||{})[el.dataset.wgn];if(g&&adm())g.n=el.value.trim()||g.n;save();return}

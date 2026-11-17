@@ -2,7 +2,7 @@
 const dord=()=>{const a=(S.dorder||[]).filter(n=>CP().some(p=>p.n==n));CP().forEach(p=>{if(!a.includes(p.n))a.push(p.n)});return a};
 let mo=false,pop=null;
 const nav=()=>`<div style="position:fixed;left:12px;top:calc(env(safe-area-inset-top,0px) + 12px);z-index:8"><button class="btn" data-a="mn">☰ Меню</button>${mo?`<div class="card" style="position:absolute;z-index:6;left:0;top:44px;width:250px"><button class="btn" data-a="v" data-k="home" style="width:100%;margin:3px 0">🏠 Главная</button><button class="btn" data-a="pop" data-k="cars" style="width:100%;margin:3px 0">🚗 Список машин</button><button class="btn" data-a="pop" data-k="ach" style="width:100%;margin:3px 0">🏆 Достижения</button><button class="btn" data-a="pop" data-k="me" style="width:100%;margin:3px 0">👤 Личная статистика</button>${adm()?'<button class="btn" data-a="pop" data-k="set" style="width:100%;margin:3px 0">⚙️ Настройки</button>':''}</div>`:''}</div>`;
-const PLR=()=>`<h2 style="margin-top:4px">Игроки и коды</h2><div class="card">${S.players.map(p=>`<div class="row"><b class="sp">${e(p.n)}</b><code>${p.c}</code></div>`).join('')}<div class="row" style="margin-top:8px"><input id="np" placeholder="Новый игрок" class="sp"><button class="btn" data-a="addp">Добавить</button></div></div>${CTUI()}`;
+const PLR=()=>`<h2 style="margin-top:4px">Игроки и коды</h2><div class="card">${S.players.map(p=>`<div class="row"><b class="sp">${e(p.n)}</b><code>${p.c}</code></div>`).join('')}<div class="row" style="margin-top:8px"><input id="np" placeholder="Новый игрок" class="sp"><button class="btn" data-a="addp">Добавить</button></div></div>`;
 const CF={'Австралия':'au','Австрия':'at','Канада':'ca','Китай':'cn','Хорватия':'hr','Дания':'dk','Франция':'fr','Германия':'de','Италия':'it','Япония':'jp','Корея':'kr','Швеция':'se','Великобритания':'gb','США':'us'};
 
 const DE=d=>/Шоссе/.test(d)?'🛣️':/Грунт/.test(d)?'🏜️':/Автокросс/.test(d)?'🌿':d=='Тогэ'?'⛰️':'🏙️';
@@ -169,28 +169,3 @@ if(view=='wof')b=WOF();
 if(view=='me')b=(stats()||'<h2>Личная статистика</h2><div class="card mut">Пока нет результатов.</div>')+'<div class="card mut">Статистика по машинам и маркам появится после загрузки списка машин и подключения общей базы.</div>';
 const hd=view=='tachki'?`<header><div class="fh6"><div class="st"><div class="fz">Forza</div><div class="hz">Horizon</div></div><div class="n6">6</div></div><img class="tkl" src="img/tachki/cars-logo.png" alt="Тачки"><div class="sp"></div><button class="btn" data-a="out">Выйти</button></header>`:`<header><div class="sp"></div><button class="btn" data-a="out">Выйти</button></header>`;
 A.innerHTML=nav()+hd+b+wgFab()}
-
-
-/* ===== Добавление новых трасс в общий пул (настройки, только админ) ===== */
-function CTUI(){const L=Object.keys(S.ntr||{}).map(id=>Object.assign({id},S.ntr[id])).filter(c=>c.n).sort((a,b)=>D.indexOf(a.d)-D.indexOf(b.d)||a.n.localeCompare(b.n,'ru'));
-return`<h2>Добавить трассу в общий пул</h2><div class="card"><div class="mut" style="margin-bottom:8px">Новая трасса попадёт в пул выбранной дисциплины и будет участвовать в рулетке трасс. Для кольцевых дисциплин («Круг») число кругов считается по длине и классу гонки.</div>
-<div class="row" style="margin:6px 0"><label class="mut" for="ctd" style="min-width:90px">Дисциплина</label><select id="ctd" class="sp">${D.map(d=>`<option>${e(d)}</option>`).join('')}</select></div>
-<div class="row" style="margin:6px 0"><label class="mut" for="ctn" style="min-width:90px">Название</label><input id="ctn" class="sp" placeholder="Название трассы" autocomplete="off"></div>
-<div class="row" style="margin:6px 0"><label class="mut" for="ctk" style="min-width:90px">Длина, км</label><input id="ctk" class="sp" type="text" inputmode="decimal" placeholder="Например 3,4 (один круг для «Круг»)" autocomplete="off"></div>
-<div style="margin:6px 0"><div class="mut" style="margin-bottom:4px">Классы, для которых трасса подходит</div><div class="row" style="flex-wrap:wrap;gap:10px">${CL.map(c=>`<label style="display:flex;align-items:center;gap:4px"><input type="checkbox" data-ctc="${c}" checked style="width:18px;height:18px;padding:0"><span class="cl cl-${c}">${c}</span></label>`).join('')}</div></div>
-<div class="row" style="margin-top:10px"><button class="btn pri" data-a="cta">Добавить трассу</button></div></div>
-${L.length?`<h2>Добавленные трассы</h2><div class="card tbl"><table><tr><th>Дисциплина</th><th>Название</th><th>Км</th><th>Классы</th><th></th></tr>${L.map(c=>`<tr><td>${e(c.d)}</td><td>${e(c.n)}</td><td>${+(+c.km).toFixed(2)}</td><td>${c.cl&&c.cl.length?e(c.cl.join(', ')):'все'}</td><td><button class="btn" data-a="ctdel" data-id="${e(c.id)}">Удалить</button></td></tr>`).join('')}</table></div>`:''}`}
-window.ctAct=function(a,el){
- if(a=='cta'){if(!adm())return true;const p=document.getElementById('pop');if(!p)return true;
-  const d=p.querySelector('#ctd').value,n=p.querySelector('#ctn').value.trim().replace(/\s+/g,' '),km=parseFloat(String(p.querySelector('#ctk').value).replace(',','.')),boxes=[...p.querySelectorAll('[data-ctc]')],cl=boxes.filter(x=>x.checked).map(x=>x.dataset.ctc);
-  if(!TD[d])return alert('Выберите дисциплину'),true;
-  if(!n)return alert('Введите название трассы'),true;
-  if(!(km>0&&km<=200))return alert('Укажите длину трассы в км (число больше 0)'),true;
-  if(!cl.length)return alert('Отметьте хотя бы один класс'),true;
-  if(TD[d][n]||(S.tracks[d]||[]).includes(n))return alert('Такая трасса уже есть в этой дисциплине'),true;
-  if(CIRC(d)){const ok=cl.filter(c=>lapsFor(km,c).length);if(!ok.length)return alert('Для такой длины нет подходящего числа кругов ни в одном из выбранных классов. Измените длину или классы.'),true}
-  const all=cl.length==CL.length,id='c'+Date.now().toString(36)+rnd(1e4);
-  S.ntr=S.ntr||{};S.ntr[id]={d,n,km:+km.toFixed(2),cl:all?null:cl};TD[d][n]={km:+km.toFixed(2),cl:all?null:cl.slice()};
-  S.tracks[d]=S.tracks[d]||[];S.tracks[d].push(n);save();render();notify('Трасса «'+n+'» добавлена в пул: '+d);return true}
- if(a=='ctdel'){if(!adm())return true;const id=el.dataset.id,c=(S.ntr||{})[id];if(!c)return true;delete S.ntr[id];if(TD[c.d])delete TD[c.d][c.n];S.tracks[c.d]=(S.tracks[c.d]||[]).filter(x=>x!==c.n);save();render();notify('Трасса удалена');return true}
- return false};
