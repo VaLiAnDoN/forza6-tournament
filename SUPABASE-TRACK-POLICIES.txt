@@ -1,13 +1,17 @@
 НАСТРОЙКА ФОТОГРАФИЙ ТРАСС
 
-1. Supabase → Storage → Forza Photo. Бакет должен быть Public; лимит 2 MB и разрешённые MIME: image/jpeg, image/png, image/webp. По последнему скриншоту эти параметры сохранены.
-2. Чтобы любой посетитель сайта мог загружать, заменять и удалять фото, откройте SQL Editor → New query и выполните ОДИН РАЗ SQL ниже. Он даёт анонимным посетителям сайта права записи/изменения/удаления только в бакете Forza Photo. Поскольку вход сайта — только код в браузере, Supabase не отличает игрока от постороннего, знающего адрес сайта.
+1. Supabase -> Storage -> Forza Photo. Бакет должен быть Public; лимит 2 MB, MIME: image/jpeg, image/png, image/webp.
+2. Supabase -> SQL Editor -> New query: вставьте весь запрос ниже и нажмите Run. Его можно запускать повторно.
+   Без этих правил загрузка фото вернёт ошибку 400 (в тексте: "row-level security policy").
 
+drop policy if exists "Forza Photo public select" on storage.objects;
+drop policy if exists "Forza Photo public insert" on storage.objects;
+drop policy if exists "Forza Photo public update" on storage.objects;
+drop policy if exists "Forza Photo public delete" on storage.objects;
+
+create policy "Forza Photo public select" on storage.objects for select to anon using (bucket_id = 'Forza Photo');
 create policy "Forza Photo public insert" on storage.objects for insert to anon with check (bucket_id = 'Forza Photo');
 create policy "Forza Photo public update" on storage.objects for update to anon using (bucket_id = 'Forza Photo') with check (bucket_id = 'Forza Photo');
 create policy "Forza Photo public delete" on storage.objects for delete to anon using (bucket_id = 'Forza Photo');
 
-3. Замените index.html, js/champ5.js и добавьте js/track-images.js из архива, сохраняя структуру папок. Публикуйте обновлённый сайт и перезагрузите без кэша.
-4. Кнопка «Трассы и фото» доступна всем вошедшим в сайт. Новые трассы и их характеристики сохраняются в общем состоянии Supabase; изображение загружается в Storage. Нажатие на название трассы в карточке гонки показывает изображение.
-
-Не отправляйте publishable key, service_role key или пароль кому-либо. В приложении используется только уже присутствующий в проекте публичный publishable key.
+Права открыты всем, кто знает адрес сайта (сайт без отдельной авторизации в Supabase).
