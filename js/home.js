@@ -10,8 +10,12 @@ const HOME=()=>`<div class="home-scene workshop-viewport" aria-label="Главн
 /* Во время входа анимируется тот же фон, который виден в меню. */
 function workshopLoginTransition(){
  const bg=document.querySelector('.login-scene');if(!bg||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
- const layer=bg.cloneNode(true);layer.classList.remove('login-scene');layer.classList.add('login-transition');layer.setAttribute('aria-hidden','true');document.body.appendChild(layer);setTimeout(()=>layer.remove(),1500);
+ const layer=bg.cloneNode(true);layer.classList.remove('login-scene');layer.classList.add('login-transition');layer.setAttribute('aria-hidden','true');
+ layer.querySelectorAll('[id]').forEach(x=>x.removeAttribute('id'));layer.querySelectorAll('input,button').forEach(x=>x.tabIndex=-1);
+ const inp=layer.querySelector('input'),src=document.getElementById('cd');if(inp&&src)inp.value=src.value;
+ document.body.appendChild(layer);setTimeout(()=>layer.remove(),1900);
 }
+
 
 /* Колесо Фортуны: игры. Драфт-исключение дисциплин → таблицы гонок → очки. Рулетка машин. */
 let wgOpen={},wgDel=null,cwS=null,cwT=0;
