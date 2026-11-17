@@ -7,7 +7,9 @@ let me=null,tab='t',pend=null;try{me=localStorage.getItem('nc5me')}catch(x){}
 function migrate(){S.players=S.players||[];S.order=S.order||[];S.picks=S.picks||{};S.races=S.races||[];S.admin='777777';S.wg=S.wg||{};S.ci=S.ci||{};S.compat=S.compat||{};S.compatC=S.compatC||{};S.tracks=S.tracks||{};D.forEach(d=>S.tracks[d]=S.tracks[d]||[]);T.forEach(t=>{S.compat[t.id]=S.compat[t.id]||{};D.forEach(d=>{if(S.compat[t.id][d]===undefined)S.compat[t.id][d]=true});S.compatC[t.id]=S.compatC[t.id]||{}});if(S.nv!==1){const sf={};S.players.forEach(p=>{if(p.n==='Женя'){if(sf.x)p.n='Даня';sf.x=1}});S.nv=1}if(!S.cp){S.cp={};S.players.forEach(p=>S.cp[p.n]=p.n==='Даня'?0:1)}if(!S.tp){S.tp={};S.players.forEach(p=>S.tp[p.n]=p.n==='Даня'?0:1)}if(!S.compatC)S.compatC=init().compatC;if(S.tv!==2){D.forEach(d=>S.tracks[d]=Object.keys(TD[d]||{}));S.tv=2}if(S.cv!==3){applyCav();S.cv=3}S.cs=S.cs||{};for(const u in S.ci)for(const K in S.ci[u])for(const k in S.ci[u][K]){const v=S.ci[u][K][k];if(v!==''&&v!==undefined){const o=S.cs[K]=S.cs[K]||{};if(o[k]===undefined)o[k]=v}}}
 /* Игроки с одинаковым именем делили общие данные (очки, выбор стран, времена хранятся по имени). Второй дубликат переименовывается. */
 function dedupPlayers(){const seen={};let ch=false;S.players.forEach(p=>{if(seen[p.n]){const nn=(p.n==='Женя'&&!S.players.some(q=>q.n==='Даня'))?'Даня':p.n+' 2';p.n=nn;S.cp=S.cp||{};S.tp=S.tp||{};S.cp[nn]=0;S.tp[nn]=0;ch=true}seen[p.n]=1});return ch}
-const _mig=migrate;migrate=function(){_mig();dedupPlayers()};
+/* Колосс и Голиаф — «Шоссе Круг»: переносим уже созданные гонки и фото на новую дисциплину */
+function fixFinals(){FIN.forEach(f=>{(S.races||[]).forEach(r=>{if(r.fin&&r.track===f.n&&r.d!==f.d)r.d=f.d});const tp=S.trackPhotos;if(tp)['Шоссе Спринт','Автокросс Спринт','Грунт Спринт','Шоссе Круг'].forEach(od=>{const ok=od+'|'+f.n,nk=f.d+'|'+f.n;if(od!==f.d&&tp[ok]){if(!tp[nk])tp[nk]=tp[ok];delete tp[ok]}})})}
+const _mig=migrate;migrate=function(){_mig();dedupPlayers();fixFinals()};
 migrate();
 const save=()=>{try{localStorage.setItem('nc5',JSON.stringify(S))}catch(x){}window.syncKick&&syncKick()};const adm=()=>me==='@admin';
 

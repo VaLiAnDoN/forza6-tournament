@@ -6,7 +6,7 @@ f.forEach(a=>{f.forEach(b=>{if(t[a]<t[b])res[a]+=Math.floor((t[b]-t[a])/1000)});
 if(f.length){const w=f.reduce((a,b)=>t[b]<t[a]?b:a);res[w]+=1}return res}
 const nP=()=>S.order.length||CP().length||1,turn=()=>{const i=Object.keys(S.picks).length;if(!S.order.length||i>=T.length)return null;const r=Math.floor(i/nP()),k=i%nP();return S.order[r%2&&S.snake?nP()-1-k:k]};
 function gen3(n){const cnt={},uc={},own=p=>Object.keys(S.picks).filter(t=>S.picks[t]==p),pick=(d,c,chk)=>{const L={};CP().forEach(({n:p})=>{const o=own(p).filter(t=>S.compat[t][d]&&(!chk||S.compatC[t][c])).sort((a,b)=>((cnt[a]||0)-(cnt[b]||0))||Math.random()-.5);if(o[0])L[p]=o[0]});return L},use=l=>Object.values(l).forEach(t=>cnt[t]=(cnt[t]||0)+1);
-S.races=[];const fin=n>=8?FIN:[],m=n-fin.length,G=Object.keys(SH),q=G.map(g=>[g,Math.floor(m*SH[g])]);
+S.races=[];const fin=n>=8?FIN.map(finInfo):[],m=n-fin.length,G=Object.keys(SH),q=G.map(g=>[g,Math.floor(m*SH[g])]);
 const rest=m-q.reduce((s,x)=>s+x[1],0);G.map((g,i)=>[i,m*SH[g]-q[i][1]]).sort((a,b)=>b[1]-a[1]).slice(0,rest).forEach(([i])=>q[i][1]++);
 const seq=[];q.forEach(([g,c])=>{for(let i=0;i<c;i++)seq.push(GR[g][i%GR[g].length])});seq.sort(()=>Math.random()-.5);
 for(const [ix,d] of seq.entries()){const cls=ACL(d).filter(c=>!CIRC(d)||(S.tracks[d]||[]).some(n=>{const x=trackData(d,n);return x&&(!x.cl||x.cl.includes(c))&&lapsFor(x.km,c).length}));if(ix<4){const kk=cls.filter(c=>CL.indexOf(c)<4);cls.length=0;cls.push(...kk)}cls.sort((a,b)=>((uc[d+a]||0)-(uc[d+b]||0))||Math.random()-.5);let best=null;
