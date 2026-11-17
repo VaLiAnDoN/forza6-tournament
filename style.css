@@ -219,3 +219,38 @@ body [contenteditable]:not([contenteditable="false"]) * {
   -webkit-user-select: text !important;
   user-select: text !important;
 }
+
+/* Мастерская: фон дизайнера, общая сцена входа и главной. */
+body.lg #lgbg {display:none}
+body.lg #app {width:100%;max-width:none;padding:0;margin:0}
+.workshop-viewport {position:fixed;inset:0;overflow:hidden;isolation:isolate;pointer-events:none}
+.workshop-canvas {position:absolute;width:max(100vw, 177.7778vh);height:max(100vh, 56.25vw);left:50%;top:50%;transform:translate(-50%,-50%);background:url('img/menu-workshop.jpg') center center / 100% 100% no-repeat}
+body.fj .home-scene {position:fixed;inset:0;overflow:hidden;touch-action:manipulation}
+.workshop-board {position:absolute;left:68.7%;top:10%;width:30.3%;height:86%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.4%;pointer-events:auto}
+.workshop-board .board-plate {width:min(74%, 35vh);flex:0 0 auto;filter:drop-shadow(0 5px 6px #0009);transform:rotate(var(--angle));transition:transform .2s ease,filter .2s ease}
+.workshop-board .board-plate:hover {transform:rotate(var(--angle)) translateY(-3px) scale(1.035);filter:brightness(1.05) drop-shadow(0 8px 7px #0009)}
+.workshop-board .board-plate.locked:hover {transform:rotate(var(--angle));filter:drop-shadow(0 5px 6px #0009)}
+.workshop-board .board-plate:focus-visible {outline:3px solid #75ddff;outline-offset:4px}
+.login-scene {z-index:1}
+.login-scene .workshop-canvas {transform:translate(-50%,-50%) scale(2.3);transform-origin:84% 48%}
+.workshop-login {position:fixed;inset:0;z-index:3;display:flex;justify-content:center;align-items:center;padding:20px;box-sizing:border-box}
+.workshop-login-card {width:min(390px,100%);box-sizing:border-box;padding:clamp(22px,4vw,38px);border:1px solid #d8d4cf;border-radius:12px;color:#222;background:rgba(255,255,255,.96);box-shadow:0 16px 45px #0008,0 2px 8px #0005;text-align:center}
+.workshop-login-kicker {color:#76573b;font-size:11px;letter-spacing:.22em;font-weight:800}
+.workshop-login-card h1 {font-size:clamp(25px,4vw,32px);margin:12px 0 7px;color:#27211d}
+.workshop-login-card p {margin:0 0 24px;color:#615c57;font-size:14px}
+.workshop-login-row {display:flex;flex-direction:column;gap:10px;text-align:left}
+.workshop-label {font-size:12px;font-weight:bold;color:#5b534b}
+.workshop-login-row input {width:100%;box-sizing:border-box;background:#f4f1ed;color:#211d1a;border:1px solid #c6beb5;border-radius:8px;padding:12px;font-size:17px}
+.workshop-login-row input:focus-visible {outline:2px solid #9d7450;outline-offset:2px}
+.workshop-login-row button {width:100%;padding:12px}
+.login-transition {z-index:10002;animation:workshop-layer 1.5s ease forwards}
+.login-transition .workshop-canvas {transform-origin:84% 48%;animation:workshop-pullback 1.3s cubic-bezier(.22,.65,.25,1) forwards}
+@keyframes workshop-pullback {from {transform:translate(-50%,-50%) scale(2.3)}to {transform:translate(-50%,-50%) scale(1)}}
+@keyframes workshop-layer {0%,73%{opacity:1}100%{opacity:0}}
+@media (max-aspect-ratio: 1/1) {
+ .workshop-canvas {left:auto;right:0;transform:translateY(-50%)}
+ .workshop-board .board-plate {width:74%}
+ .login-scene .workshop-canvas {transform:translateY(-50%) scale(2);transform-origin:84% 48%}
+ @keyframes workshop-pullback {from {transform:translateY(-50%) scale(2)}to {transform:translateY(-50%) scale(1)}}
+}
+@media (prefers-reduced-motion:reduce) {.workshop-board .board-plate {transition:none}.login-transition,.login-transition .workshop-canvas {animation:none}}
