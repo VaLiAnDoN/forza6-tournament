@@ -20,7 +20,7 @@ if(a=='mn')mo=!mo;if(a=='pop'){pop=el.dataset.k;mo=false}if(a=='pc')pop=null;
 if(a=='tkt')tkTab=el.dataset.k;if(a=='tkadd'){const n=document.getElementById('tkn').value.trim();if(n)TK().races.push({n,t:document.getElementById('tkt').value,l:document.getElementById('tkl').value,code:document.getElementById('tkc').value.trim(),p:{}})}
 if(a=='tkdel')TK().races.splice(+el.dataset.i,1);
 if(a=='gen'){const n=+document.getElementById('nr').value||12;S.nr=n;if(!Object.keys(S.picks).length)return alert('Сначала проведите драфт');gen3(n)}
-if(a=='addp'){const n=document.getElementById('np').value.trim();if(n)S.players.push({n,c:code()})}
+if(a=='addp'){const n=document.getElementById('np').value.trim();if(n){if(S.players.some(p=>p.n.toLowerCase()===n.toLowerCase()))alert('Игрок с таким именем уже есть');else S.players.push({n,c:code()})}}
 if(window.tkAct)tkAct(a,el);
 if(a!='wgdel')wgDel=null;if(a.slice(0,2)=='wg')wgAct(a,el);if(a=='ci'){const k=+el.dataset.k;ciOpen=ciOpen===k?-1:k}if(a=='cisave'&&me){const tr=el.closest('tr'),c=CARS[+el.dataset.k];if(tr&&c){S.cs=S.cs||{};const o=S.cs[c[1]+' '+c[2]]=S.cs[c[1]+' '+c[2]]||{};tr.querySelectorAll('[data-ci]').forEach(i=>{o[i.dataset.ci.split('|')[1]]=i.value.trim()});ciOpen=-1;notify('Сохранено')}}
 save();render()});
