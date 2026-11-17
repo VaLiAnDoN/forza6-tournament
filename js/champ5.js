@@ -12,7 +12,7 @@ const seq=[];q.forEach(([g,c])=>{for(let i=0;i<c;i++)seq.push(GR[g][i%GR[g].leng
 for(const [ix,d] of seq.entries()){const cls=ACL(d).filter(c=>!CIRC(d)||(S.tracks[d]||[]).some(n=>{const x=trackData(d,n);return x&&(!x.cl||x.cl.includes(c))&&lapsFor(x.km,c).length}));if(ix<4){const kk=cls.filter(c=>CL.indexOf(c)<4);cls.length=0;cls.push(...kk)}cls.sort((a,b)=>((uc[d+a]||0)-(uc[d+b]||0))||Math.random()-.5);let best=null;
 for(const c of cls){const l=pick(d,c,1);if(!best||Object.keys(l).length>Object.keys(best.lanes).length)best={d,c,lanes:l};if(Object.keys(l).length==nP())break}
 if(best&&Object.keys(best.lanes).length>1){use(best.lanes);uc[d+best.c]=(uc[d+best.c]||0)+1;S.races.push({d,c:best.c,lanes:best.lanes,times:{},track:'',laps:0,km:0,w:'',s:''})}}
-for(const f of fin){const l=pick(f.d,f.c=='X'?'R':f.c,1);if(Object.keys(l).length>1){use(l);S.races.push({d:f.d,c:f.c,lanes:l,times:{},track:f.n,laps:0,km:f.km,w:'',s:'',fin:1})}}}
+for(const f of fin){const l=pick(f.d,f.c=='X'?'R':f.c,1);if(Object.keys(l).length>1){use(l);S.races.push({d:f.d,c:f.c,lanes:l,times:{},track:f.n,laps:0,km:(trackData(f.d,f.n)||f).km,w:'',s:'',fin:1})}}}
 
 function render(){const A=document.getElementById('app');
 const hd=`<header><img src="img/champ5-emblem.png" alt="Эмблема чемпионата 5" width="64" height="64" style="width:64px;height:64px;object-fit:contain"><div><h1>Чемпионат 5 · <span>Страны</span></h1><div class="mut">Nations Cup</div></div><div class="sp"></div>${me?`<span class="mut">${adm()?'Админ':e(me)}</span><button class="btn" data-a="out">Выйти</button>`:''}</header>`;

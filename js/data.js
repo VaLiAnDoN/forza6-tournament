@@ -10,7 +10,11 @@ const DB={'Шоссе Круг':'Гонка на автомагистрали|7|
 'Тогэ':'Хаконэ Нанамагари|2.7;Трасса Норикура|5.8;Арасияма Такао|4.8;Бандай - Адзума|4.7;Гора Харуна|6.9'};
 const TD=Object.fromEntries(Object.entries(DB).map(([d,s])=>[d,Object.fromEntries(s.split(';').map(x=>{const[n,k,c]=x.split('|');return[n,{km:+k,cl:c?[...c].map(h=>({1:'S1',2:'S2'}[h]||h)):null}]}))]));
 /* Общие характеристики: пользовательские данные берутся из синхронизируемого состояния. */
-function trackData(d,n){const m=(typeof S!=='undefined'&&S.trackPhotos||{})[d+'|'+n],base=(TD[d]||{})[n];if(m&&Number(m.km)>0)return {km:Number(m.km),cl:Array.isArray(m.cl)?m.cl:null};return base||null}
+function trackData(d,n){const m=(typeof S!=='undefined'&&S.trackPhotos||{})[d+'|'+n],base=(TD[d]||{})[n],f=FIN.find(x=>x.n===n&&x.d===d);
+if(m&&Number(m.km)>0)return {km:Number(m.km),cl:Array.isArray(m.cl)?m.cl:null,fin:!!f};
+if(base)return base;if(f)return {km:f.km,cl:null,fin:true};return null}
+/* Общий пул трасс для любых режимов (Чемпионат 5, Колесо Фортуны, будущие чемпионаты). Классы в записи относятся только к Чемпионату 5. */
+function trackPool(d){const meta=(typeof S!=='undefined'&&S.trackPhotos)||{},out=[];D.filter(x=>!d||x===d).forEach(dd=>{const names=((typeof S!=='undefined'&&S.tracks||{})[dd])||[];names.forEach(n=>{const x=trackData(dd,n)||{};out.push({d:dd,n,km:x.km||0,url:(meta[dd+'|'+n]||{}).url||'',fin:false})});FIN.filter(f=>f.d===dd&&!names.includes(f.n)).forEach(f=>{const x=trackData(dd,f.n)||{};out.push({d:dd,n:f.n,km:x.km||f.km,url:(meta[dd+'|'+f.n]||{}).url||'',fin:true})})});return out}
 const CAV={au:['D','A'],athr:['S1','R'],dkca:['B','R'],cn:['D','S1'],kr:['B','A'],se:['C','S2'],fr:['D','A'],gb:['D','R'],de:['D','R'],it:['D','R'],us:['D','R'],jp:['D','R']};
 function applyCav(){T.forEach(t=>{const[lo,hi]=CAV[t.id].map(c=>CL.indexOf(c));CL.forEach((c,i)=>{S.compatC[t.id][c]=i==6?hi>=5:lo<=i})})}
 const CIRC=d=>/Круг/.test(d),RNG={D:[5,8],C:[6.5,10],B:[7,13.5],A:[9,15],S1:[11,18],S2:[15,23],R:[18,30]},lapsFor=(len,c)=>{const g=RNG[c],o=[];if(!g||!len)return o;for(let k=1;k<=40;k++){const x=k*len;if(x>=g[0]-1e-9&&x<=g[1]+1e-9)o.push(k)}return o};
