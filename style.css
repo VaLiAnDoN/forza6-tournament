@@ -226,7 +226,7 @@ body.lg #app {width:100%;max-width:none;padding:0;margin:0}
 .workshop-viewport {--w:max(100vw,177.7778vh);position:fixed;inset:0;overflow:hidden;isolation:isolate;pointer-events:none}
 .workshop-canvas {position:absolute;width:max(100vw, 177.7778vh);height:max(100vh, 56.25vw);left:50%;top:50%;transform:translate(-50%,-50%);background:url('img/menu-workshop.jpg') center center / 100% 100% no-repeat}
 body.fj .home-scene {position:fixed;inset:0;overflow:hidden;touch-action:manipulation}
-.workshop-board {position:absolute;left:68.7%;top:10%;width:30.3%;height:86%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.4%;pointer-events:auto}
+.workshop-board {position:absolute;left:68.7%;top:10%;width:30.3%;height:86%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3%;pointer-events:auto}
 .workshop-board .board-plate {width:min(74%, 35vh);flex:0 0 auto;filter:drop-shadow(0 5px 6px #0009);transform:rotate(var(--angle));transition:transform .2s ease,filter .2s ease}
 .workshop-board .board-plate:hover {transform:rotate(var(--angle)) translateY(-3px) scale(1.035);filter:brightness(1.05) drop-shadow(0 8px 7px #0009)}
 .workshop-board .board-plate.locked:hover {transform:rotate(var(--angle));filter:drop-shadow(0 5px 6px #0009)}
