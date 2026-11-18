@@ -224,7 +224,7 @@ body [contenteditable]:not([contenteditable="false"]) * {
 body.lg #lgbg {display:none}
 body.lg #app {width:100%;max-width:none;padding:0;margin:0}
 .workshop-viewport {--w:max(100vw,177.7778vh);position:fixed;inset:0;overflow:hidden;isolation:isolate;pointer-events:none}
-.workshop-canvas {position:absolute;width:max(100vw, 177.7778vh);height:max(100vh, 56.25vw);left:50%;top:50%;transform:translate(-50%,-50%);background:url('img/menu-workshop.jpg') center center / 100% 100% no-repeat}
+.workshop-canvas {position:absolute;width:max(100vw, 177.7778vh);height:max(100vh, 56.25vw);left:50%;top:50%;transform:translate(-50%,-50%);background:url('img/menu-workshop.jpg?v=20261119-hq') center center / 100% 100% no-repeat}
 body.fj .home-scene {position:fixed;inset:0;overflow:hidden;touch-action:manipulation}
 .workshop-board {position:absolute;left:68.7%;top:10%;width:30.3%;height:86%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3%;pointer-events:auto}
 .workshop-board .board-plate {width:min(74%, 35vh);flex:0 0 auto;filter:drop-shadow(0 5px 6px #0009);transform:rotate(var(--angle));transition:transform .2s ease,filter .2s ease}
@@ -232,7 +232,7 @@ body.fj .home-scene {position:fixed;inset:0;overflow:hidden;touch-action:manipul
 .workshop-board .board-plate.locked:hover {transform:rotate(var(--angle));filter:drop-shadow(0 5px 6px #0009)}
 .workshop-board .board-plate:focus-visible {outline:3px solid #75ddff;outline-offset:4px}
 .login-scene {z-index:1}
-.workshop-ext {position:absolute;left:calc(100% - 1px);top:0;width:calc(100% + 1px);height:100%;background:url('img/menu-workshop-ext.jpg') center center / 100% 100% no-repeat}
+.workshop-ext {position:absolute;left:calc(100% - 1px);top:0;width:calc(100% + 1px);height:100%;background:url('img/menu-workshop-ext.jpg?v=20261119-hq') center center / 100% 100% no-repeat}
 .login-scene .workshop-canvas,.login-transition .workshop-canvas {transform:translate(calc(-50% - var(--w)),-50%)}
 .workshop-login-card {position:absolute;left:150%;top:50%;transform:translate(-50%,-50%);z-index:2;pointer-events:auto;width:min(390px,82vw);box-sizing:border-box;padding:clamp(22px,4vw,38px);border:1px solid #cfcac4;border-radius:10px;color:#222;background:#fbfaf8;box-shadow:0 14px 30px #0006,0 2px 6px #0004;text-align:center}
 .workshop-login-card::before,.workshop-login-card::after {content:"";position:absolute;top:-9px;width:18px;height:18px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ff8a8a,#c21f2f 60%,#7c0f1a);box-shadow:0 3px 4px #0006}
