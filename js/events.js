@@ -35,8 +35,9 @@ if(el.dataset.wgn){const g=(S.wg||{})[el.dataset.wgn];if(g&&adm())g.n=el.value.t
 if(el.dataset.wgs){const g=S.wg[el.dataset.wgs];g.sn=el.checked?1:0;save();render();return}
 if(el.dataset.wgx){const[id,d]=el.dataset.wgx.split('|'),g=S.wg[id];g.ex=g.ex||[];const k=g.ex.indexOf(+d);if(el.checked){if(k>=0)g.ex.splice(k,1)}else if(k<0)g.ex.push(+d);save();return}
 if(el.dataset.wgk){const g=S.wg[el.dataset.wgk];g.k=Math.max(1,Math.min(16,+el.value||1));save();render();return}
-if(el.dataset.wr){const[id,d,pi,f]=el.dataset.wr.split('|'),g=S.wg[id],p=g.pl[+pi];g.rc=g.rc||{};const r=g.rc[d]=g.rc[d]||{},m=r[f]=r[f]||{};m[p]=el.value.trim();save();render();return}
-if(el.dataset.wm){const[id,i,sd]=el.dataset.wm.split('|'),g=S.wg[id];g.rc=g.rc||{};const r=g.rc[7]=g.rc[7]||{};r.m=r.m||{};(r.m[i]=r.m[i]||{})[sd]=el.value.trim();save();render();return}
+if(el.dataset.wgtrack||el.dataset.wglaps){const isTrack=!!el.dataset.wgtrack,[id,d]=(el.dataset.wgtrack||el.dataset.wglaps).split('|'),g=(S.wg||{})[id];if(!g||!me)return;g.rc=g.rc||{};const r=g.rc[d]=g.rc[d]||{};if(isTrack){const dd=wgTrackDisc(+d);if(el.value&&!trackPool(dd).some(x=>x.n===el.value))return;r.track=el.value}else{const n=Number(el.value);r.laps=Number.isInteger(n)&&n>0&&n<=999?n:0}save();render();return}
+if(el.dataset.wr){const[id,d,pi,f]=el.dataset.wr.split('|'),g=S.wg[id];if(!g||!me)return;const p=g.pl[+pi];g.rc=g.rc||{};const r=g.rc[d]=g.rc[d]||{},m=r[f]=r[f]||{};m[p]=el.value.trim();save();render();return}
+if(el.dataset.wm){const[id,i,sd]=el.dataset.wm.split('|'),g=S.wg[id];if(!g||!me)return;g.rc=g.rc||{};const r=g.rc[7]=g.rc[7]||{};r.m=r.m||{};(r.m[i]=r.m[i]||{})[sd]=el.value.trim();save();render();return}
 if(el.dataset.ci!==undefined&&me){const[k,f]=el.dataset.ci.split('|'),c=CARS[+k],K=c[1]+' '+c[2];S.cs=S.cs||{};const o=S.cs[K]=S.cs[K]||{};o[f]=el.value.trim();save();return}
 if(el.dataset.tkpg){const[i,f]=el.dataset.tkpg.split('|'),g=tkPg();(g[i]=g[i]||{})[f]=el.value.trim();save();return}
 if(el.dataset.tkf){const[i,f]=el.dataset.tkf.split('|');TK().races[i][f]=el.value;save();return}
