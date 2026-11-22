@@ -39,6 +39,7 @@ if(el.dataset.wgtrack||el.dataset.wglaps){const isTrack=!!el.dataset.wgtrack,[id
 if(el.dataset.wr){const[id,d,pi,f]=el.dataset.wr.split('|'),g=S.wg[id];if(!g||!me)return;const p=g.pl[+pi];g.rc=g.rc||{};const r=g.rc[d]=g.rc[d]||{},m=r[f]=r[f]||{};m[p]=el.value.trim();save();render();return}
 if(el.dataset.wm){const[id,i,sd]=el.dataset.wm.split('|'),g=S.wg[id];if(!g||!me)return;g.rc=g.rc||{};const r=g.rc[7]=g.rc[7]||{};r.m=r.m||{};(r.m[i]=r.m[i]||{})[sd]=el.value.trim();save();render();return}
 if(el.dataset.ci!==undefined&&me){const[k,f]=el.dataset.ci.split('|'),c=CARS[+k],K=c[1]+' '+c[2];S.cs=S.cs||{};const o=S.cs[K]=S.cs[K]||{};o[f]=el.value.trim();save();return}
+if(el.dataset.tktune){const [id,k]=el.dataset.tktune.split('|');if(!tkCanTune()||!TKR.some(r=>String(r.id)===id&&r.cars.some(c=>c[0]===k)))return;const g=tkPg(),pg=g[id]=g[id]||{},codes=pg.tuning=pg.tuning||{};codes[k]=el.value.trim();save();return}
 if(el.dataset.tkpg){const[i,f]=el.dataset.tkpg.split('|'),g=tkPg();(g[i]=g[i]||{})[f]=el.value.trim();save();return}
 if(el.dataset.tkf){const[i,f]=el.dataset.tkf.split('|');TK().races[i][f]=el.value;save();return}
 if(el.dataset.car!==undefined){const r=S.races[el.dataset.car];r.cars=r.cars||{};r.cars[el.dataset.p]=el.value;save();return}

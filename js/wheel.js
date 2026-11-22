@@ -1,7 +1,7 @@
 /* Колесо рулетки, погода/сезон/цвета дисциплин */
 const WE={'Ясно':'☀️','Облачно после дождя':'⛅','Дождь':'🌧️','Туман':'🌫️','Ночь':'🌙'},SE={'Весна':'🌸','Зима':'❄️','Лето':'☀️','Осень':'🍂'},DC=d=>/Шоссе/.test(d)?'#3b9cff':/Грунт/.test(d)?'#ff8a1f':/Автокросс/.test(d)?'#3ecf4a':d=='Тогэ'?'#19e3c3':'#a35cff',TH=d=>/Шоссе/.test(d)?'ro':/Грунт/.test(d)?'di':/Автокросс/.test(d)?'au':d=='Тогэ'?'to':'st',WHEEL_PALETTES={ro:['#16324f','#0f2236'],di:['#6b4a2b','#4a3220','#8a5a2b'],au:['#2f7d32','#1f5a28','#4caf50'],to:['#0b1a1f','#14222a'],st:['#d62839','#1f4fd8']},TX={ro:'#fff',di:'#fff',au:'#fff',to:'#19e3c3',st:'#fff'};
 function spin2(i,k){const r=S.races[i];let its,ti,cb=[];
-if(k=='t'){its=S.tracks[r.d].filter(n=>{if(S.races.some((z,j)=>j!==i&&z.track&&z.track.toLocaleLowerCase('ru')===n.toLocaleLowerCase('ru')))return false;const x=trackData(r.d,n);return!x||((!x.cl||x.cl.includes(r.c))&&(!CIRC(r.d)||lapsFor(x.km,r.c).length))});ti='Трасса'}
+if(k=='t'){its=trackPool(r.d).map(t=>t.n).filter(n=>{if(!rouletteTrack(r.d,n))return false;if(S.races.some((z,j)=>j!==i&&z.track&&z.track.toLocaleLowerCase('ru')===n.toLocaleLowerCase('ru')))return false;const x=trackData(r.d,n);return!x||((!x.cl||x.cl.includes(r.c))&&(!CIRC(r.d)||lapsFor(x.km,r.c).length))});ti='Трасса'}
 if(k=='ws'){const WL=['Ясно','Облачно после дождя','Дождь','Туман','Ночь'],SL=['Весна','Зима','Лето','Осень'];SL.forEach(s=>WL.forEach(w=>cb.push([s,w])));its=cb.map(([s,w])=>s+' · '+(w=='Облачно после дождя'?'После дождя':w));ti='Сезон и погода'}
 const x=trackData(r.d,r.track);
 if(k=='l'){const o=x?lapsFor(x.km,r.c):[];its=o.map(v=>v+' кр. · '+(+(v*x.km).toFixed(1))+' км');ti='Круги'}
