@@ -258,3 +258,12 @@ body.fj .home-scene {position:fixed;inset:0;overflow:hidden;touch-action:manipul
  @keyframes workshop-pan {from {transform:translate(calc(-1 * var(--w)),-50%)}to {transform:translateY(-50%)}}
 }
 @media (prefers-reduced-motion:reduce) {.workshop-board .board-plate {transition:none}.login-transition,.login-transition .workshop-canvas {animation:none}}
+
+/* Турнир Тачки: карточки выбора без потери оригинальных фото Crazy 8 */
+.tk-cars-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;align-items:stretch}
+.tk-car-option{display:flex;flex-direction:column;gap:8px;min-width:0}
+.tk-car-pick{width:100%;min-height:42px}
+.tk-car-photo{display:block;width:100%;height:150px;object-fit:contain;border-radius:10px;background:#111722}
+.tk-tuning{display:block;margin-top:auto;padding-top:4px}
+.tk-tuning input{display:block;box-sizing:border-box;width:100%;margin-top:5px}
+@media(max-width:560px){.tk-cars-grid{grid-template-columns:1fr 1fr;gap:8px}.tk-car-option{padding:10px}.tk-car-photo{height:110px}.tk-car-pick{font-size:12px;padding:8px 5px}}
