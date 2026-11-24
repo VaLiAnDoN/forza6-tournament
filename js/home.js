@@ -168,5 +168,5 @@ if(view=='cars')b=carsView();
 if(view=='tachki')b=TACHKI2();
 if(view=='wof')b=WOF();
 if(view=='me')b=(stats()||'<h2>Личная статистика</h2><div class="card mut">Пока нет результатов.</div>')+'<div class="card mut">Статистика по машинам и маркам появится после загрузки списка машин и подключения общей базы.</div>';
-const hd=view=='tachki'?`<header><img src="img/forza-palata-logo.webp?v=20261125-emblem" alt="Forza Палата" style="display:block;width:190px;max-width:48%;height:76px;object-fit:contain;flex-shrink:1;border-radius:8px;filter:drop-shadow(0 3px 7px #000)"><img class="tkl" src="img/tachki/cars-logo.png" alt="Тачки"><div class="sp"></div><button class="btn" data-a="out">Выйти</button></header>`:`<header><div class="sp"></div><button class="btn" data-a="out">Выйти</button></header>`;
+const hd=view=='tachki'?`<header><img src="img/forza-palata-logo.webp?v=20261125-transparent" alt="Forza Палата" style="display:block;width:190px;max-width:48%;height:76px;object-fit:contain;flex-shrink:1;border-radius:8px;filter:drop-shadow(0 3px 7px #000)"><img class="tkl" src="img/tachki/cars-logo.png" alt="Тачки"><div class="sp"></div><button class="btn" data-a="out">Выйти</button></header>`:`<header><div class="sp"></div><button class="btn" data-a="out">Выйти</button></header>`;
 A.innerHTML=nav()+hd+b+wgFab()}
