@@ -277,3 +277,13 @@ body.fj .home-scene {position:fixed;inset:0;overflow:hidden;touch-action:manipul
 .tk-track-center,.tk-track-side{min-width:0}.tk-track-side{display:flex;flex-direction:column;gap:12px}.tk-track-photo{display:block;width:100%;height:auto;border-radius:12px;object-fit:contain}
 @media(max-width:900px){.tk-track-layout{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.tk-track-center{grid-column:1/-1;grid-row:1}.tk-track-side{grid-row:2}}
 @media(max-width:520px){.tk-track-layout{display:flex;flex-direction:column}.tk-track-center,.tk-track-side{width:100%}}
+
+
+/* Тачки: карточки машин по бокам, данные гонки по центру, слайдшоу фото трассы в шапке */
+.tkg>.tkc .chr.tk-sc{cursor:default;justify-content:flex-start;gap:6px}
+.tkg>.tkc .chr.tk-nophoto{min-height:0;padding-top:34px}
+.tk-sc-img{display:block;width:100%;padding:0;margin:0;border:0;background:none;cursor:pointer}
+.tk-sc .tk-car-pick{width:100%;margin-top:6px}
+.tk-sc .tk-assign{width:100%;margin-top:4px}.tk-sc .tk-assign select{flex:1;min-width:0}
+.tk-sc .tk-tuning{display:block;width:100%;text-align:left;margin-top:6px;font-size:12px;color:var(--m)}
+.tk-sc .tk-tuning input{display:block;box-sizing:border-box;width:100%;margin-top:4px}
