@@ -4,3 +4,9 @@
 /* Soften car cutout shadow and avoid clipping at the image frame edge. */
 .tkg>.tkc .chr.tk-sc .tk-sc-img{overflow:visible}
 .tkg>.tkc .chr.tk-sc .tk-sc-img img{filter:drop-shadow(0 5px 8px rgba(0,0,0,.48))}
+
+/* Race lore stays in normal flow so the banner grows with its content. */
+.tkh.tk-race-banner{aspect-ratio:auto;max-height:none;min-height:clamp(250px,34vw,440px);display:flex;align-items:flex-end}
+.tkh.tk-race-banner .hti{position:relative;inset:auto;width:100%;box-sizing:border-box;padding:clamp(90px,15vw,190px) clamp(14px,3vw,32px) 20px;text-align:center}
+.tkh.tk-race-banner .tk-race-story{display:block;-webkit-line-clamp:unset;overflow:visible;overflow-wrap:anywhere;margin:0 auto;line-height:1.5}
+@media(max-width:560px){.tkh.tk-race-banner .hti{padding-top:110px}.tkh.tk-race-banner .tk-race-story{font-size:13px}}
