@@ -1,2 +1,6 @@
 .tkh .hti{bottom:12px}.tk-race-story{max-width:1000px;margin:8px 0 0;color:#f1f3fa;font-size:clamp(12px,1.4vw,16px);line-height:1.4;text-shadow:0 2px 8px #000;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}@media(max-width:600px){.tkh{min-height:220px}.tk-race-story{-webkit-line-clamp:4;font-size:12px}}
 .tk-pi-row{justify-content:center;gap:8px;margin:5px 0}.tk-pi-row input{padding:4px 6px}
+
+/* Soften car cutout shadow and avoid clipping at the image frame edge. */
+.tkg>.tkc .chr.tk-sc .tk-sc-img{overflow:visible}
+.tkg>.tkc .chr.tk-sc .tk-sc-img img{filter:drop-shadow(0 5px 8px rgba(0,0,0,.48))}
