@@ -271,3 +271,9 @@ body.fj .home-scene {position:fixed;inset:0;overflow:hidden;touch-action:manipul
 /* Тачки: табличка по центру, фотографии машин по бокам. */
 .tk-hero-layout{margin:10px 0 18px}.tk-plate-row{display:grid;grid-template-columns:minmax(120px,1fr) minmax(260px,2fr) minmax(120px,1fr);gap:18px;align-items:center;margin:8px auto 16px;max-width:1150px}.tk-side-photo{display:block;width:100%;height:170px;object-fit:contain;border-radius:12px;background:#101722}.tk-center-plate{display:block;width:100%;max-height:190px;object-fit:contain}.tk-escape-gallery{margin:12px auto 18px;max-width:1000px}.tk-escape-gallery img{display:block;max-width:100%;max-height:420px;margin:auto;object-fit:contain;border-radius:14px}
 @media(max-width:650px){.tk-plate-row{grid-template-columns:1fr 1.4fr 1fr;gap:6px}.tk-side-photo{height:92px}.tk-center-plate{max-height:105px}.tk-escape-gallery img{max-height:260px}}
+
+/* Фотографии трассы по сторонам таблицы гонки, без подмены изображениями машин. */
+.tk-track-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(350px,1.6fr) minmax(0,1fr);gap:16px;align-items:start;margin:12px 0 18px}
+.tk-track-center,.tk-track-side{min-width:0}.tk-track-side{display:flex;flex-direction:column;gap:12px}.tk-track-photo{display:block;width:100%;height:auto;border-radius:12px;object-fit:contain}
+@media(max-width:900px){.tk-track-layout{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.tk-track-center{grid-column:1/-1;grid-row:1}.tk-track-side{grid-row:2}}
+@media(max-width:520px){.tk-track-layout{display:flex;flex-direction:column}.tk-track-center,.tk-track-side{width:100%}}
