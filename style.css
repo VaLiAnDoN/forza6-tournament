@@ -350,3 +350,9 @@ body.fj .home-scene {position:fixed;inset:0;overflow:hidden;touch-action:manipul
  .tkg>.tkc .chr.tk-sc .tkst-r em{font-size:10px}
  #tkgm .tkgs{grid-template-columns:1fr}
 }
+
+/* Выбор трассы и перелистывание машин */
+.tk-track-select{display:block;margin:14px 0 8px;color:var(--m)}
+.tk-track-select select{display:block;width:100%;margin-top:6px;box-sizing:border-box}
+.tk-pool-photo{display:block;width:100%;max-height:250px;object-fit:contain;border-radius:12px;margin:12px auto}
+.tk-car-nav{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 15px}.tk-car-nav span{font-size:13px;color:var(--m)}
