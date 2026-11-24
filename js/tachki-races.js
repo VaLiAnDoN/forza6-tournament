@@ -39,25 +39,22 @@ return`<div class="card"><h2 style="margin-top:0">Время гонки</h2>${ro
 let chOpen=null;
 const tkClsChip=s=>{const m=s.match(/^([A-Z0-9]+)\s*(\d+)?/);return m?`<span class="cl cl-${m[1]}">${m[1]}</span>${m[2]?` <b class="pi">${m[2]}</b>`:''}${s.slice(m[0].length)?` <span class="mut">${e(s.slice(m[0].length))}</span>`:''}`:e(s)};
 function tkCanTune(){return adm() || !!(me&&S.players.some(p=>p.n===me&&p.n==='Богдан'&&String(p.c)==='638731'))}
+/* Карта ключа машины гонки -> ключ персонажа с фото и описанием (если он есть). */
+function tkIK(k){return TKC[k]?k:(TKC[k+'_rs']?k+'_rs':null)}
 function TKPAGE(id){
  const r=TKR.find(x=>x.id==id);if(!r)return'';
- const pk=tkPk(r.id),pg=tkPg()[r.id]||{},tc=pg.tuning||{},P=TPN(),A=adm(),crazy=r.id===2;
- const by={};Object.keys(pk).forEach(k=>by[pk[k]]=k);
- const photoByKey={mcqueen:'c_mcqueen.webp',mater:'c_mater.webp',cruz:'c_cruz.webp',fillmore:'c_fillmore.webp',sarge:'c_sarge.webp',sheriff:'c_sheriff_rs.webp'};
- const cars=r.cars.map(([k,n])=>{
-  const img=crazy&&photoByKey[k]?`<img class="tk-car-photo" src="img/tachki/${photoByKey[k]}" alt="${e(n)}" loading="lazy">`:'';
-  const assigned=pk[k]||'';
-  return `<article class="card tk-car-option ${crazy?'tk-crazy-option':''}">${img}<button class="btn tk-car-pick" data-a="tkcarpick" data-r="${r.id}" data-k="${e(k)}">${e(n)}${assigned?' · '+e(assigned):' · выбрать'}</button>${A?`<div class="row"><select id="tkassign_${r.id}_${e(k)}"><option value="">Снять выбор</option>${P.map(n=>`<option value="${e(n)}" ${assigned===n?'selected':''}>${e(n)}</option>`).join('')}</select><button class="btn" data-a="tkcarassign" data-r="${r.id}" data-k="${e(k)}">Назначить</button></div>`:''}<label class="tk-tuning">Код тюнинга <input data-tktune="${r.id}|${e(k)}" value="${e(tc[k]||'')}" placeholder="Код тюнинга" ${tkCanTune()?'':'disabled'}></label></article>`
- }).join('');
- const trackFiles=crazy?['track1.jpg','track2.jpg','track3.jpg']:r.id===8?['escape_radiator_1.jpg','escape_radiator_2.png','escape_radiator_3.png']:[];
- const trackImg=(file,i)=>`<img class="tk-track-photo" src="img/tachki/${file}" alt="${e(r.n)}: фотография трассы ${i+1}" loading="lazy">`;
- const header=`<div class="tkh tkh0"><div class="hsh"></div><div class="hti"><div class="hk">${e(r.fmt||'')}</div><h1>${e(r.n)}</h1>${r.clsNote?`<div class="row"><span class="chip">${e(r.clsNote)}</span></div>`:''}</div></div>`;
- const raceInfo=`<div class="card"><h2 style="margin-top:0">Данные гонки</h2>${r.fmt?`<p><b>Формат:</b> ${e(r.fmt)}</p>`:''}${r.clsNote?`<p><b>Класс:</b> ${e(r.clsNote)}</p>`:''}${r.rules?`<p><b>Правила:</b> ${e(r.rules)}</p>`:''}<label>Код трассы <input data-tkpg="${r.id}|code" value="${e(pg.code||'')}" placeholder="Код трассы" ${A?'':'disabled'}></label></div>`;
- const center=`${raceInfo}<div class="card"><h2>Кто на чём</h2>${P.map(n=>`<div class="lane"><b class="sp">${e(n)}</b><span>${e((r.cars.find(x=>x[0]===by[n])||[])[1]||'ещё не выбрал')}</span></div>`).join('')}</div>${tkTimes(r)}`;
- const raceLayout=trackFiles.length?`<div class="tk-track-layout"><div class="tk-track-side">${trackImg(trackFiles[0],0)}</div><div class="tk-track-center">${center}</div><div class="tk-track-side">${trackFiles.slice(1).map((f,i)=>trackImg(f,i+1)).join('')}</div></div>`:center;
-
- const tuningNote=tkCanTune()?'Коды тюнинга можно редактировать.':'Код тюнинга могут редактировать администратор и Богдан.';
- return `${header}${raceLayout}<h2>Машины на выбор</h2><p class="mut">Нажмите на машину, чтобы выбрать её. ${tuningNote}</p><div class="tk-cars-grid">${cars}</div>`
+ const pk=tkPk(r.id),pg=tkPg()[r.id]||{},tc=pg.tuning||{},P=TPN(),A=adm(),by={};
+ Object.keys(pk).forEach(k=>by[pk[k]]=k);
+ const slides=r.id===2?['track1.jpg','track2.jpg','track3.jpg']:r.id===8?['escape_radiator_1.jpg','escape_radiator_2.png','escape_radiator_3.png']:[];
+ const card=([k,n])=>{
+  const ik=tkIK(k),c=ik?TKC[ik]:null,owner=pk[k]||'',hue=c?c.hue:'#7c8aa8',
+  photo=c?`<button class="tk-sc-img" data-a="chr" data-r="${r.id}" data-k="${e(k)}" title="Подробнее о машине"><img src="img/tachki/${e(c.img)}.webp" alt="${e(c.n)}" loading="lazy"></button>`:'';
+  return `<article class="chr tk-sc ${c?'':'tk-nophoto'}" style="--hc:${hue}">${owner?`<i class="chown">${e(owner)}</i>`:''}${photo}<b>${e(c?c.n:n)}</b><span>${e(n)}</span><button class="btn tk-car-pick" data-a="tkcarpick" data-r="${r.id}" data-k="${e(k)}">${owner?'Выбрал: '+e(owner):'Выбрать'}</button>${A?`<div class="row tk-assign"><select id="tkassign_${r.id}_${e(k)}"><option value="">Снять выбор</option>${P.map(x=>`<option value="${e(x)}" ${owner===x?'selected':''}>${e(x)}</option>`).join('')}</select><button class="btn" data-a="tkcarassign" data-r="${r.id}" data-k="${e(k)}">Назначить</button></div>`:''}<label class="tk-tuning">Код тюнинга <input data-tktune="${r.id}|${e(k)}" value="${e(tc[k]||'')}" placeholder="Код тюнинга" ${tkCanTune()?'':'disabled'}></label></article>`};
+ const half=Math.ceil(r.cars.length/2),left=r.cars.slice(0,half).map(card).join(''),right=r.cars.slice(half).map(card).join('');
+ const header=`<div class="tkh ${slides.length?'':'tkh0'}">${slides.length?`<div class="hs">${slides.map((f,i)=>`<img src="img/tachki/${f}" alt="${e(r.n)}: фото трассы ${i+1}" style="animation-delay:${i*5}s">`).join('')}</div>`:''}<div class="hsh"></div><div class="hti"><div class="hk">${e(r.fmt||'')}</div><h1>${e(r.n)}</h1>${r.clsNote?`<div class="row"><span class="chip">${e(r.clsNote)}</span></div>`:''}</div></div>`;
+ const info=`<div class="card"><h2 style="margin-top:0">Данные гонки</h2><table class="kv">${r.fmt?`<tr><td>Формат</td><td>${e(r.fmt)}</td></tr>`:''}${r.clsNote?`<tr><td>Класс</td><td>${e(r.clsNote)}</td></tr>`:''}${r.rules?`<tr><td>Правила</td><td>${e(r.rules)}</td></tr>`:''}<tr><td>Машин на выбор</td><td>${r.cars.length}</td></tr><tr><td>Код трассы</td><td><input data-tkpg="${r.id}|code" placeholder="Код трассы" value="${e(pg.code||'')}" ${A?'':'disabled'} style="width:100%;box-sizing:border-box"></td></tr></table></div>`;
+ const who=`<div class="card"><h2 style="margin-top:0">Кто на чём</h2>${P.map(n=>`<div class="lane"><b class="sp">${e(n)}</b>${by[n]?`<span class="chip">${e((r.cars.find(x=>x[0]===by[n])||[])[1]||'—')}</span>`:'<span class="mut">ещё не выбрал</span>'}</div>`).join('')}<div class="mut" style="font-size:12px;margin-top:8px">Нажмите «Выбрать» на карточке машины. Фото машины открывает описание. ${tkCanTune()?'Коды тюнинга можно редактировать.':'Код тюнинга могут редактировать администратор и Богдан.'}</div></div>`;
+ return `${header}<div class="tkg"><div class="tkc">${left}</div><div class="tkmc">${info}${tkTimes(r)}${who}</div><div class="tkc">${right}</div></div>`
 }
 
 function TKFULL(r){const A=adm(),pk=tkPk(r.id),pg=tkPg()[r.id]||{},ch=k=>{const c=TKC[k],o=pk[k];return`<button class="chr" data-a="chr" data-r="${r.id}" data-k="${k}" style="--hc:${c.hue}"><img src="img/tachki/${c.img}.webp" alt="${e(c.n)}" loading="lazy">${o?`<i class="chown">${e(o)}</i>`:''}<b>${e(c.n)}</b><span>${e(c.short)}</span></button>`},
@@ -81,7 +78,7 @@ function TKRADIATOR(r){
 function TKSOON(r){return`<div class="tkh tkh0"><div class="hsh"></div><div class="hti"><div class="hk">${e(r.fmt)}</div><h1>${e(r.n)}</h1><div class="row"><span class="chip">${tkClsChip(r.cls)}</span></div></div></div>
 <div class="tkg1"><div class="card"><h2 style="margin-top:0">Данные гонки</h2><table class="kv"><tr><td>Формат</td><td>${e(r.fmt)}</td></tr><tr><td>Класс</td><td>${e(r.clsNote)}</td></tr>${r.rules?`<tr><td>Правила</td><td>${e(r.rules)}</td></tr>`:''}<tr><td>Выбор машин</td><td>${r.pick.map(x=>`<span class="chip" style="margin:2px">${e(x)}</span>`).join(' ')}</td></tr></table><div class="mut" style="margin-top:10px">Оформление этой гонки (фото трека и персонажи) появится позже.</div></div>${tkTimes(r)}</div>`}
 function chmR(){let o=document.getElementById('chm');if(!chOpen||!me){if(o)o.remove();return}
-const r=TKR.find(x=>x.id==chOpen.r),c=TKC[chOpen.k],car=tkCar(c.car),pk=tkPk(r.id),owner=pk[chOpen.k],mine=Object.keys(pk).find(k=>pk[k]==me),A=adm();
+const r=TKR.find(x=>x.id==chOpen.r),c=TKC[tkIK(chOpen.k)],car=tkCar(c.car),pk=tkPk(r.id),owner=pk[chOpen.k],mine=Object.keys(pk).find(k=>pk[k]==me),A=adm();
 const ci=car?`<h2 class="chh">${car[1]} ${e(car[2])}</h2><div class="row" style="margin:6px 0"><span class="cl cl-${car[5]}">${car[5]}</span><b class="pi">${car[4]}</b><span class="mut">${car[7]||''}</span>${car[9]?`<span class="pr pr-${car[8]}">${priceF(car[9])} CR</span>`:''}</div><div class="mut" style="margin-bottom:6px">${e(car[3])} · ${CF[car[6]]?flag(CF[car[6]]):''}${e(car[6])}</div><div class="mut" style="font-size:13px">В гонке «${e(r.n)}»: ${e(r.clsNote)}. Это сток-параметры машины из игры.</div>`:`<h2 class="chh">${e(c.short)}</h2>`;
 const ctl=owner?`<div class="row"><span class="chip">Выбрал: ${e(owner)}</span>${A||owner==me?'<button class="btn" data-a="chclr">Снять выбор</button>':''}</div>`:A?`<div class="row"><select id="chsel">${TP().map(p=>`<option>${e(p.n)}</option>`).join('')}</select><button class="btn pri" data-a="chas">Назначить игроку</button></div>`:me&&me!='@admin'?`<button class="btn pri" data-a="chpick">${mine?'Сменить выбор на этого':'Выбрать этого персонажа'}</button>`:'';
 const html=`<div id="chm" style="--hc:${c.hue}"><div class="chbk" data-a="chc"></div><div class="chw"><button class="btn chx" data-a="chc">✕</button><div class="chimg"><img src="img/tachki/${c.img.endsWith('.jpg')?c.img:c.img+'.webp'}" alt="${e(c.n)}"></div><div class="chb"><div class="mut">Машина</div>${ci}<div class="chsp"></div><div class="mut">Персонаж</div><h3 style="margin:2px 0">${e(c.n)}</h3><div class="chwho">${e(c.who)}</div><p>${e(c.bio)}</p>${ctl}</div></div></div>`;
