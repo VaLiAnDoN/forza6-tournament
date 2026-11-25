@@ -367,3 +367,14 @@ body.fj .home-scene {position:fixed;inset:0;overflow:hidden;touch-action:manipul
 @media(max-width:560px){.tk-race-banner{min-height:250px;max-height:none}.tk-race-banner .hti h1{font-size:clamp(23px,6vw,34px)}.tk-race-banner .tk-race-story{font-size:13px;line-height:1.4}}
 
 body.champ-ready #map{display:block}
+
+/* KF: two fixed lanes, independent traffic, no external assets. */
+#wofbg .rdw{height:clamp(105px,19vh,190px);background:linear-gradient(180deg,#343446 0%,#242535 48%,#181a28 52%,#10121e 100%);border-top:3px solid #a8a3c766;border-bottom:3px solid #a8a3c766;box-shadow:0 -12px 35px #120a4266}
+#wofbg .rdw:before{top:49%;height:2px;background:repeating-linear-gradient(90deg,#e9e5d8aa 0 36px,transparent 36px 76px);animation:none}
+#wofbg .wc{width:clamp(100px,15vw,230px);height:auto;filter:drop-shadow(0 3px 3px #0008);animation:kfdrive var(--trip) linear var(--delay) infinite;bottom:calc(clamp(105px,19vh,190px)*.12);}
+#wofbg .kf-lane0{bottom:calc(clamp(105px,19vh,190px)*.60);width:clamp(85px,13vw,195px);opacity:.86}
+#wofbg .kf-lane1{animation-direction:reverse}
+@keyframes kfdrive{from{transform:translateX(-105%)}to{transform:translateX(100vw)}}
+#wofbg .kf-rim{animation:kfrim .65s linear infinite}@keyframes kfrim{to{transform:rotate(360deg)}}
+#wofbg .kf-lane1 .kf-rim{animation-direction:reverse}
+@media(prefers-reduced-motion:reduce){#wofbg .wc{display:none}#wofbg .kf-rim{animation:none}}
