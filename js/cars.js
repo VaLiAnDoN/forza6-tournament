@@ -244,7 +244,7 @@ const CARS=[
 ["Ford",2022,"Ford Bronco Raptor","Pickups & 4x4's",473,"C","США","AWD","e",50.0,5,"4,16,1","3,13,2"],
 ["Ford",2022,"Ford F-150 Lightning","Pickups & 4x4's",500,"C","США","AWD","e",250.0,5,"4,16,1","3,13,2"],
 ["Ford",2022,"Ford Focus ST","Hot Hatch",594,"B","США","FWD","c",34.0,4,"9,10,5","7,8,14"],
-["Ford",2022,"Ford Supervan 4","Extreme Track Toys",919,"R","США","AWD","r",2000.0,5,"8,15,11","12,13,6"],
+["Ford",2022,"Ford Supervan 4","Extreme Track Toys",919,"R","США","AWD","e",2000.0,5,"8,15,11","12,13,6"],
 ["Ford",2023,"Ford F-150 Raptor R","Pickups & 4x4's",536,"B","США","AWD","e",110.0,5,"4,1,3","16,2,13"],
 ["Ford",2023,"Ford F-150 Raptor R Welcome Pack","Pickups & 4x4's",600,"B","США","AWD","l",50.0,5,"4,1,3","16,2,13"],
 ["Ford",2023,"Ford Fiesta ST","Hot Hatch",500,"C","США","FWD","c",26.0,4,"9,10,5","7,8,14"],
@@ -276,12 +276,12 @@ const CARS=[
 ["Hennessey",2021,"Hennessey Venom F5","Hypercars",870,"S2","США","RWD","l",2050.0,4,"11,12,15","8,7,9"],
 ["Holden",1968,"Holden Monaro GTS 327","Classic Muscle",366,"D","Австралия","","",0,3,"9,13,15","16,11,12"],
 ["Holden",1977,"Holden Torana A9X","Classic Muscle",413,"C","Австралия","RWD","r",500.0,3,"9,13,15","16,11,12"],
-["Honda",1970,"Honda S800","Cult Cars",134,"D","Япония","FWD","e",50.0,2,"13,16,4","12,15,9"],
+["Honda",1970,"Honda S800","Cult Cars",134,"D","Япония","FWD","c",50.0,2,"13,16,4","12,15,9"],
 ["Honda",1970,"Honda N600","Electic Domestics",100,"D","Япония","","",0,2,"4,9,13","16"],
 ["Honda",1972,"Honda Z GT","Eclectic Domestics",100,"D","Япония","RWD","c",15.0,2,"13,16,4","12,15,9"],
 ["Honda",1974,"Honda Civic RS","Retro Hot Hatch",254,"D","Япония","FWD","c",14.0,3,"9,10,5","7,8,14"],
 ["Honda",1984,"Honda City E II","Eclectic Domestics",203,"D","Япония","FWD","e",7.5,2,"13,16,4","12,15,9"],
-["Honda",1984,"Honda Civic CRX Mugen","Retro Sports Cars",390,"D","Япония","","",0,3,"9,11,12","7,8,10"],
+["Honda",1984,"Honda Civic CRX Mugen","Retro Sports Cars",390,"D","Япония","","e",0,3,"9,11,12","7,8,10"],
 ["Honda",1986,"Honda Civic Si","Retro Hot Hatch",253,"D","Япония","FWD","e",10.0,3,"9,10,5","7,8,14"],
 ["Honda",1990,"Honda #19 101 Motorsport CRX WTAC","Extreme Track Toys",877,"S2","Япония","FWD","e",150.0,5,"8,11,12","6,7,9"],
 ["Honda",1991,"Honda Beat","Eclectic Domestics",283,"D","Япония","RWD","r",15.0,2,"13,16,4","12,15,9"],
@@ -514,7 +514,7 @@ const CARS=[
 ["Penhall",2011,"Penhall The Cholla","Unlimited Buggies",541,"B","США","RWD","r",85.0,5,"4,1,3","16,2,13"],
 ["Peugeot",1984,"Peugeot 205 Turbo 16","Retro Rally",500,"C","Франция","AWD","b",0.0,5,"4,5,1","2,3,6"],
 ["Peugeot",1991,"Peugeot 205 Rallye","Retro Hot Hatch",350,"D","Франция","FWD","r",22.0,3,"5,10,7","9,4,1"],
-["Peugeot",2007,"Peugeot 207 Super 2000","Rally Monsters",632,"A","Франция","","",0.0,5,"4,5,1","2,3,6"],
+["Peugeot",2007,"Peugeot 207 Super 2000","Rally Monsters",632,"A","Франция","","e",0.0,5,"4,5,1","2,3,6"],
 ["Plymouth",1958,"Plymouth Fury","Rods and Customs",361,"D","США","RWD","r",53.0,3,"13,16,4","12,15,9"],
 ["Plymouth",1968,"Plymouth Barracuda Formula S","Classic Muscle",445,"C","США","RWD","r",45.0,3,"9,13,15","16,11,12"],
 ["Plymouth",1971,"Plymouth Cuda 426 HEMI","Classic Muscle",441,"C","США","RWD","e",125.0,3,"9,13,15","16,11,12"],
@@ -547,7 +547,7 @@ const CARS=[
 ["Porsche",2018,"Porsche Macan LPR Rally Raid","Offroad",528,"B","Германия","AWD","e",250.0,5,"4,1,3","2,5,16"],
 ["Porsche",2019,"Porsche #70 Porsche Motorsport 935","Extreme Track Toys",853,"S2","Германия","RWD","l",1600.0,5,"8,11,12","6,7,9"],
 ["Porsche",2019,"Porsche 911 Carrera S","Modern Sports Cars",714,"S1","Германия","RWD","r",145.0,4,"11,12,7","8,9,10"],
-["Porsche",2019,"Porsche 911 GT3 RS","Track Toys",760,"S1","Германия","","",0,5,"8,6,7","9,11,12"],
+["Porsche",2019,"Porsche 911 GT3 RS","Track Toys",760,"S1","Германия","","e",0,5,"8,6,7","9,11,12"],
 ["Porsche",2020,"Porsche Taycan Turbo S","Modern Super Saloons",725,"S1","Германия","AWD","c",200.0,4,"4,9",""],
 ["Porsche",2021,"Porsche 911 GT3","Track Toys",752,"S1","Германия","RWD","e",260.0,5,"8,6,7","9,11,12"],
 ["Porsche",2021,"Porsche Mission R","Extreme Track Toys",865,"S2","Германия","AWD","l",5000.0,5,"8,11,12","6,7,9"],
@@ -568,7 +568,7 @@ const CARS=[
 ["Rimac",2021,"Rimac Nevera","Hypercars",913,"R","Хорватия","AWD","l",2250.0,4,"11,12,15","8,7,9"],
 ["Rivian",2022,"Rivian R1T","Pickups & 4x4's",607,"A","США","AWD","e",56.0,5,"4,1,3","16,2,13"],
 ["RJ Anderson",2016,"RJ Anderson #37 Polaris RZR Pro 2 Truck","Unlimited Offroad",674,"A","США","RWD","e",120.0,5,"1,3,4","16,2,13"],
-["RJ Anderson",2021,"RJ Anderson #37 Polaris RZR Pro 4 Truck","Unlimited Offroad",677,"A","США","","",0.0,5,"1,3,4","16,2,13"],
+["RJ Anderson",2021,"RJ Anderson #37 Polaris RZR Pro 4 Truck","Unlimited Offroad",677,"A","США","","e",0.0,5,"1,3,4","16,2,13"],
 ["Saleen",2004,"Saleen S7","Retro Supercars",773,"S1","США","","",0,4,"11,12,7","8,9,10"],
 ["Saleen",2017,"Saleen S7 LM","Extreme Track Toys",835,"S2","США","AWD","e",1000.0,5,"8,11,12","6,7,9"],
 ["Schuppan",1993,"Schuppan 962CR","Retro Supercars",764,"S1","Великобритания","AWD","e",1950.0,4,"11,12,7","8,9,10"],
@@ -604,7 +604,7 @@ const CARS=[
 ["Toyota",1979,"Toyota FJ40","Pickups & 4x4's",157,"D","Япония","AWD","c",103.0,4,"4,16,1","3,13,2"],
 ["Toyota",1985,"Toyota Sprinter Trueno GT Apex","Retro Sports Cars",376,"D","Япония","RWD","e",30.0,3,"9,11,12","7,8,10"],
 ["Toyota",1985,"Toyota Sprinter Trueno GT Apex Forza Edition","Track Toys",600,"B","Япония","","f",500.0,5,"8,6,7","9,11,12"],
-["Toyota",1989,"Toyota MR2 SC","Retro Sports Cars",397,"D","Япония","AWD","e",250.0,3,"9,11,12","7,8,10"],
+["Toyota",1989,"Toyota MR2 SC","Retro Sports Cars",397,"D","Япония","AWD","r",250.0,3,"9,11,12","7,8,10"],
 ["Toyota",1991,"Toyota Chaser GT Twin Turbo","Retro Super Saloons",484,"C","Япония","RWD","r",20.0,4,"9,4,13","16"],
 ["Toyota",1991,"Toyota Sera","Eclectic Domestics",344,"D","Япония","FWD","r",11.0,2,"13,16,4","12,15,9"],
 ["Toyota",1992,"Toyota Celica GT-Four RC ST185","Retro Rally",438,"C","Япония","AWD","r",30.0,5,"4,5,1","2,3,6"],
@@ -669,7 +669,7 @@ R=CARS.filter(c=>(!f.q||(c[0]+' '+c[2]).toLowerCase().includes(f.q.toLowerCase()
 row=c=>{const ix=CARS.indexOf(c),n=my[key(c)]||{},rc=n.r||c[8],pc=n.p!==undefined&&n.p!==''?+n.p:c[9],nt=[n.t?'🔧 '+e(n.t):'',n.m?'PI макс '+e(n.m):'',n.d?'★ '+e(n.d):''].filter(Boolean).join(' · ');
 let h=`<tr><td>${e(c[0])}</td><td>${c[1]}</td><td>${e(c[2])}</td><td>${e(c[3])}</td><td><b class="pi">${c[4]}</b></td><td><span class="cl cl-${c[5]}">${c[5]}</span></td><td>${c[7]||'—'}</td><td>${pc?`<span class="pr pr-${rc}">${priceF(pc)}</span>`:'—'}</td><td>${CF[c[6]]?flag(CF[c[6]]):''}${e(c[6])}</td><td style="white-space:normal;text-align:left;min-width:170px">${me?`<button class="btn" data-a="ci" data-k="${ix}" title="Редактировать информацию о машине">✎</button>`:''}${nt?`<div class="mut" style="font-size:12px;margin-top:3px;white-space:nowrap">${nt}</div>`:''}</td></tr>`;
 if(me&&ciOpen===ix)h+=`<tr><td colspan="10" style="text-align:left;white-space:normal"><b>${e(c[2])} — информация о машине</b> <span class="mut">(видна всем игрокам)</span><div class="row" style="margin-top:6px"><input data-ci="${ix}|t" placeholder="Код тюнинга" value="${e(n.t||'')}" style="width:160px"><input data-ci="${ix}|m" type="number" placeholder="Макс. PI" value="${e(n.m||'')}" style="width:100px"><input data-ci="${ix}|d" placeholder="Лучшие дисциплины" value="${e(n.d||'')}" style="width:220px"><input data-ci="${ix}|p" type="number" placeholder="Цена, тыс. CR" value="${e(n.p||'')}" style="width:130px"><select data-ci="${ix}|r"><option value="">Редкость</option>${Object.entries(RAR).map(([q,v])=>`<option value="${q}" ${n.r==q?'selected':''}>${v}</option>`).join('')}</select><button class="btn pri" data-a="cisave" data-k="${ix}">Сохранить</button></div></td></tr>`;return h};
-return`<h2>Список машин</h2><div class="card row"><input data-cf="q" placeholder="Поиск" value="${e(f.q||'')}">${sel('cl',5,'Класс')}${sel('dt',7,'Привод')}${sel('co',6,'Страна')}${sel('ty',3,'Тип')}${num('p0','PI от')}${num('p1','PI до')}${num('y0','Год от')}${num('y1','Год до')}<select data-cf="so">${so.map(([v,t])=>`<option value="${v}"${f.so==v?' selected':''}>${t}</option>`).join('')}</select><select data-cf="dir"><option value="-1"${f.dir=='-1'?' selected':''}>↓</option><option value="1"${f.dir=='1'?' selected':''}>↑</option></select></div><div class="card tbl"><table><tr><th>Марка</th><th>Год</th><th>Модель</th><th>Тип</th><th>PI</th><th>Класс</th><th>Привод</th><th>Цена, CR</th><th>Страна</th><th>Заметки</th></tr>${R.slice(0,300).map(row).join('')}</table><p class="mut">Показано ${Math.min(300,R.length)} из ${R.length}. Привод и цена — по открытым спискам (у части новых машин пусто). Цвет цены показывает редкость: <span class="pr pr-c">Common</span> <span class="pr pr-r">Rare</span> <span class="pr pr-e">Epic</span> <span class="pr pr-l">Legendary</span> <span class="pr pr-f">Forza Edition · Barn Find · Treasure</span>. Кнопка ✎ — общие заметки о машине (код тюнинга, макс. PI, дисциплины, цена, редкость): их видят все игроки; после ввода нажмите «Сохранить».</p></div>`}
+return`<h2>Список машин</h2><div class="card row"><input data-cf="q" placeholder="Поиск" value="${e(f.q||'')}">${sel('cl',5,'Класс')}${sel('dt',7,'Привод')}${sel('co',6,'Страна')}${sel('ty',3,'Тип')}${num('p0','PI от')}${num('p1','PI до')}${num('y0','Год от')}${num('y1','Год до')}<select data-cf="so">${so.map(([v,t])=>`<option value="${v}"${f.so==v?' selected':''}>${t}</option>`).join('')}</select><select data-cf="dir"><option value="-1"${f.dir=='-1'?' selected':''}>↓</option><option value="1"${f.dir=='1'?' selected':''}>↑</option></select></div><div class="card tbl"><table><tr><th>Марка</th><th>Год</th><th>Модель</th><th>Тип</th><th>PI</th><th>Класс</th><th>Привод</th><th>Цена, CR</th><th>Страна</th><th>Заметки</th></tr>${R.map(row).join('')}</table><p class="mut">Показано ${R.length} из ${R.length}. Привод и цена — по открытым спискам (у части новых машин пусто). Цвет цены показывает редкость: <span class="pr pr-c">Common</span> <span class="pr pr-r">Rare</span> <span class="pr pr-e">Epic</span> <span class="pr pr-l">Legendary</span> <span class="pr pr-f">Forza Edition · Barn Find · Treasure</span>. Кнопка ✎ — общие заметки о машине (код тюнинга, макс. PI, дисциплины, цена, редкость): их видят все игроки; после ввода нажмите «Сохранить».</p></div>`}
 
 /* ===== Мини-ИИ: оценка машины (0–100) под каждую из 16 дисциплин ===== */
 const SPD={'Hypercars':1,'Modern Supercars':.95,'Extreme Track Toys':.9,'Super GT':.85,'Track Toys':.8,'Modern Super Saloons':.8,'Retro Supercars':.75,'Modern Sports Cars':.7,'Modern Muscle':.75,'GT Cars':.7,'Super Hot Hatch':.6,'Modern Rally':.55,'Rally Monsters':.6,'Classic Racers':.55,'Retro Racers':.5,'Retro Super Saloons':.6,'Classic Muscle':.55,'Retro Muscle':.55,'Retro Sports Cars':.5,'Drift Cars':.5,'Unlimited Offroad':.5,"Pickups & 4x4's":.45,'Offroad':.4,'Sports Utility Heroes':.5},
