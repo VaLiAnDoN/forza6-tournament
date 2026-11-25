@@ -368,14 +368,12 @@ body.fj .home-scene {position:fixed;inset:0;overflow:hidden;touch-action:manipul
 
 body.champ-ready #map{display:block}
 
-/* KF: subdued overhead night traffic, matching the violet wheel palette. */
-#wofbg{--kf-road:clamp(96px,16vh,156px);--kf-car:clamp(84px,10vw,142px)}
-#wofbg .rdw{height:var(--kf-road);background:linear-gradient(180deg,#211b3b,#19162d 49%,#211b36 51%,#141126);border-top:2px solid #a69bc044;border-bottom:2px solid #a69bc033;box-shadow:0 -8px 32px #1d0c4c66}
-#wofbg .rdw:before{top:50%;height:1px;background:repeating-linear-gradient(90deg,#c5b7e066 0 24px,transparent 24px 55px);animation:none}
-#wofbg .rdw:after{content:"";position:absolute;inset:7px 0;border-block:1px solid #c5b7e02b}
-#wofbg .wc{left:0;width:var(--kf-car);height:auto;bottom:calc(var(--kf-road)*.25 - var(--kf-car)*.26923);filter:none;opacity:.85;animation:kfdrive var(--trip) linear var(--delay) infinite;animation-play-state:paused}
+/* KF: original side-view silhouettes, integrated with the violet festival backdrop. */
+#wofbg .rdw{height:17vh;background:linear-gradient(180deg,#4a288b88,#24134f 48%,#160c39);border-top:1px solid #d3baff66;box-shadow:0 -4px 24px #a98aff22}
+#wofbg .rdw:before{top:48%;height:2px;background:repeating-linear-gradient(90deg,#cbbaff55 0 34px,transparent 34px 88px);animation:none}
+#wofbg .rdw:after{content:"";position:absolute;inset:5px 0;border-block:1px solid #bcaaff26}
+#wofbg .wc{width:clamp(90px,13vw,190px);filter:drop-shadow(0 3px 5px #0d062caa);opacity:.76;animation-play-state:paused}
 body.wf #wofbg .wc{animation-play-state:running}
-#wofbg .kf-lane0{bottom:calc(var(--kf-road)*.75 - var(--kf-car)*.26923)}
-#wofbg .kf-lane1{animation-direction:reverse}
-@keyframes kfdrive{from{transform:translateX(-105%)}to{transform:translateX(100vw)}}
+#wofbg .kf-stream0{bottom:8.5vh;opacity:.52;width:clamp(75px,10vw,150px)}
+#wofbg .kf-stream1{bottom:1vh;animation-direction:reverse}
 @media(prefers-reduced-motion:reduce){#wofbg .wc{display:none}}
