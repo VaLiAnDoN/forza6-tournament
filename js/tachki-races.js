@@ -119,7 +119,7 @@ function TKPAGE(id){
  const hp=r.id===3&&tkHoolDriver()?tkHoolPicks(tkHoolDriver()):null,pk=hp?Object.fromEntries(Object.entries(hp).map(([n,k])=>[k,n])):tkPk(r.id),pg=tkPg()[r.id]||{},tc=pg.tuning||{},P=TPN(),A=adm(),by={};
  Object.keys(pk).forEach(k=>{if(tkCars(r).some(x=>x[0]===k))by[pk[k]]=k});
  const slidePrefix={1:'radiator_gp_',3:'hooligans_',2:'track',4:'nascar_',5:'tokyo_gp_cars_',7:'tokyo_grand_prix_',8:'escape_radiator_'}[r.id];
- const slides=slidePrefix?[1,2,3].map(i=>slidePrefix+i+'.jpg'):[];
+ const slides=slidePrefix?[1,2,3].map(i=>slidePrefix+i+'.webp'):[];
  const raceColor={1:'#ffad52',3:'#c49aff',2:'#70e49a',4:'#75caff',5:'#75caff',7:'#75caff',8:'#ffad52'}[r.id];
  const card=([k,n,who])=>{
   const ik=tkIK(k),c=ik?TKC[ik]:null,owner=r.id===3&&k==='unimog'?(tkHoolDriver()||''):hp?Object.keys(hp).filter(n=>hp[n]===k).join(', '):pk[k]||'',hue=c?c.hue:'#7c8aa8',pi=tkPoolPI(r,k,n),
