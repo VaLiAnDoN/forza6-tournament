@@ -10,3 +10,11 @@
 .tkh.tk-race-banner .hti{position:relative;inset:auto;width:100%;box-sizing:border-box;padding:clamp(90px,15vw,190px) clamp(14px,3vw,32px) 20px;text-align:center}
 .tkh.tk-race-banner .tk-race-story{display:block;-webkit-line-clamp:unset;overflow:visible;overflow-wrap:anywhere;margin:0 auto;line-height:1.5}
 @media(max-width:560px){.tkh.tk-race-banner .hti{padding-top:110px}.tkh.tk-race-banner .tk-race-story{font-size:13px}}
+
+/* Keep the race banner and the three race columns on the same outer edges. */
+.tkh.tk-race-banner + .tkg{width:100%;box-sizing:border-box;grid-template-columns:minmax(0,1fr) minmax(0,2fr) minmax(0,1fr);gap:clamp(12px,1.6vw,28px);align-items:start}
+.tkh.tk-race-banner + .tkg > .tkmc > .card:first-child{margin-top:0}
+.tkh.tk-race-banner + .tkg > .tkc .chr:hover{transform:none}
+@media(max-width:900px){.tkh.tk-race-banner + .tkg{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}}
+@media(max-width:560px){.tkh.tk-race-banner + .tkg{grid-template-columns:minmax(0,1fr);gap:12px}.tkh.tk-race-banner + .tkg > .tkc{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:380px){.tkh.tk-race-banner + .tkg > .tkc{grid-template-columns:minmax(0,1fr)}}
